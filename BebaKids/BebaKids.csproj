@@ -1,0 +1,513 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D44A187C-A493-44BF-ADD4-9473AEBB0D6C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BebaKids</RootNamespace>
+    <AssemblyName>BebaKids</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>ftp://vemid.net/public_html/bebakids-promo.com/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>true</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://www.bebakids-promo.com/</InstallUrl>
+    <PublisherName>Marko Vesic</PublisherName>
+    <MinimumRequiredVersion>1.1.0.101</MinimumRequiredVersion>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>101</ApplicationRevision>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Logo-BEBAKIDS%281%29.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>BC670C9A0866FC2256EBA56F4421E70364234AE7</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>BebaKids_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ClosedXML, Version=0.86.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.86.0\lib\net40\ClosedXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=6.0.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.6.0.0\lib\net452\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="IBM.Data.Informix, Version=3.0.0.2, Culture=neutral, PublicKeyToken=7c307b91aa13d208, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Informix\bin\netf40\IBM.Data.Informix.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=2.0.6.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.2.0.6\lib\net452\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=4.5.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.4.5.0\lib\net452\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.14.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.14\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoClosingMessageBox.cs" />
+    <Compile Include="Backend\eFiscal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Backend\eFiscal.Designer.cs">
+      <DependentUpon>eFiscal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Backend\FBConection.cs" />
+    <Compile Include="Backend\frmPrometiPoRadnjama.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Backend\frmPrometiPoRadnjama.Designer.cs">
+      <DependentUpon>frmPrometiPoRadnjama.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Backend\MyClass.cs" />
+    <Compile Include="Classes\Application.cs" />
+    <Compile Include="Classes\Proizvodnja.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Fransiza\PregledDnevneProvizije.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Fransiza\PregledDnevneProvizije.Designer.cs">
+      <DependentUpon>PregledDnevneProvizije.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCekovi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCekovi.Designer.cs">
+      <DependentUpon>frmCekovi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDnevniPromet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDnevniPromet.Designer.cs">
+      <DependentUpon>frmDnevniPromet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmInsertBarkod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInsertBarkod.Designer.cs">
+      <DependentUpon>frmInsertBarkod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrijemnica.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrijemnica.Designer.cs">
+      <DependentUpon>frmPrijemnica.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmProveraFakture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmProveraFakture.Designer.cs">
+      <DependentUpon>FrmProveraFakture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProveraPrijemnice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProveraPrijemnice.Designer.cs">
+      <DependentUpon>frmProveraPrijemnice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProveraPrijemnice1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProveraPrijemnice1.Designer.cs">
+      <DependentUpon>frmProveraPrijemnice1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRucniUnos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRucniUnos.Designer.cs">
+      <DependentUpon>frmRucniUnos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmVelicina.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVelicina.Designer.cs">
+      <DependentUpon>frmVelicina.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IniFile.cs" />
+    <Compile Include="Konekcija.cs" />
+    <Compile Include="Loyalti\addNewCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Loyalti\addNewCard.Designer.cs">
+      <DependentUpon>addNewCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Loyalti\addNewCardCG.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Loyalti\addNewCardCG.Designer.cs">
+      <DependentUpon>addNewCardCG.cs</DependentUpon>
+    </Compile>
+    <Compile Include="noConnection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="noConnection.Designer.cs">
+      <DependentUpon>noConnection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PCPrint.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PopisMp\PopisMpUnos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PopisMp\PopisMpUnos.Designer.cs">
+      <DependentUpon>PopisMpUnos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PopisMp\PrenosPopis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PopisMp\PrenosPopis.Designer.cs">
+      <DependentUpon>PrenosPopis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PopisMp\ProveraLagera.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PopisMp\ProveraLagera.Designer.cs">
+      <DependentUpon>ProveraLagera.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Prijava\Aktivnost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Prijava\Aktivnost.Designer.cs">
+      <DependentUpon>Aktivnost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Prijava\Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Prijava\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Prijava\Objekat\Objekti.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Prijava\Objekat\Objekti.Designer.cs">
+      <DependentUpon>Objekti.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Prijava\PrijavaOdsustva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Prijava\PrijavaOdsustva.Designer.cs">
+      <DependentUpon>PrijavaOdsustva.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Prijava\PrijavaRadnika.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Prijava\PrijavaRadnika.Designer.cs">
+      <DependentUpon>PrijavaRadnika.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Prijava\Radnici\Radnici.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Prijava\Radnici\Radnici.Designer.cs">
+      <DependentUpon>Radnici.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Prijava\Reports\ReportByRadnik.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Prijava\Reports\ReportByRadnik.Designer.cs">
+      <DependentUpon>ReportByRadnik.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Proizvodnja\Kalkulacija.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Proizvodnja\Kalkulacija.Designer.cs">
+      <DependentUpon>Kalkulacija.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Proizvodnja\PrenosSifara.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Proizvodnja\PrenosSifara.Designer.cs">
+      <DependentUpon>PrenosSifara.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Proizvodnja\ProveraCene.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Proizvodnja\ProveraCene.Designer.cs">
+      <DependentUpon>ProveraCene.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Racunovodstvo\izvodi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Racunovodstvo\izvodi.Designer.cs">
+      <DependentUpon>izvodi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Save.cs" />
+    <EmbeddedResource Include="Backend\frmPrometiPoRadnjama.resx">
+      <DependentUpon>frmPrometiPoRadnjama.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fransiza\PregledDnevneProvizije.resx">
+      <DependentUpon>PregledDnevneProvizije.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCekovi.resx">
+      <DependentUpon>frmCekovi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDnevniPromet.resx">
+      <DependentUpon>frmDnevniPromet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmInsertBarkod.resx">
+      <DependentUpon>frmInsertBarkod.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrijemnica.resx">
+      <DependentUpon>frmPrijemnica.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmProveraFakture.resx">
+      <DependentUpon>FrmProveraFakture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProveraPrijemnice.resx">
+      <DependentUpon>frmProveraPrijemnice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProveraPrijemnice1.resx">
+      <DependentUpon>frmProveraPrijemnice1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRucniUnos.resx">
+      <DependentUpon>frmRucniUnos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVelicina.resx">
+      <DependentUpon>frmVelicina.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Loyalti\addNewCard.resx">
+      <DependentUpon>addNewCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Loyalti\addNewCardCG.resx">
+      <DependentUpon>addNewCardCG.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="noConnection.resx">
+      <DependentUpon>noConnection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopisMp\PopisMpUnos.resx">
+      <DependentUpon>PopisMpUnos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopisMp\PrenosPopis.resx">
+      <DependentUpon>PrenosPopis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopisMp\ProveraLagera.resx">
+      <DependentUpon>ProveraLagera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Prijava\Aktivnost.resx">
+      <DependentUpon>Aktivnost.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Prijava\Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Prijava\Objekat\Objekti.resx">
+      <DependentUpon>Objekti.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Prijava\PrijavaOdsustva.resx">
+      <DependentUpon>PrijavaOdsustva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Prijava\PrijavaRadnika.resx">
+      <DependentUpon>PrijavaRadnika.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Prijava\Radnici\Radnici.resx">
+      <DependentUpon>Radnici.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Prijava\Reports\ReportByRadnik.resx">
+      <DependentUpon>ReportByRadnik.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Proizvodnja\Kalkulacija.resx">
+      <DependentUpon>Kalkulacija.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Proizvodnja\PrenosSifara.resx">
+      <DependentUpon>PrenosSifara.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Proizvodnja\ProveraCene.resx">
+      <DependentUpon>ProveraCene.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Racunovodstvo\izvodi.resx">
+      <DependentUpon>izvodi.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="PostBuildScripts\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bk.ico" />
+    <Content Include="favicon.ico" />
+    <Content Include="Logo-BEBAKIDS%281%29.ico" />
+    <Content Include="PopisMp\logo.png" />
+    <None Include="Resources\aliases.conf" />
+    <None Include="Resources\fbtrace.conf" />
+    <None Include="Resources\firebird.conf" />
+    <None Include="Resources\watch_logo.png" />
+    <None Include="Resources\watch_logo1.png" />
+    <None Include="Resources\mainfavicon.ico" />
+    <None Include="Resources\watch_logo.ico" />
+    <None Include="Resources\logoHeader.png" />
+    <None Include="Resources\watch_header.png" />
+    <Content Include="watch_logo.png" />
+    <None Include="Resources\logo.bmp" />
+    <None Include="Resources\print.png" />
+    <None Include="Resources\no-image.png" />
+    <None Include="Resources\search.png" />
+    <None Include="Resources\document.png" />
+    <None Include="Resources\delete.png" />
+    <None Include="Resources\check.png" />
+    <None Include="Resources\nc11.png" />
+    <None Include="Resources\nc1.png" />
+    <None Include="Resources\no-internet-connection1.jpg" />
+    <None Include="Resources\no-internet-connection.jpg" />
+    <None Include="nointernet.jpg" />
+    <None Include="logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>REM Update the ClickOnce MinimumRequiredVersion so that it auto-updates without prompting.
+PowerShell -NoProfile -ExecutionPolicy Bypass -Command "&amp; '$(ProjectDir)PostBuildScripts\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1' -ProjectFilePaths '$(ProjectPath)'"</PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
