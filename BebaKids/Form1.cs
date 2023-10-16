@@ -333,5 +333,13 @@ var MyIni = new IniFile(@"C:\bkapps\config.ini");
                 Backend.eFiscal frm = new Backend.eFiscal();
                 frm.Show();
         }
+
+        private void dokumentOtpremeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            MIS.dodajDokumentMP frm = new MIS.dodajDokumentMP();
+            frm.Show();
+        }
     }
 }

@@ -235,6 +235,12 @@
     <Compile Include="Loyalti\addNewCardCG.Designer.cs">
       <DependentUpon>addNewCardCG.cs</DependentUpon>
     </Compile>
+    <Compile Include="MIS\dodajDokumentMP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MIS\dodajDokumentMP.Designer.cs">
+      <DependentUpon>dodajDokumentMP.cs</DependentUpon>
+    </Compile>
     <Compile Include="noConnection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -376,6 +382,9 @@
     <EmbeddedResource Include="Loyalti\addNewCardCG.resx">
       <DependentUpon>addNewCardCG.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MIS\dodajDokumentMP.resx">
+      <DependentUpon>dodajDokumentMP.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="noConnection.resx">
       <DependentUpon>noConnection.cs</DependentUpon>
     </EmbeddedResource>
@@ -491,9 +500,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MIS_servisi\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>REM Update the ClickOnce MinimumRequiredVersion so that it auto-updates without prompting.
