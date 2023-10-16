@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.Odbc;
+using System.Net.Http;
+using System.Text;
 
 namespace BebaKids.Prijava
 {
@@ -19,6 +21,87 @@ namespace BebaKids.Prijava
             InitializeComponent();
             label2.Text = "";
         }
+
+        private async void sendRequestButton_Click(object sender, EventArgs e)
+        {
+            string url = "http://192.168.100.236/ServisMisWeb/services/NalogZaIzdavanjeMpServisPort?wsdl"; // Replace with the actual URL of your SOAP service.
+            string soapRequest = GenerateSoapRequest(); // Create your SOAP request here.
+
+            using (HttpClient client = new HttpClient())
+            {
+                // Set the content type and SOAP action header
+                //client.DefaultRequestHeaders.Add("Content-Type", "text/xml; charset=utf-8");
+                //client.DefaultRequestHeaders.Add("SOAPAction", "YourSOAPAction"); // Replace with your SOAP action.
+
+                // Create the HTTP request content
+                HttpContent content = new StringContent(soapRequest, Encoding.UTF8, "text/xml");
+
+                try
+                {
+                    HttpResponseMessage response = await client.PostAsync(url, content);
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    textBox2.Text = responseContent;
+                }
+                catch (Exception ex)
+                {
+                    textBox2.Text = "Error: " + ex.Message;
+                }
+            }
+        }
+
+        // Generate your SOAP request here
+        private string GenerateSoapRequest()
+        {
+            // Construct your SOAP request XML string here
+            // Example:
+            string soapRequest = @"<?xml version=""1.0"" encoding=""utf-8""?>
+        <soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+            <soap:Body>
+                <dodajNalogZaIzdavanjeMp xmlns=""http://dokumenti.servis.mis.com/"">
+                    <nalozi xmlns="""">
+                        <datumDokumenta>2023-10-16</datumDokumenta>
+                        <dpo>2023-10-16</dpo>
+                        <logname>mis</logname>
+                        <oznakaDokumenta>M12</oznakaDokumenta>
+                        <sifraMagacina>MP</sifraMagacina>
+                        <sifraObjekta>02</sifraObjekta>
+                        <sifraOrganizacioneJedinice>01</sifraOrganizacioneJedinice>
+                        <status>0</status>
+                        <stavke>
+                            <kolicina>1</kolicina>
+                            <osnovnaCenabezPoreza>83.3333</osnovnaCenabezPoreza>
+                            <prodajnaCenaSaPopustom>100</prodajnaCenaSaPopustom>
+                            <prodajnaCenaSaPorezom>100</prodajnaCenaSaPorezom>
+                            <redniBroj>1</redniBroj>
+                            <sifraOblezja>XX</sifraOblezja>
+                            <sifraRobe>01032040</sifraRobe>
+                            <sifraTarifneGrupe>100</sifraTarifneGrupe>
+                            <stopaPopusta>0</stopaPopusta>
+                            <stopaPoreza>20</stopaPoreza>
+                            <zonaMagacina>DEF_ZON</zonaMagacina>
+                        </stavke>
+                        <stavke>
+                            <kolicina>1</kolicina>
+                            <osnovnaCenabezPoreza>83.3333</osnovnaCenabezPoreza>
+                            <prodajnaCenaSaPopustom>100</prodajnaCenaSaPopustom>
+                            <prodajnaCenaSaPorezom>100</prodajnaCenaSaPorezom>
+                            <redniBroj>1</redniBroj>
+                            <sifraOblezja>XX</sifraOblezja>
+                            <sifraRobe>04315060F</sifraRobe>
+                            <sifraTarifneGrupe>100</sifraTarifneGrupe>
+                            <stopaPopusta>0</stopaPopusta>
+                            <stopaPoreza>20</stopaPoreza>
+                            <zonaMagacina>DEF_ZON</zonaMagacina>
+                        </stavke>
+                        <storno>N</storno>
+                    </nalozi>
+                </dodajNalogZaIzdavanjeMp>
+            </soap:Body>
+        </soap:Envelope>";
+
+            return soapRequest;
+        }
+
         public static string vrsta = "";
         private DataTable citajUsere()
         {
