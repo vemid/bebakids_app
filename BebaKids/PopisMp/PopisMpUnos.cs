@@ -11,6 +11,7 @@ using System.Data.Odbc;
 using ClosedXML.Excel;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BebaKids.PopisMp
 {
@@ -21,10 +22,10 @@ namespace BebaKids.PopisMp
         {
             InitializeComponent();
             tbBarkod.Enabled = false;
-            
+
         }
 
-        
+
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
@@ -74,7 +75,7 @@ namespace BebaKids.PopisMp
             Classes.Application test = new Classes.Application();
             if (test.testKonekcija())
             {
-                
+
                 var MyIni = new IniFile(@"C:\bkapps\config.ini");
                 var sifraObjekta = MyIni.Read("naziv", "ProveraDokumenta");
                 var objekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta");
@@ -119,7 +120,7 @@ namespace BebaKids.PopisMp
 
         private void textBoxTest_KeyDown(object sender, KeyEventArgs e)
         {
-            
+
             var oznakaDokumenta = textBox1.Text.ToString();
             //var objekat = textBox2.Text.ToString;
             DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
@@ -161,7 +162,7 @@ namespace BebaKids.PopisMp
 
                         lbVelicina.Text = iVelicina.ToString();
                         lbSifra.Text = iSifra.ToString();
-                       
+
                         tbBarkod.Clear();
                     }
 
@@ -236,31 +237,31 @@ namespace BebaKids.PopisMp
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+
             OdbcConnection conn = new OdbcConnection(Konekcija.konString);
             if (dataGridView1.CurrentCell.ColumnIndex == 0)
             {
                 int row = dataGridView1.CurrentCell.RowIndex;
-               /* int id = Convert.ToInt32(dataGridView1.CurrentRow.Cells[1].Value);
-                
-                
-                OdbcCommand komanda = new OdbcCommand("delete from pop_sta_mp_st where ozn_pop_sta = '" + textBox1.Text.ToString() + "' and id = '" + id + "'", conn);
-                try
-                {
-                    conn.Open();
-                    komanda.ExecuteNonQuery();
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                dataGridView1.DataSource = null;
-                dataGridView1.Rows.Clear();
-                Save save = new Save();
-                DataTable tabelaCekova = new DataTable();
-                dataGridView1.DataSource = save.popisTable(textBox1.Text.ToString(),"insert");
-                */
+                /* int id = Convert.ToInt32(dataGridView1.CurrentRow.Cells[1].Value);
+
+
+                 OdbcCommand komanda = new OdbcCommand("delete from pop_sta_mp_st where ozn_pop_sta = '" + textBox1.Text.ToString() + "' and id = '" + id + "'", conn);
+                 try
+                 {
+                     conn.Open();
+                     komanda.ExecuteNonQuery();
+                     conn.Close();
+                 }
+                 catch (Exception ex)
+                 {
+                     MessageBox.Show(ex.Message);
+                 }
+                 dataGridView1.DataSource = null;
+                 dataGridView1.Rows.Clear();
+                 Save save = new Save();
+                 DataTable tabelaCekova = new DataTable();
+                 dataGridView1.DataSource = save.popisTable(textBox1.Text.ToString(),"insert");
+                 */
                 //tabela.Rows[row].Delete();
                 dataGridView1.DataSource = tabela;
                 dataGridView1.AutoResizeColumns();
@@ -286,12 +287,12 @@ namespace BebaKids.PopisMp
             //Save cuvanje = new Save();
             //cuvanje.savePopis(tabela, dokument, objekat, d);
 
-            
+
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
             string connString = "Dsn=ifx;uid=informix";
             OdbcConnection conn = new OdbcConnection(connString);
 
-            string cmd = ("select * from pop_sta_mp_st where ozn_pop_sta = '"+dokument+"' and preneto = 0");
+            string cmd = ("select * from pop_sta_mp_st where ozn_pop_sta = '" + dokument + "' and preneto = 0");
             konekcija.Open();
             OdbcDataAdapter adapter = new OdbcDataAdapter(cmd, konekcija);
             DataTable table = new DataTable();
@@ -309,7 +310,7 @@ namespace BebaKids.PopisMp
                 int id = Convert.ToInt32(row["id"].ToString());
 
                 StringBuilder insertPopis = new StringBuilder();
-                insertPopis.Append("insert into pop_sta_mp_st (ozn_pop_sta,rbr,sif_rob,sif_ent_rob,kol_pop) values ('"+ozn_pop_sta+"','"+id+"','"+sif_rob+"','"+sif_ent_rob+"','"+kol_pop+"')");
+                insertPopis.Append("insert into pop_sta_mp_st (ozn_pop_sta,rbr,sif_rob,sif_ent_rob,kol_pop) values ('" + ozn_pop_sta + "','" + id + "','" + sif_rob + "','" + sif_ent_rob + "','" + kol_pop + "')");
                 OdbcCommand komandaUpdate = new OdbcCommand(insertPopis.ToString(), conn);
                 i++;
 
@@ -331,7 +332,7 @@ namespace BebaKids.PopisMp
                         konekcija.Open();
                         komandaPreneto.ExecuteNonQuery();
                         konekcija.Close();
-                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -382,16 +383,96 @@ namespace BebaKids.PopisMp
 
         private string GenerateSoapRequest(string document)
         {
-            string soapRequest = "";
 
-            return soapRequest;
+            string connString = "Dsn=ifx;uid=informix";
+            OdbcConnection conn = new OdbcConnection(connString);
+
+            // string cmd = ("select sif_rob sifra,sif_ent_rob velicina from pop_sta_mp_st where ozn_pop_sta = '" + document + "'");
+            string cmd = ("select sif_rob sifra,trim(sif_ent_rob) velicina from pop_sta_mp_st where ozn_pop_sta = '01/230300003'");
+
+            List<DataRecord> dataCollection = new List<DataRecord>();
+            using (OdbcCommand command = new OdbcCommand(cmd, conn))
+            {
+                // Create a data collection (List) to store the results
+
+                conn.Open();
+                // Execute the SQL query and retrieve the results
+                using (OdbcDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // Create a custom data record object to store the data
+                        DataRecord dataRecord = new DataRecord
+                        {
+                            sifra = reader["sifra"].ToString(), // Replace with actual column names
+                            velicina = reader["velicina"].ToString(),
+                            // Add more columns as needed
+                        };
+
+                        // Add the data record to the data collection
+                        dataCollection.Add(dataRecord);
+                    }
+                }
+                conn.Close();
+
+            }
+
+
+            List<string> stavkeElements = new List<string>();
+            int rbr = 1;
+            // Iterate through your data using a foreach loop
+            foreach (var dataItem in dataCollection)
+            {
+                // Generate the XML for each stavke element
+                string stavkeElement = $@"
+        <stavke><kolicina>1</kolicina>
+            <osnovnaCenabezPoreza>100</osnovnaCenabezPoreza>
+            <prodajnaCenaSaPopustom>100</prodajnaCenaSaPopustom>
+            <prodajnaCenaSaPorezom>100</prodajnaCenaSaPorezom>
+            <redniBroj>{i}</redniBroj>
+            <sifraOblezja>{dataItem.velicina}</sifraOblezja>
+            <sifraRobe>{dataItem.sifra}</sifraRobe>
+            <sifraTarifneGrupe>100</sifraTarifneGrupe>
+            <stopaPopusta>0</stopaPopusta>
+            <stopaPoreza>20</stopaPoreza></stavke>";
+
+                i++;
+
+                // Add the generated stavke element to the list
+                stavkeElements.Add(stavkeElement);
+            }
+
+            // Join the stavke elements into a single string
+            string stavkeXml = string.Join("", stavkeElements);
+
+            string soapRequest = $@"<?xml version='1.0' encoding='utf-8'?>
+        <soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+            <soap:Body>
+                <dodajNalogZaIzdavanjeMp xmlns='http://dokumenti.servis.mis.com/'>
+                    <nalozi xmlns=''>
+                        <datumDokumenta>2023-10-16</datumDokumenta>
+                        <dpo>2023-10-16</dpo>
+                        <logname>mis</logname>
+                        <oznakaDokumenta>{document}</oznakaDokumenta>
+                        <sifraMagacina>MR</sifraMagacina>
+                        <sifraObjekta>02</sifraObjekta>
+                        <sifraOrganizacioneJedinice>01</sifraOrganizacioneJedinice>
+                        <status>0</status>
+                        {stavkeXml}
+                        <storno>N</storno>
+                    </nalozi>
+                </dodajNalogZaIzdavanjeMp>
+            </soap:Body>
+        </soap:Envelope>";
+
+            return Regex.Replace(soapRequest, @"\t|\n|\r", "");
         }
 
         private void btnExport_Click(object sender, EventArgs e)
         {
             Save save = new Save();
             DataTable table = new DataTable();
-            table = save.popisTable(textBox1.Text.ToString(),"insert");
+            table = save.popisTable(textBox1.Text.ToString(), "insert");
 
             string text = textBox1.Text.ToString().Replace("/", "-");
 
@@ -415,6 +496,13 @@ namespace BebaKids.PopisMp
                 MessageBox.Show("Uspesno exportovani podaci", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
+        }
+
+        public class DataRecord
+        {
+            public string sifra { get; set; }
+            public string velicina { get; set; }
+            // Add more properties for other columns
         }
 
         private void PopisMpUnos_Load(object sender, EventArgs e)
