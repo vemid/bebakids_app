@@ -382,73 +382,7 @@ namespace BebaKids.PopisMp
 
         private string GenerateSoapRequest(string document)
         {
-
-            string connString = "Dsn=ifx;uid=informix";
-            OdbcConnection conn = new OdbcConnection(connString);
-
-            string cmd = ("select * from pop_sta_mp_st where ozn_pop_sta = '" + document + "'");
-
-            using (OdbcCommand command = new OdbcCommand(cmd, conn))
-            {
-                // Create a DataSet to store the result
-                DataSet dataSet = new DataSet();
-
-                // Use an OdbcDataAdapter to fill the DataSet with data
-                using (OdbcDataAdapter adapter = new OdbcDataAdapter(command))
-                {
-                    adapter.Fill(dataSet);
-                }
-
-                // At this point, the data is in the dataSet variable and can be used as needed
-            }
-
-            List<string> stavkeElements = new List<string>();
-
-            // Iterate through your data using a foreach loop
-            foreach (var dataItem in yourDataCollection)
-            {
-                // Generate the XML for each stavke element
-                string stavkeElement = $@"
-        <stavke>
-            <kolicina>{dataItem.Kolicina}</kolicina>
-            <osnovnaCenabezPoreza>{dataItem.OsnovnaCenaBezPoreza}</osnovnaCenabezPoreza>
-            <prodajnaCenaSaPopustom>{dataItem.ProdajnaCenaSaPopustom}</prodajnaCenaSaPopustom>
-            <prodajnaCenaSaPorezom>{dataItem.ProdajnaCenaSaPorezom}</prodajnaCenaSaPorezom>
-            <redniBroj>{dataItem.RedniBroj}</redniBroj>
-            <sifraOblezja>{dataItem.SifraOblezja}</sifraOblezja>
-            <sifraRobe>{dataItem.SifraRobe}</sifraRobe>
-            <sifraTarifneGrupe>{dataItem.SifraTarifneGrupe}</sifraTarifneGrupe>
-            <stopaPopusta>{dataItem.StopaPopusta}</stopaPopusta>
-            <stopaPoreza>{dataItem.StopaPoreza}</stopaPoreza>
-            <zonaMagacina>{dataItem.ZonaMagacina}</zonaMagacina>
-        </stavke>";
-
-                // Add the generated stavke element to the list
-                stavkeElements.Add(stavkeElement);
-            }
-
-            // Join the stavke elements into a single string
-            string stavkeXml = string.Join("", stavkeElements);
-
-            string soapRequest = $@"<?xml version=""1.0"" encoding=""utf-8""?>
-        <soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-            <soap:Body>
-                <dodajNalogZaIzdavanjeMp xmlns=""http://dokumenti.servis.mis.com/"">
-                    <nalozi xmlns=""http://dokumenti.servis.mis.com/"">
-                        <datumDokumenta>2023-10-16</datumDokumenta>
-                        <dpo>2023-10-16</dpo>
-                        <logname>mis</logname>
-                        <oznakaDokumenta>M1</oznakaDokumenta>
-                        <sifraMagacina>MP</sifraMagacina>
-                        <sifraObjekta>02</sifraObjekta>
-                        <sifraOrganizacioneJedinice>01</sifraOrganizacioneJedinice>
-                        <status>0</status>
-                        {stavkeXml} <!-- Insert the stavke elements here -->
-                        <storno>N</storno>
-                    </nalozi>
-                </dodajNalogZaIzdavanjeMp>
-            </soap:Body>
-        </soap:Envelope>";
+            string soapRequest = "";
 
             return soapRequest;
         }
