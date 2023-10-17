@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Net;
-using System.Data;
-using MySql.Data.MySqlClient;
+using System.Text;
 
 namespace BebaKids.Classes
 {

@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.Odbc;
+using System.Windows.Forms;
 
 namespace BebaKids
 {
@@ -43,8 +37,8 @@ namespace BebaKids
                 int row = dataGridView1.CurrentCell.RowIndex;
                 string broCek = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 //MessageBox.Show("broj ceka je "+broCek.ToString()+" i objekat je"+objekat.ToString());
-                
-                OdbcCommand komanda = new OdbcCommand("update cek_gra set realizovan = 1 where bro_cek = '"+broCek+"' and sif_obj_mp = '"+objekat+"'", conn);
+
+                OdbcCommand komanda = new OdbcCommand("update cek_gra set realizovan = 1 where bro_cek = '" + broCek + "' and sif_obj_mp = '" + objekat + "'", conn);
                 try
                 {
                     conn.Open();
@@ -64,7 +58,7 @@ namespace BebaKids
                 dataGridView1.DataSource = tabelaCekova;
 
             }
-            
+
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {

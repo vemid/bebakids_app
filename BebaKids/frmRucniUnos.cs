@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.Odbc;
+using System.Windows.Forms;
 
 namespace BebaKids
 {
@@ -32,13 +25,13 @@ namespace BebaKids
         {
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
             string sifra = tbSifra.Text.ToString();
-            OdbcCommand komanda = new OdbcCommand("select * from ean_kod2 where sif_rob = '"+sifra+"'", konekcija);
-            
+            OdbcCommand komanda = new OdbcCommand("select * from ean_kod2 where sif_rob = '" + sifra + "'", konekcija);
+
             try
             {
                 konekcija.Open();
                 OdbcDataReader dr = komanda.ExecuteReader();
-                
+
 
                 if (dr.Read())
                 {
@@ -50,8 +43,8 @@ namespace BebaKids
                     tbSifra.Clear();
                     tbSifra.Focus();
                 }
-                
-            
+
+
                 konekcija.Close();
             }
             catch (Exception ex)
@@ -61,7 +54,7 @@ namespace BebaKids
             }
 
 
-            
+
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)

@@ -154,6 +154,7 @@
     </Compile>
     <Compile Include="Backend\MyClass.cs" />
     <Compile Include="Classes\Application.cs" />
+    <Compile Include="Classes\ErrorLogger.cs" />
     <Compile Include="Classes\Proizvodnja.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

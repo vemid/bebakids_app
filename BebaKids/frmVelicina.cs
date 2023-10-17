@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BebaKids
@@ -18,7 +11,7 @@ namespace BebaKids
             //button1.Visible = false;
         }
         public static string tbvelicina = "";
-        
+
 
         private void textBoxTest_KeyDown(object sender, KeyEventArgs e)
         {

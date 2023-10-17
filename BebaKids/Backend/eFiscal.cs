@@ -1,13 +1,6 @@
-﻿using System;
+﻿using FirebirdSql.Data.FirebirdClient;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using FirebirdSql.Data.FirebirdClient;
 
 namespace BebaKids.Backend
 {
@@ -56,7 +49,7 @@ namespace BebaKids.Backend
                 MessageBox.Show(result.TypeName.ToString());
             }
 
-            
+
 
         }
     }

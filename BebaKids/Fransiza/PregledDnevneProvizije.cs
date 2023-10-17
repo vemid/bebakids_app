@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BebaKids.Fransiza
@@ -52,7 +48,7 @@ namespace BebaKids.Fransiza
             }
             else
             {
-                dateFrom.MinDate = thisDay.AddDays(date*(-1));
+                dateFrom.MinDate = thisDay.AddDays(date * (-1));
                 dateTo.MaxDate = thisDay.AddDays(30);
             }
             //MessageBox.Show(date.ToString());
@@ -88,7 +84,7 @@ namespace BebaKids.Fransiza
             }
             else tTrziste = "SRB";
 
-                Save save = new Save();
+            Save save = new Save();
             DataTable report = save.reportProvizija(Sifraobjekat, date.ToShortDateString(), dateDo.ToShortDateString(), tTrziste);
 
             double bkLoyalti = 0;
@@ -112,7 +108,7 @@ namespace BebaKids.Fransiza
             //bkSnizeno = ConvertToInt32(dbkSnizeno["vred_pro"], 0);
             if (dbkNeSnizeno != null)
                 bkNeSnizeno = Convert.ToDouble(dbkNeSnizeno["vred_pro"].ToString());
-                //bkNeSnizeno = ConvertToInt32(dbkNeSnizeno["vred_pro"], 0);
+            //bkNeSnizeno = ConvertToInt32(dbkNeSnizeno["vred_pro"], 0);
             if (dbkLoyalti != null)
                 bkLoyalti = Convert.ToDouble(dbkLoyalti["vred_pro"].ToString());
             //bkLoyalti = ConvertToInt32(dbkLoyalti["vred_pro"], 0);
@@ -136,10 +132,10 @@ namespace BebaKids.Fransiza
             tbTotalS.Text = (trSnizeno + bkSnizeno).ToString();
             tbTotal.Text = (Convert.ToDouble(tbTotalNs.Text.ToString()) + (Convert.ToDouble(tbTotalS.Text.ToString()))).ToString();
 
-            double pdv ;
+            double pdv;
             double pdv2;
-            double neSnizeno ;
-            double snizeno ;
+            double neSnizeno;
+            double snizeno;
 
             if (trziste == "CG")
             {
@@ -165,18 +161,18 @@ namespace BebaKids.Fransiza
                 snizeno = 0.23;
             }
 
-            
-            double pdvNs = Math.Round(Convert.ToDouble(tbBkNs.Text) * pdv, 2)+ Math.Round(Convert.ToDouble(tbTrNs.Text) * pdv, 2);
-            double pdvS = Math.Round(Convert.ToDouble(tbBkS.Text) * pdv, 2)+ Math.Round(Convert.ToDouble(tbTrS.Text) * pdv, 2);
+
+            double pdvNs = Math.Round(Convert.ToDouble(tbBkNs.Text) * pdv, 2) + Math.Round(Convert.ToDouble(tbTrNs.Text) * pdv, 2);
+            double pdvS = Math.Round(Convert.ToDouble(tbBkS.Text) * pdv, 2) + Math.Round(Convert.ToDouble(tbTrS.Text) * pdv, 2);
             double pdvBkNs = Math.Round(Convert.ToDouble(tbBkNs.Text) * pdv, 2);
             double pdvBkS = Math.Round(Convert.ToDouble(tbBkS.Text) * pdv, 2);
             double pdvTrNs = Math.Round(Convert.ToDouble(tbTrNs.Text) * pdv, 2);
             double pdvTrS = Math.Round(Convert.ToDouble(tbTrS.Text) * pdv, 2);
 
-            double proBkNs = Math.Round(pdvBkNs * neSnizeno,2);
-            double proBkS = Math.Round(pdvBkS * snizeno,2);
-            double proTrNs = Math.Round(pdvTrNs * neSnizeno,2);
-            double proTrS = Math.Round(pdvTrS * snizeno,2);
+            double proBkNs = Math.Round(pdvBkNs * neSnizeno, 2);
+            double proBkS = Math.Round(pdvBkS * snizeno, 2);
+            double proTrNs = Math.Round(pdvTrNs * neSnizeno, 2);
+            double proTrS = Math.Round(pdvTrS * snizeno, 2);
 
 
             tbpdvBkNs.Text = pdvBkNs.ToString();
@@ -225,7 +221,7 @@ namespace BebaKids.Fransiza
             */
             double vreRab = Math.Round((rabat * vrednost), 2);
             double suma = vreRab + vrednostPro;
-            double sumaPdv = Math.Round(suma * pdv2,2);
+            double sumaPdv = Math.Round(suma * pdv2, 2);
 
             tbRab.Text = String.Format("{0:P2}.", rabat);
             tbVreRab.Text = vreRab.ToString();

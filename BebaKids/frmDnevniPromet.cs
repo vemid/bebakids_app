@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
+using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.Odbc;
-using System.Data.SqlClient;
 
 namespace BebaKids
 {
@@ -40,13 +37,13 @@ namespace BebaKids
 
             if (database == "DA")
             {
-                cmd = "select trim(kbk.sif_inst) banka,round(sum(iznos),2) vrednost from "+ baza+":kasa_blok_kartice kbk " +
+                cmd = "select trim(kbk.sif_inst) banka,round(sum(iznos),2) vrednost from " + baza + ":kasa_blok_kartice kbk " +
                          "left join inst k on k.sif_inst = kbk.sif_inst where kbk.sif_obj_mp = '" + objekat + "' and kbk.datum = today group by banka ";
             }
 
 
 
-            
+
 
             string connString = "Dsn=ifx;uid=informix";
 
@@ -57,7 +54,7 @@ namespace BebaKids
             adapter.Fill(table);
             conn.Close();
 
-            vrednostBI.Text = (from DataRow dr in table.Rows where (string)dr["banka"] == "160" select (decimal)dr["vrednost"]).FirstOrDefault().ToString()+" rsd";
+            vrednostBI.Text = (from DataRow dr in table.Rows where (string)dr["banka"] == "160" select (decimal)dr["vrednost"]).FirstOrDefault().ToString() + " rsd";
             vrednostUni.Text = (from DataRow dr in table.Rows where (string)dr["banka"] == "170" select (decimal)dr["vrednost"]).FirstOrDefault().ToString() + " rsd";
 
         }
@@ -74,7 +71,7 @@ namespace BebaKids
             myPen.Width = 5;
             //g.DrawLine(myPen, 50, 300, 50, 300);
             Point tacka12 = new Point(30, 50);
-            Point tacka22 = new Point(width-30, 50);
+            Point tacka22 = new Point(width - 30, 50);
             g.DrawLine(myPen, tacka12, tacka22);
 
             Pen litlePen = new Pen(color);
@@ -112,21 +109,22 @@ namespace BebaKids
             SqlCommand komanda = new SqlCommand(sb.ToString(), sqlConn);
             String sif_obj_mp = MyIni.Read("sif_obj_mp", "ProveraDokumenta").ToString();
             String database = MyIni.Read("database", "ProveraDokumenta").ToString();
-            if (database == "DA") {
+            if (database == "DA")
+            {
                 sif_obj_mp = "1" + sif_obj_mp;
             }
             DateTime thisDay = DateTime.Now;
             string dateFormat = "yyyy-MM-dd";
-            Decimal presek = Decimal.TryParse(tbPresek.Text.ToString(),out presek) ? presek:0;            
-            Decimal presek_pdv = Decimal.TryParse(tbPSPdv.Text.ToString(),out presek_pdv) ? presek_pdv:0;
-            Decimal cache = Decimal.TryParse(tbDIGotovina.Text.ToString(),out cache) ? cache:0;
-            Decimal card = Decimal.TryParse(tbDIKartice.Text.ToString(),out card) ? card: 0;
-            Decimal cek = Decimal.TryParse(tbDICek.Text.ToString(),out cek) ? cek:0;
-            Decimal cek_redovni = Decimal.TryParse(tbACRedovni.Text.ToString(),out cek_redovni) ? cek_redovni:0;
-            Decimal cek_odlozeni = Decimal.TryParse(tbACOdlozeni.Text.ToString(),out cek_odlozeni) ? cek_odlozeni:0;
-            Decimal administrativna = Decimal.TryParse(tbACAdmimistrativne.Text.ToString(),out administrativna) ? administrativna:0;
-            Decimal konzul = Decimal.TryParse(tbKonzul.Text.ToString(),out konzul) ? konzul:0;
-            Decimal vaucer = Decimal.TryParse(tbVauceri.Text.ToString(),out vaucer) ? vaucer:0;
+            Decimal presek = Decimal.TryParse(tbPresek.Text.ToString(), out presek) ? presek : 0;
+            Decimal presek_pdv = Decimal.TryParse(tbPSPdv.Text.ToString(), out presek_pdv) ? presek_pdv : 0;
+            Decimal cache = Decimal.TryParse(tbDIGotovina.Text.ToString(), out cache) ? cache : 0;
+            Decimal card = Decimal.TryParse(tbDIKartice.Text.ToString(), out card) ? card : 0;
+            Decimal cek = Decimal.TryParse(tbDICek.Text.ToString(), out cek) ? cek : 0;
+            Decimal cek_redovni = Decimal.TryParse(tbACRedovni.Text.ToString(), out cek_redovni) ? cek_redovni : 0;
+            Decimal cek_odlozeni = Decimal.TryParse(tbACOdlozeni.Text.ToString(), out cek_odlozeni) ? cek_odlozeni : 0;
+            Decimal administrativna = Decimal.TryParse(tbACAdmimistrativne.Text.ToString(), out administrativna) ? administrativna : 0;
+            Decimal konzul = Decimal.TryParse(tbKonzul.Text.ToString(), out konzul) ? konzul : 0;
+            Decimal vaucer = Decimal.TryParse(tbVauceri.Text.ToString(), out vaucer) ? vaucer : 0;
             String napomena = tbNapomena.Text.ToString();
             //komanda.Parameters.Add("@oznaka", SqlDbType.Char).Value = id + "-" + sif_obj_mp + "-" + thisDay.ToString(dateFormat);
 
@@ -251,7 +249,7 @@ namespace BebaKids
                     sqlConn.Open();
                     komandaObrasci.ExecuteNonQuery();
                     sqlConn.Close();
-                    
+
                 }
                 catch (Exception ex)
                 { MessageBox.Show(ex.Message); }

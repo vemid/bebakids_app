@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.Odbc;
+using System.Windows.Forms;
 
 namespace BebaKids
 {
@@ -19,7 +13,7 @@ namespace BebaKids
         }
         string prijemnica = frmPrijemnica.prijemnica;
         string vrsta = frmPrijemnica.vrsta;
-        DataTable Excel =new DataTable();
+        DataTable Excel = new DataTable();
 
         public void frmProveraPrijemnice_Load(object sender, EventArgs e)
         {
@@ -28,7 +22,7 @@ namespace BebaKids
 
             var MyIni = new IniFile(@"C:\bkapps\config.ini");
             var objekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta").ToString();
-           
+
 
             Save save = new Save();
             save.getTable(vrsta, objekat, prijemnica);
@@ -55,8 +49,8 @@ namespace BebaKids
                 }
                 if (vrsta == "OM")
                 {
-                    cmd = " select o.e_mail from otprem_mp p " +
-                                 " left join obj_mp o on p.sif_obj_mp = o.sif_obj_mp " +
+                    cmd = " select o.napomena e_mail from otprem_mp p " +
+                                 " left join magacin o on p.sif_mag = o.sif_mag " +
                                  " where p.ozn_otp_mal = '" + prijemnica + "'";
                 }
                 if (vrsta == "MP")
@@ -98,7 +92,7 @@ namespace BebaKids
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+
 
             DialogResult result = MessageBox.Show("Da li ste sigruno proverili kolicinu sa dokumenta sa skeniranom kolicinom??", "Obavestenje", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (result == DialogResult.Yes)

@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Data.Odbc;
-using System.Data.SqlClient;
 using System.Net.Sockets;
-using System.Threading;
+using System.Windows.Forms;
 
 namespace BebaKids
 {
@@ -19,8 +10,8 @@ namespace BebaKids
         public Form1()
         {
             InitializeComponent();
-            
-var MyIni = new IniFile(@"C:\bkapps\config.ini");
+
+            var MyIni = new IniFile(@"C:\bkapps\config.ini");
             var sifraObjekta = MyIni.Read("naziv", "ProveraDokumenta");
             var objekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta");
             label2.Text = sifraObjekta.ToString();
@@ -40,7 +31,7 @@ var MyIni = new IniFile(@"C:\bkapps\config.ini");
             catch (Exception)
             {
                 return false;
-                
+
             }
         }
 
@@ -88,7 +79,7 @@ var MyIni = new IniFile(@"C:\bkapps\config.ini");
             this.Hide();
             Prijava.PrijavaRadnika prijavaRadnika = new Prijava.PrijavaRadnika();
             prijavaRadnika.Show();
-            
+
         }
 
         public void btnPopis_Click(object sender, EventArgs e)
@@ -122,7 +113,7 @@ var MyIni = new IniFile(@"C:\bkapps\config.ini");
                     proizvodnjaToolStripMenuItem.Visible = true;
                 }
                 dnevniPrometToolStripMenuItem.Visible = false;
-                
+
             }
             else
             {
@@ -150,8 +141,8 @@ var MyIni = new IniFile(@"C:\bkapps\config.ini");
             }
             else { unosNovogClanaCGToolStripMenuItem.Visible = false; }
 
-            
-            
+
+
             if (testKonekcija())
             { }
             else
@@ -254,7 +245,7 @@ var MyIni = new IniFile(@"C:\bkapps\config.ini");
         {
             this.Hide();
             Proizvodnja.Kalkulacija frm = new Proizvodnja.Kalkulacija();
-            frm.Size = new Size(SystemInformation.VirtualScreen.Width,SystemInformation.VirtualScreen.Height);
+            frm.Size = new Size(SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
             frm.Show();
         }
 
@@ -267,18 +258,18 @@ var MyIni = new IniFile(@"C:\bkapps\config.ini");
 
         private void unosPrometaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(testKonekcija())
-            { 
-            this.Hide();
-            tbPSPresek frm = new tbPSPresek();
-            frm.Show();
+            if (testKonekcija())
+            {
+                this.Hide();
+                tbPSPresek frm = new tbPSPresek();
+                frm.Show();
             }
             else
             {
                 noConnection nc = new noConnection();
                 nc.Show();
             }
-}
+        }
 
         private void pregledDnevnogIzveštajaToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -330,8 +321,8 @@ var MyIni = new IniFile(@"C:\bkapps\config.ini");
         {
             this.Hide();
 
-                Backend.eFiscal frm = new Backend.eFiscal();
-                frm.Show();
+            Backend.eFiscal frm = new Backend.eFiscal();
+            frm.Show();
         }
 
         private void dokumentOtpremeToolStripMenuItem_Click(object sender, EventArgs e)

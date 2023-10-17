@@ -1,13 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.Odbc;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BebaKids.Loyalti
@@ -149,12 +144,12 @@ namespace BebaKids.Loyalti
                 int posPar = komandaPosPar.ExecuteNonQuery();
                 conn.Close();
                 if (posPar == 1)
-                {                  
-                        mysql.Open();
-                        command.ExecuteNonQuery();
-                        mysql.Close();
-                        MessageBox.Show("Uspesno otvorena kartica !", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        clearAll();
+                {
+                    mysql.Open();
+                    command.ExecuteNonQuery();
+                    mysql.Close();
+                    MessageBox.Show("Uspesno otvorena kartica !", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clearAll();
 
                 }
                 else

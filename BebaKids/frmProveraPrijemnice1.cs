@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.Odbc;
 
 
 namespace BebaKids
@@ -40,25 +33,25 @@ namespace BebaKids
 
         public void btnExcel_Click(object sender, EventArgs e)
         {
-                var MyIni = new IniFile(@"C:\bkapps\config.ini");
-                string prijemnica = FrmProveraFakture.prijemnica;
-                string vrsta = FrmProveraFakture.vrsta.ToString();
-                //MessageBox.Show(vrsta);
-                string objekat = MyIni.Read("objekat", "ProveraDokumenta").ToString();
+            var MyIni = new IniFile(@"C:\bkapps\config.ini");
+            string prijemnica = FrmProveraFakture.prijemnica;
+            string vrsta = FrmProveraFakture.vrsta.ToString();
+            //MessageBox.Show(vrsta);
+            string objekat = MyIni.Read("objekat", "ProveraDokumenta").ToString();
 
 
 
-                Classes.Application export = new Classes.Application();
-                export.createExcel(vrsta, objekat, prijemnica, Excel);
+            Classes.Application export = new Classes.Application();
+            export.createExcel(vrsta, objekat, prijemnica, Excel);
 
-                MessageBox.Show("Uspesno poslati podaci", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Uspesno poslati podaci", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            
+
             this.Hide();
             Form1 frm = new Form1();
             frm.Show();
         }
-       
+
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Save save = new Save();
@@ -95,6 +88,6 @@ namespace BebaKids
             }
         }
 
-       
+
     }
 }

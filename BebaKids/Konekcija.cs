@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BebaKids
+﻿namespace BebaKids
 {
 
 
@@ -20,7 +14,7 @@ namespace BebaKids
 
     class MysqlKonekcija
     {
-       public static string myConnectionString = "server=192.168.100.11;database=interno;uid=root;pwd=710412;";
+        public static string myConnectionString = "server=192.168.100.11;database=interno;uid=root;pwd=710412;";
     }
 
     class MysqlB2B

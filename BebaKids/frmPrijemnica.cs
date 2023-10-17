@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.Odbc;
-using System.Media;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace BebaKids
 {
@@ -91,7 +85,7 @@ namespace BebaKids
                 {
                     if (barkodovi.Rows[result].ItemArray[4].ToString() == "")
                     {
-                        
+
                         sound.playSound("error");
                         frmVelicina frmVelicina = new frmVelicina();
                         if (frmVelicina.ShowDialog() == DialogResult.OK || !string.IsNullOrEmpty(frmVelicina.tbvelicina.ToString()))
@@ -153,14 +147,14 @@ namespace BebaKids
         {
             vrsta = Form1.vrsta.ToString();
             Save brisi = new Save();
-            
+
             this.Hide();
             prijemnica = tbPrijemnica.Text.ToString();
 
             //brisi.brisiDokument(prijemnica,vrsta);
             frmProveraPrijemnice frm = new frmProveraPrijemnice();
             frm.Show();
-            
+
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {

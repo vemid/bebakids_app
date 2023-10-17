@@ -1,17 +1,14 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.Odbc;
-using ClosedXML.Excel;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using System.Xml;
 namespace BebaKids.MIS
 {
     public partial class dodajDokumentMP : Form
@@ -28,6 +25,26 @@ namespace BebaKids.MIS
             comboBox1.DisplayMember = "naz_obj_mp";
             comboBox1.ValueMember = "sif_obj_mp";
             comboBox1.SelectedIndex = -1;
+
+            comboBoxMagacin.DataSource = objekti.magacini();
+            comboBoxMagacin.DisplayMember = "magacin";
+            comboBoxMagacin.ValueMember = "sif_mag";
+            comboBoxMagacin.SelectedIndex = -1;
+
+            var items = new List<ItemWithTextAndValue>
+            {
+                new ItemWithTextAndValue("Otprema u MP", "OM"),
+                new ItemWithTextAndValue("Otprema Fransize", "OT"),
+                new ItemWithTextAndValue("Narudzbenica", "N1"),
+                new ItemWithTextAndValue("Otprema u MP", "NO"),
+            };
+
+
+            cbDocumentType.DisplayMember = "DisplayText";
+            cbDocumentType.ValueMember = "Value";
+            cbDocumentType.DataSource = items;
+            cbDocumentType.SelectedIndex = -1;
+
         }
 
 
@@ -80,40 +97,48 @@ namespace BebaKids.MIS
             if (test.testKonekcija())
             {
 
-                var MyIni = new IniFile(@"C:\bkapps\config.ini");
-                var sifraObjekta = MyIni.Read("naziv", "ProveraDokumenta");
-                var objekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta");
-                DateTime d = datumDokumenta.Value.Date;
-                var organizacija = MyIni.Read("organizacija", "ProveraDokumenta");
-                string connString = "Dsn=ifx;uid=informix";
-                string cmd = "execute procedure test_popis('ST','" + objekat + "','" + organizacija + "','" + d.ToString("dd.MM.yyyy") + "')";
-                OdbcConnection conn = new OdbcConnection(connString);
-                OdbcCommand komandaProcedure = new OdbcCommand(cmd, conn);
-                conn.Open();
-                try
+                if (comboBoxMagacin.SelectedIndex != -1 && comboBox1.SelectedIndex != -1 && cbDocumentType.SelectedIndex != -1)
                 {
-                    int a = komandaProcedure.ExecuteNonQuery();
+                    var MyIni = new IniFile(@"C:\bkapps\config.ini");
+                    var sifraObjekta = MyIni.Read("naziv", "ProveraDokumenta");
+                    var objekat = comboBoxMagacin.SelectedValue.ToString();
+                    DateTime d = datumDokumenta.Value.Date;
+                    var organizacija = MyIni.Read("organizacija", "ProveraDokumenta");
+                    string connString = "Dsn=ifx;uid=informix";
+                    string cmd = "execute procedure test_get_oznaka_dokumenta('"+cbDocumentType.SelectedValue.ToString()+"','" + objekat + "','" + organizacija + "')";
+                    OdbcConnection conn = new OdbcConnection(connString);
+                    OdbcCommand komandaProcedure = new OdbcCommand(cmd, conn);
+                    conn.Open();
+                    try
+                    {
+                        int a = komandaProcedure.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    string getOznaka = "select trim(oznaka) from temptOznaka";
+                    OdbcCommand komandaGetOznaka = new OdbcCommand(getOznaka, conn);
+                    OdbcDataReader dr = komandaGetOznaka.ExecuteReader();
+                    dr.Read();
+                    textBox1.Text = dr.GetString(0).ToString();
+                    textBox2.Text = objekat.ToString();
+                    conn.Close();
+                    datumDokumenta.Enabled = false;
+                    textBox1.Enabled = false;
+                    tbBarkod.Enabled = true;
+                    btnExport.Visible = true;
+                    btnPrenesi.Visible = true;
+                    progressBar1.Visible = true;
+                    tbBarkod.Focus();
+                    tabela = popisMP();
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Nisu preneti popunjena sva polja", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                string getOznaka = "select trim(ozn_pop_sta) from tOznaka";
-                OdbcCommand komandaGetOznaka = new OdbcCommand(getOznaka, conn);
-                OdbcDataReader dr = komandaGetOznaka.ExecuteReader();
-                dr.Read();
-                textBox1.Text = dr.GetString(0).ToString();
-                textBox2.Text = objekat.ToString();
-                conn.Close();
-                datumDokumenta.Enabled = false;
-                textBox1.Enabled = false;
-                tbBarkod.Enabled = true;
-                btnExport.Visible = true;
-                btnPrenesi.Visible = true;
-                progressBar1.Visible = true;
-                tbBarkod.Focus();
-                tabela = popisMP();
             }
+
             else
             {
                 noConnection nc = new noConnection();
@@ -121,6 +146,7 @@ namespace BebaKids.MIS
             }
 
         }
+
 
         private void textBoxTest_KeyDown(object sender, KeyEventArgs e)
         {
@@ -286,7 +312,9 @@ namespace BebaKids.MIS
         private void btnPrenesi_Click(object sender, EventArgs e)
         {
             string dokument = textBox1.Text.ToString();
-            var objekat = textBox2.Text.ToString();
+            var objekatFrom = comboBoxMagacin.SelectedValue.ToString();
+            var objekatTo = comboBox1.SelectedValue.ToString();
+            var vrsta = cbDocumentType.SelectedValue.ToString();
             DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
             //Save cuvanje = new Save();
             //cuvanje.savePopis(tabela, dokument, objekat, d);
@@ -345,62 +373,99 @@ namespace BebaKids.MIS
                 progressBar1.Value = i;
             }
             MessageBox.Show("Uspesno preneti podaci", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            sendRequest(dokument);
+
+            string objekatToMp = comboBox1.SelectedValue.ToString();
+            if (objekatToMp.Length == 1)
+            {
+                objekatToMp = "0" + objekatToMp;
+            }
+
+            sendRequest(dokument, comboBoxMagacin.SelectedValue.ToString(), objekatToMp, cbDocumentType.SelectedValue.ToString());
             progressBar1.Value = 0;
             this.Hide();
             Form1 frm = new Form1();
             frm.Show();
         }
 
-        private async void sendRequest(string document)
+        private async void sendRequest(string document, string objekatFrom, string objekatTo, string documentType)
         {
-            string connString = "Dsn=ifx;uid=informix";
-            OdbcConnection conn = new OdbcConnection(connString);
 
-            string cmd = ("select * from pop_sta_mp_st where ozn_pop_sta = '" + document + "'");
-
-
-            string url = "http://192.168.100.236/ServisMisWeb/services/NalogZaIzdavanjeMpServisPort?wsdl"; // Replace with the actual URL of your SOAP service.
-            string soapRequest = GenerateSoapRequest(document); // Create your SOAP request here.
+            string soapRequest = generateRequestForMIS(document, objekatFrom, objekatTo, documentType);
 
             using (HttpClient client = new HttpClient())
             {
-                // Set the content type and SOAP action header
-                //client.DefaultRequestHeaders.Add("Content-Type", "text/xml; charset=utf-8");
-                //client.DefaultRequestHeaders.Add("SOAPAction", "YourSOAPAction"); // Replace with your SOAP action.
 
-                // Create the HTTP request content
                 HttpContent content = new StringContent(soapRequest, Encoding.UTF8, "text/xml");
-
+                Classes.ErrorLogger errorLogger = new Classes.ErrorLogger();
                 try
                 {
-                    HttpResponseMessage response = await client.PostAsync(url, content);
+                    HttpResponseMessage response = await client.PostAsync(servisUrl(documentType), content);
                     string responseContent = await response.Content.ReadAsStringAsync();
-                    textBox2.Text = responseContent;
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.LoadXml(responseContent);
+                    XmlNode errorMessageNode = xmlDoc.SelectSingleNode("//errorMessage");
+                    if (errorMessageNode != null)
+                    {
+                        string log = "Za dokument " + document + "postoji greska : " + errorMessageNode.InnerText;
+                        errorLogger.LogStringException(log);
+                        MessageBox.Show(log, "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    }
                 }
                 catch (Exception ex)
                 {
-                    textBox2.Text = "Error: " + ex.Message;
+
+                    errorLogger.LogException(ex);
                 }
             }
         }
 
-        private string GenerateSoapRequest(string document)
+        private string servisUrl(string documentType)
+        {
+
+            var MyIni = new IniFile(@"C:\bkapps\config.ini");
+            var urlServis = MyIni.Read("webservis", "Servis");
+            string url = "";
+
+            if (documentType == "NO")
+            {
+                url = urlServis + "/NalogZaIzdavanjeMpServisPort?wsdl";
+            }
+
+            if (documentType == "OM")
+            {
+                url = urlServis + "/OptremnicaServisPort";
+            }
+
+            if (documentType == "OT")
+            {
+                url = urlServis + "/DodajNalogZaIzdavanjePort?wsdl";
+            }
+
+            return url;
+
+
+        }
+
+        private string generateRequestForMIS(string document, string objekatFrom, string objekatTo, string documentType)
         {
 
             string connString = "Dsn=ifx;uid=informix";
             OdbcConnection conn = new OdbcConnection(connString);
 
             // string cmd = ("select sif_rob sifra,sif_ent_rob velicina from pop_sta_mp_st where ozn_pop_sta = '" + document + "'");
-            string cmd = ("select sif_rob sifra,trim(sif_ent_rob) velicina from pop_sta_mp_st where ozn_pop_sta = '01/230300003'");
+            string cmd = "select trim(p.sif_rob) sifra,trim(p.sif_ent_rob) velicina,p.kol_pop kolicina,obc.ozn_cen cenovnik," +
+                            "nvl(z.cen_zal, 0) nabavna,nvl(c.vel_cen, 0) vp,nvl(c.mal_cen, 0) mp,round(nvl(c.mal_cen, 0) * 0.8333, 3) mp_bpdv from pop_sta_mp_st p " +
+                            "left join zal_robe_mag z on z.sif_rob = p.sif_rob and z.sif_mag = '"+objekatFrom+"' " +
+                            "left join proiz_cen_obj_mp obc on obc.sif_obj_mp = '"+objekatTo+"' " +
+                            "left join proiz_cen_st c on c.sif_rob = p.sif_rob and c.sta_cen_st = 'A' and c.ozn_cen = obc.ozn_cen " +
+                            "where p.ozn_pop_sta = '01/230300003'";
 
             List<DataRecord> dataCollection = new List<DataRecord>();
+
             using (OdbcCommand command = new OdbcCommand(cmd, conn))
             {
-                // Create a data collection (List) to store the results
-
                 conn.Open();
-                // Execute the SQL query and retrieve the results
                 using (OdbcDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -410,7 +475,12 @@ namespace BebaKids.MIS
                         {
                             sifra = reader["sifra"].ToString(), // Replace with actual column names
                             velicina = reader["velicina"].ToString(),
-                            // Add more columns as needed
+                            cenovnik = reader["cenovnik"].ToString(),
+                            nabavna = double.Parse(reader["nabavna"].ToString()),
+                            kolicina = double.Parse(reader["kolicina"].ToString()),
+                            vp = double.Parse(reader["vp"].ToString()),
+                            mp = double.Parse(reader["mp"].ToString()),
+                            mp_bpdv = double.Parse(reader["mp_bpdv"].ToString()),
                         };
 
                         // Add the data record to the data collection
@@ -421,53 +491,141 @@ namespace BebaKids.MIS
 
             }
 
+            string returnXml = "";
+
+            if (documentType == "NO")
+            {
+                returnXml = generateDodajNalogZaIzdavanjeMP(document, dataCollection, objekatFrom, objekatTo);
+            }
+
+            if (documentType == "OM")
+            {
+                returnXml = generateDodajOtpremnicuMP(document, dataCollection, objekatFrom, objekatTo);
+            }
+
+            if (documentType == "OT")
+            {
+                returnXml = generateDodajNalogZaIzdavanjeMP(document, dataCollection, objekatFrom, objekatTo);
+            }
+
+            if (documentType == "N1")
+            {
+                returnXml = generateDodajNalogZaIzdavanjeMP(document, dataCollection, objekatFrom, objekatTo);
+            }
+
+            return returnXml;
+        }
+
+        private string generateDodajNalogZaIzdavanjeMP(string document, List<DataRecord> items, string objekatFrom, string objekatTo)
+        {
+
+            var MyIni = new IniFile(@"C:\bkapps\config.ini");
+            var organizacija = MyIni.Read("organizacija", "ProveraDokumenta");
 
             List<string> stavkeElements = new List<string>();
-            int rbr = 1;
-            // Iterate through your data using a foreach loop
-            foreach (var dataItem in dataCollection)
+            foreach (var dataItem in items)
             {
-                // Generate the XML for each stavke element
                 string stavkeElement = $@"
-        <stavke><kolicina>1</kolicina>
-            <osnovnaCenabezPoreza>100</osnovnaCenabezPoreza>
-            <prodajnaCenaSaPopustom>100</prodajnaCenaSaPopustom>
-            <prodajnaCenaSaPorezom>100</prodajnaCenaSaPorezom>
-            <redniBroj>{i}</redniBroj>
-            <sifraOblezja>{dataItem.velicina}</sifraOblezja>
-            <sifraRobe>{dataItem.sifra}</sifraRobe>
-            <sifraTarifneGrupe>100</sifraTarifneGrupe>
-            <stopaPopusta>0</stopaPopusta>
-            <stopaPoreza>20</stopaPoreza></stavke>";
+                    <stavke>
+                        <kolicina>{dataItem.kolicina}</kolicina>
+                        <osnovnaCenabezPoreza>{dataItem.mp}</osnovnaCenabezPoreza>
+                        <prodajnaCenaSaPopustom>{dataItem.mp}</prodajnaCenaSaPopustom>
+                        <prodajnaCenaSaPorezom>{dataItem.mp}</prodajnaCenaSaPorezom>
+                        <redniBroj>{i}</redniBroj>
+                        <sifraOblezja>{dataItem.velicina}</sifraOblezja>
+                        <sifraRobe>{dataItem.sifra}</sifraRobe>
+                        <sifraTarifneGrupe>100</sifraTarifneGrupe>
+                        <stopaPopusta>0</stopaPopusta>
+                        <stopaPoreza>20</stopaPoreza>
+                    </stavke>";
 
                 i++;
 
-                // Add the generated stavke element to the list
                 stavkeElements.Add(stavkeElement);
             }
 
-            // Join the stavke elements into a single string
             string stavkeXml = string.Join("", stavkeElements);
 
+
             string soapRequest = $@"<?xml version='1.0' encoding='utf-8'?>
-        <soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
-            <soap:Body>
-                <dodajNalogZaIzdavanjeMp xmlns='http://dokumenti.servis.mis.com/'>
-                    <nalozi xmlns=''>
-                        <datumDokumenta>2023-10-16</datumDokumenta>
-                        <dpo>2023-10-16</dpo>
-                        <logname>mis</logname>
-                        <oznakaDokumenta>{document}</oznakaDokumenta>
-                        <sifraMagacina>MR</sifraMagacina>
-                        <sifraObjekta>02</sifraObjekta>
-                        <sifraOrganizacioneJedinice>01</sifraOrganizacioneJedinice>
-                        <status>0</status>
-                        {stavkeXml}
-                        <storno>N</storno>
-                    </nalozi>
-                </dodajNalogZaIzdavanjeMp>
-            </soap:Body>
-        </soap:Envelope>";
+                <soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+                    <soap:Body>
+                        <dodajNalogZaIzdavanjeMp xmlns='http://dokumenti.servis.mis.com/'>
+                            <nalozi xmlns=''>
+                                <datumDokumenta>{DateTime.Now.ToString("yyyy-MM-dd")}</datumDokumenta>
+                                <dpo>{DateTime.Now.ToString("yyyy-MM-dd")}</dpo>
+                                <logname>mis</logname>
+                                <oznakaCenovnika>{items[0].cenovnik}</oznakaCenovnika>
+                                <oznakaDokumenta>{document}</oznakaDokumenta>
+                                <sifraMagacina>{objekatFrom}</sifraMagacina>
+                                <sifraObjekta>{objekatTo}</sifraObjekta>
+                                <sifraOrganizacioneJedinice>{organizacija}</sifraOrganizacioneJedinice>
+                                <status>0</status>
+                                {stavkeXml}
+                                <storno>N</storno>
+                            </nalozi>
+                        </dodajNalogZaIzdavanjeMp>
+                    </soap:Body>
+                </soap:Envelope>";
+
+            return Regex.Replace(soapRequest, @"\t|\n|\r", "");
+        }
+
+        private string generateDodajOtpremnicuMP(string document, List<DataRecord> items, string objekatFrom, string objekatTo)
+        {
+
+            var MyIni = new IniFile(@"C:\bkapps\config.ini");
+            var organizacija = MyIni.Read("organizacija", "ProveraDokumenta");
+
+            List<string> stavkeElements = new List<string>();
+            foreach (var dataItem in items)
+            {
+                string stavkeElement = $@"
+                <stavke>
+                    <akcijskaStopaRabata>0</akcijskaStopaRabata>
+                    <cenaZalihe>{}</cenaZalihe>
+                    <kolicina>{}</kolicina>
+                    <osnovnaCena>100</osnovnaCena>
+                    <prodajnaCena>100</prodajnaCena>
+                    <prodajnaCenaBezPoreza>83.333</prodajnaCenaBezPoreza>
+                    <prodajnaCenaSaRabatom>100</prodajnaCenaSaRabatom>
+                    <sifraObelezja>XX</sifraObelezja>
+                    <sifraRobe>01032040</sifraRobe>
+                    <sifraTarifneGrupePoreza>100</sifraTarifneGrupePoreza>
+                    <stopaPDV>20</stopaPDV>
+                    <stopaRabata>0</stopaRabata>
+                    <maloprodajnaMarza>0</maloprodajnaMarza>
+                    <posebnaStopaRabata>0</posebnaStopaRabata>
+                </stavke>";
+
+                i++;
+
+                stavkeElements.Add(stavkeElement);
+            }
+
+            string stavkeXml = string.Join("", stavkeElements);
+
+
+            string soapRequest = $@"<?xml version='1.0' encoding='utf-8'?>
+                <soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+                    <soap:Body>
+                        <dodajNalogZaIzdavanjeMp xmlns='http://dokumenti.servis.mis.com/'>
+                            <nalozi xmlns=''>
+                                <datumDokumenta>{DateTime.Now.ToString("yyyy-MM-dd")}</datumDokumenta>
+                                <logname>mis</logname>
+                                <napomena>123</napomena>
+                                <oznakaCenovnika>{items[0].cenovnik}</oznakaCenovnika>
+                                <oznakaDokumenta>{document}</oznakaDokumenta>
+                                <sifraMagacina>{objekatFrom}</sifraMagacina>
+                                <sifraObjektaMaloprodaje>{objekatTo}</sifraObjektaMaloprodaje>
+                                <status>0</status>
+                                {stavkeXml}
+                                <storno>N</storno>
+                                <vrstaKnjizenja>2</vrstaKnjizenja>
+                            </nalozi>
+                        </dodajNalogZaIzdavanjeMp>
+                    </soap:Body>
+                </soap:Envelope>";
 
             return Regex.Replace(soapRequest, @"\t|\n|\r", "");
         }
@@ -506,6 +664,14 @@ namespace BebaKids.MIS
         {
             public string sifra { get; set; }
             public string velicina { get; set; }
+
+            public string cenovnik { get; set; }
+            public double kolicina { get; set; }
+            public double nabavna { get; set; }
+            public double vp { get; set; }
+            public double mp { get; set; }
+            public double mp_bpdv { get; set; }
+
             // Add more properties for other columns
         }
 
@@ -514,9 +680,16 @@ namespace BebaKids.MIS
 
         }
 
-        private void label7_Click(object sender, EventArgs e)
+        public class ItemWithTextAndValue
         {
+            public string DisplayText { get; set; }
+            public string Value { get; set; }
 
+            public ItemWithTextAndValue(string displayText, string value)
+            {
+                DisplayText = displayText;
+                Value = value;
+            }
         }
     }
 }

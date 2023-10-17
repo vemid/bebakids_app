@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Odbc;
-using System.Data.SqlClient;
-using System.Windows.Forms;
 using System.Data;
+using System.Data.Odbc;
+using System.Text;
+using System.Windows.Forms;
 
 namespace BebaKids
 {
@@ -20,7 +16,7 @@ namespace BebaKids
             string tObjekat = objekat;
             string tSifra = sifra;
             string tVelicina = velicina;
-            int tKolicina = kolicina*-1;
+            int tKolicina = kolicina * -1;
 
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into prenos_dokumenta (vrsta,dokument,objekat,sifra,velicina,scaned_kolicina) values (" + "?" + "," + "?" + "," + "?" + "," + "?,?,?);");
@@ -104,7 +100,7 @@ namespace BebaKids
                 //return ex.Message.ToString;
             }
         }
-        public bool proveraDokumenta(string dokument, string vrsta,string objekat)
+        public bool proveraDokumenta(string dokument, string vrsta, string objekat)
         {
             bool provera = false;
             string tDokumnet = dokument;
@@ -128,7 +124,7 @@ namespace BebaKids
                 else { provera = false; }
                 conn.Close();
             }
-            
+
             if (tVrsta.ToString() == "OM")
             {
                 OdbcCommand komanda = new OdbcCommand("select * from otprem_mp where storno = 'N' and sif_obj_mp = '" + tObjekat + "' and ozn_otp_mal = '" + tDokumnet + "'", conn);
@@ -141,7 +137,7 @@ namespace BebaKids
                 else { provera = false; }
                 conn.Close();
             }
-            if(tVrsta.ToString()=="MP")
+            if (tVrsta.ToString() == "MP")
             {
                 OdbcCommand komanda = new OdbcCommand("select * from povrat_mp where storno = 'N' and ozn_pov_mp = '" + tDokumnet + "'", conn);
                 conn.Open();
@@ -152,7 +148,7 @@ namespace BebaKids
                 }
                 else { provera = false; }
                 conn.Close();
-            }            
+            }
             return provera;
         }
 
@@ -167,17 +163,17 @@ namespace BebaKids
             //OdbcCommand komanda = new OdbcCommand();
 
             OdbcConnection conn = new OdbcConnection(connString);
-                        
-                OdbcCommand komanda = new OdbcCommand("select * from otprem where storno = 'N' and sif_par = '" + tSifPar + "' and ozn_otp = '" + tDokumnet + "'", conn);
-                conn.Open();
-                OdbcDataReader dr = komanda.ExecuteReader();
-                if (dr.Read())
-                {
-                    provera = true;
-                }
-                else { provera = false; }
-                conn.Close();
-            
+
+            OdbcCommand komanda = new OdbcCommand("select * from otprem where storno = 'N' and sif_par = '" + tSifPar + "' and ozn_otp = '" + tDokumnet + "'", conn);
+            conn.Open();
+            OdbcDataReader dr = komanda.ExecuteReader();
+            if (dr.Read())
+            {
+                provera = true;
+            }
+            else { provera = false; }
+            conn.Close();
+
             return provera;
 
         }
@@ -188,7 +184,7 @@ namespace BebaKids
             string tObjekat = objekat;
             string connString = "Dsn=ifx;uid=informix";
             OdbcConnection conn = new OdbcConnection(connString);
-            string cmd = ("select trim(bro_tek_rac) Tekuci_Racun,trim(bro_cek) Broj_Ceka,dat_cek Datum,izn_cek Iznos from cek_gra where dat_obr = dat_cek and realizovan = 0 and sif_obj_mp = '"+tObjekat+"'");
+            string cmd = ("select trim(bro_tek_rac) Tekuci_Racun,trim(bro_cek) Broj_Ceka,dat_cek Datum,izn_cek Iznos from cek_gra where dat_obr = dat_cek and realizovan = 0 and sif_obj_mp = '" + tObjekat + "'");
             conn.Open();
             OdbcDataAdapter adapter = new OdbcDataAdapter(cmd, conn);
             adapter.Fill(table);
@@ -197,7 +193,7 @@ namespace BebaKids
             return table;
         }
 
-        public void getTable(string vrsta,string objekat,string dokument)
+        public void getTable(string vrsta, string objekat, string dokument)
         {
 
             DataTable table = new DataTable();
@@ -219,16 +215,16 @@ namespace BebaKids
                 databaseObjekat = "sif_obj_mp";
                 databaseTable = "otprem_mp_st";
             }
-            if(vrsta =="MP")
+            if (vrsta == "MP")
             {
                 oznaka = "ozn_pov_mp";
                 databaseObjekat = "sif_obj_mp";
                 databaseTable = "povrat_mp_st";
             }
-            
+
             string connString = "Dsn=ifx;uid=informix";
             OdbcConnection conn = new OdbcConnection(connString);
-            string cmd = ("select "+oznaka+",trim(sif_rob) sif_rob,trim(sif_ent_rob) sif_ent_Rob,sum(kolic) kolic from "+databaseTable+" where "+oznaka+" = '" + tDokumnet + "' group by sif_rob,sif_ent_Rob,"+ oznaka + " ");
+            string cmd = ("select " + oznaka + ",trim(sif_rob) sif_rob,trim(sif_ent_rob) sif_ent_Rob,sum(kolic) kolic from " + databaseTable + " where " + oznaka + " = '" + tDokumnet + "' group by sif_rob,sif_ent_Rob," + oznaka + " ");
             conn.Open();
             OdbcDataAdapter adapter = new OdbcDataAdapter(cmd, conn);
             adapter.Fill(table);
@@ -258,7 +254,7 @@ namespace BebaKids
             }
 
         }
-        public void getTable1(string vrsta,string sif_par,string dokument)
+        public void getTable1(string vrsta, string sif_par, string dokument)
         {
 
             DataTable table = new DataTable();
@@ -267,11 +263,11 @@ namespace BebaKids
             string tVrsta = vrsta;
             string oznaka = "ozn_otp";
             string databaseTable = "otprem_st";
-            string databaseObjekat = "sif_par";          
-                      
+            string databaseObjekat = "sif_par";
+
             string connString = "Dsn=ifx;uid=informix";
             OdbcConnection conn = new OdbcConnection(connString);
-            string cmd = ("select "+oznaka+",trim(sif_rob) sif_rob,trim(sif_ent_rob) sif_ent_Rob,sum(kolic) kolic from "+databaseTable+" where "+oznaka+" = '" + tDokumnet + "' group by sif_rob,sif_ent_Rob,"+ oznaka + " ");
+            string cmd = ("select " + oznaka + ",trim(sif_rob) sif_rob,trim(sif_ent_rob) sif_ent_Rob,sum(kolic) kolic from " + databaseTable + " where " + oznaka + " = '" + tDokumnet + "' group by sif_rob,sif_ent_Rob," + oznaka + " ");
             conn.Open();
             OdbcDataAdapter adapter = new OdbcDataAdapter(cmd, conn);
             adapter.Fill(table);
@@ -301,7 +297,7 @@ namespace BebaKids
             }
 
         }
-        
+
         public DataTable table(string dokument)  //provera razlike skeniranja i dokumenta
         {
             string tDokumnet = dokument;
@@ -323,7 +319,7 @@ namespace BebaKids
 
             return razlika;
         }
-      
+
         public DataTable popisTable(string dokument, string vrsta)  //pnjenje datagridview-a popisa
         {
             string tDokumnet = dokument;
@@ -351,7 +347,7 @@ namespace BebaKids
 
             return popisDokumenta;
         }
-        public void brisiDokument(string dokument,string vrsta)
+        public void brisiDokument(string dokument, string vrsta)
         {
             string tDokument = dokument;
             string tVrsta = vrsta;
@@ -410,7 +406,7 @@ namespace BebaKids
 
             string tVrsta = vrsta;
 
-            OdbcCommand komanda = new OdbcCommand("insert into prijava (sifra,sif_obj_mp,date,check_in,vrsta) values ('" + tSifra + "','" + tObjekat + "','" + date + "','" + time + "','"+ tVrsta+"')", konekcija);
+            OdbcCommand komanda = new OdbcCommand("insert into prijava (sifra,sif_obj_mp,date,check_in,vrsta) values ('" + tSifra + "','" + tObjekat + "','" + date + "','" + time + "','" + tVrsta + "')", konekcija);
             try
             {
                 konekcija.Open();
@@ -424,7 +420,7 @@ namespace BebaKids
         }
 
         //update prijave radnika
-        public void updatePrijava(int idPrijave, bool isRegular,int status,string napomena)
+        public void updatePrijava(int idPrijave, bool isRegular, int status, string napomena)
         {
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
             int tIdPrijave = idPrijave;
@@ -450,7 +446,7 @@ namespace BebaKids
             //OdbcCommand komanda = new OdbcCommand();
             if (tIsRegular == true)
             {
-                OdbcCommand komanda = new OdbcCommand("update prijava set check_out = '"+time+"',status='"+ pstatus + "', regularDay = 1,doubleDay = 0,sickDay = 0,paidDay = 0,napomena = '" + napomena + "' where id ='" + tIdPrijave + "'", konekcija);
+                OdbcCommand komanda = new OdbcCommand("update prijava set check_out = '" + time + "',status='" + pstatus + "', regularDay = 1,doubleDay = 0,sickDay = 0,paidDay = 0,napomena = '" + napomena + "' where id ='" + tIdPrijave + "'", konekcija);
                 try
                 {
                     konekcija.Open();
@@ -464,7 +460,7 @@ namespace BebaKids
             }
             else
             {
-                OdbcCommand komanda = new OdbcCommand("update prijava set check_out = '" + time + "',status='" + pstatus + "', regularDay = 0,doubleDay = 2,sickDay = 0,paidDay = 0,napomena ='"+napomena+"' where id ='" + tIdPrijave + "'", konekcija);
+                OdbcCommand komanda = new OdbcCommand("update prijava set check_out = '" + time + "',status='" + pstatus + "', regularDay = 0,doubleDay = 2,sickDay = 0,paidDay = 0,napomena ='" + napomena + "' where id ='" + tIdPrijave + "'", konekcija);
                 try
                 {
                     konekcija.Open();
@@ -479,7 +475,7 @@ namespace BebaKids
         }
 
         //insert placenog odsustva
-        public void insertOdsustvo(int sifra, int objekat,string date,int paidDay,int sickDay, string vrsta,string napomena)
+        public void insertOdsustvo(int sifra, int objekat, string date, int paidDay, int sickDay, string vrsta, string napomena)
         {
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
 
@@ -497,7 +493,7 @@ namespace BebaKids
 
             string tVrsta = vrsta;
 
-            OdbcCommand komanda = new OdbcCommand("insert into prijava (sifra,sif_obj_mp,date,check_in,check_out,regularDay,doubleDay,sickDay,paidDay,vrsta,status,napomena) values ('" + tSifra + "','" + tObjekat + "','" + tdate + "','" + time + "','" + time + "',0,0,'" + tsickDay + "','" + tpaidDay + "','" + tVrsta + "',4,'"+napomena+"')", konekcija);
+            OdbcCommand komanda = new OdbcCommand("insert into prijava (sifra,sif_obj_mp,date,check_in,check_out,regularDay,doubleDay,sickDay,paidDay,vrsta,status,napomena) values ('" + tSifra + "','" + tObjekat + "','" + tdate + "','" + time + "','" + time + "',0,0,'" + tsickDay + "','" + tpaidDay + "','" + tVrsta + "',4,'" + napomena + "')", konekcija);
             try
             {
                 konekcija.Open();
@@ -552,7 +548,7 @@ namespace BebaKids
                     int sickDay = Convert.ToInt32(row["sickDay"].ToString());
                     int paidDay = Convert.ToInt32(row["paidDay"].ToString());
 
-                    sbPrijava.Append("update prijava set check_out = '" + checkOut + "',status=3,napomena = '"+napomena+"', regularDay = '" + regularDay + "', doubleDay = '" + doubleDay + "',sickDay = '" + sickDay + "',paidDay = '" + paidDay + "',vrsta = '" + vrsta + "' where sifra = '"+sifra+"' and sif_obj_mp ='"+objekat+"' and date ='"+date.ToString(dateFormat) + "' and vrsta ='"+vrsta+ "'");
+                    sbPrijava.Append("update prijava set check_out = '" + checkOut + "',status=3,napomena = '" + napomena + "', regularDay = '" + regularDay + "', doubleDay = '" + doubleDay + "',sickDay = '" + sickDay + "',paidDay = '" + paidDay + "',vrsta = '" + vrsta + "' where sifra = '" + sifra + "' and sif_obj_mp ='" + objekat + "' and date ='" + date.ToString(dateFormat) + "' and vrsta ='" + vrsta + "'");
                     sbBebakids.Append("update prijava set status = 3 where id = '" + Convert.ToInt32(row["id"].ToString()) + "'");
                 }
                 else if (status == 4)
@@ -563,7 +559,7 @@ namespace BebaKids
                     int doubleDay = Convert.ToInt32(row["doubleDay"].ToString());
                     int sickDay = Convert.ToInt32(row["sickDay"].ToString());
                     int paidDay = Convert.ToInt32(row["paidDay"].ToString());
-                    sbPrijava.Append("insert into prijava (sifra,sif_obj_mp,date,check_in,check_out,regularDay,doubleDay,sickDay,paidDay,vrsta,status,napomena) values ('" + sifra + "','" + objekat + "','" + date.ToString(dateFormat) + "','" + checkIn + "','" + checkOut + "','" + regularDay + "','" + doubleDay + "','" + sickDay + "','" + paidDay + "','" + vrsta + "',3,'"+napomena+"')");
+                    sbPrijava.Append("insert into prijava (sifra,sif_obj_mp,date,check_in,check_out,regularDay,doubleDay,sickDay,paidDay,vrsta,status,napomena) values ('" + sifra + "','" + objekat + "','" + date.ToString(dateFormat) + "','" + checkIn + "','" + checkOut + "','" + regularDay + "','" + doubleDay + "','" + sickDay + "','" + paidDay + "','" + vrsta + "',3,'" + napomena + "')");
                     sbBebakids.Append("update prijava set status = 3 where id = '" + Convert.ToInt32(row["id"].ToString()) + "'");
                 }
                 OdbcCommand prenosKomanda = new OdbcCommand(sbPrijava.ToString(), prijavaKonekcija);
@@ -587,7 +583,7 @@ namespace BebaKids
                             konekcija.Open();
                             komandaUpdate.ExecuteNonQuery();
                             konekcija.Close();
-                            
+
                         }
                         catch (Exception ex)
                         {
@@ -603,7 +599,7 @@ namespace BebaKids
         }
 
         //kreiranje tabele za izvestaj prijave radnika
-        public DataTable tableIzvestajRadnika(int sifra,string dateFrom,string dateTo,string vrsta)
+        public DataTable tableIzvestajRadnika(int sifra, string dateFrom, string dateTo, string vrsta)
         {
             string tVrsta = vrsta;
             string pom = "";
@@ -626,7 +622,7 @@ namespace BebaKids
                           " from prijava p " +
                           " left join sif_obj_mp o on o.sif_obj_mp = p.sif_obj_mp " +
                           " left join radnici r on r.sifra = p.sifra " +
-                          " where "+pom+" and p.sifra = '" + tSifra + "' and p.date>= '" + tDateFrom+ "' and p.date <= '" + tDateTo + "'" +
+                          " where " + pom + " and p.sifra = '" + tSifra + "' and p.date>= '" + tDateFrom + "' and p.date <= '" + tDateTo + "'" +
                           " order by p.date";
 
             OdbcDataAdapter adapter1 = new OdbcDataAdapter(cmd1, konekcija);
@@ -641,12 +637,13 @@ namespace BebaKids
             return tabela;
         }
 
-        public DataTable barkodovi(string eanKod) {
+        public DataTable barkodovi(string eanKod)
+        {
             string tBarkod = eanKod;
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
 
             DataSet ds = new DataSet();// kreiranje DataSet objekta
-            OdbcDataAdapter barkod = new OdbcDataAdapter("select * from ean_kod2 where bar_kod = '"+tBarkod+"'", konekcija);//punjenje objekta sqladaptera sa podacima iz tab. users
+            OdbcDataAdapter barkod = new OdbcDataAdapter("select * from ean_kod2 where bar_kod = '" + tBarkod + "'", konekcija);//punjenje objekta sqladaptera sa podacima iz tab. users
             barkod.MissingSchemaAction = MissingSchemaAction.AddWithKey;
             OdbcCommandBuilder builder = new OdbcCommandBuilder(barkod);//sqldataadapter komanda cita iz sqlbuildera
             barkod.Fill(ds, "barkod");//punjenj objekta
@@ -663,7 +660,7 @@ namespace BebaKids
             string prijavaKonString = "Dsn=prijava;uid=sa;Pwd=adminabc123";
             OdbcConnection konekcija = new OdbcConnection(prijavaKonString);
             string cmd1 = " SELECT convert(varchar(8), dateadd(second, SUM(DATEDIFF(SECOND, check_in, check_out)), 0),108) from prijava p " +
-                          " where p.vrsta = '" + vrsta + "' and p.sifra = '" + tSifra + "' and p.date>= '" + tDateFrom + "' and p.date <= '" + tDateTo + "'" ;
+                          " where p.vrsta = '" + vrsta + "' and p.sifra = '" + tSifra + "' and p.date>= '" + tDateFrom + "' and p.date <= '" + tDateTo + "'";
 
             //OdbcDataAdapter adapter1 = new OdbcDataAdapter(cmd1, konekcija);
             OdbcCommand komanda = new OdbcCommand(cmd1, konekcija);
@@ -705,7 +702,7 @@ namespace BebaKids
             cmd.Parameters.AddWithValue("@ve", tObjekat);*/
 
 
-            OdbcCommand komanda = new OdbcCommand("insert into pop_sta_mp_st (ozn_pop_sta,dat_pop,sif_obj_mp,sif_rob,sif_ent_rob,kolic,preneto) values ('"+tOznakaPopisa+"','"+ tdate.ToString(dateFormat) + "','"+tObjekat+"','"+tSifra+"','"+tVelicina+"','"+tKolicina+"','"+preneto+"')", konekcija);
+            OdbcCommand komanda = new OdbcCommand("insert into pop_sta_mp_st (ozn_pop_sta,dat_pop,sif_obj_mp,sif_rob,sif_ent_rob,kolic,preneto) values ('" + tOznakaPopisa + "','" + tdate.ToString(dateFormat) + "','" + tObjekat + "','" + tSifra + "','" + tVelicina + "','" + tKolicina + "','" + preneto + "')", konekcija);
             try
             {
                 konekcija.Open();
@@ -720,7 +717,7 @@ namespace BebaKids
 
         //FRANSIZNI OBJEKTI
 
-        public DataTable reportProvizija(string objekat, string dateFrom, string dateTo,string trziste)
+        public DataTable reportProvizija(string objekat, string dateFrom, string dateTo, string trziste)
         {
             string tObjekat = objekat;
             string tDateFrom = dateFrom;
@@ -730,7 +727,7 @@ namespace BebaKids
             DataTable tabelaProvizija = new DataTable();
             string connString = "Dsn=ifx;uid=informix";
             OdbcConnection conn = new OdbcConnection(connString);
-            string cmd = "execute procedure test_provizija_fransiza('"+tObjekat+"','"+tDateFrom+"','"+tDateTo+"','"+tTrziste+"')";
+            string cmd = "execute procedure test_provizija_fransiza('" + tObjekat + "','" + tDateFrom + "','" + tDateTo + "','" + tTrziste + "')";
             OdbcCommand komandaProcedure = new OdbcCommand(cmd, conn);
             komandaProcedure.CommandTimeout = 0;
             conn.Open();
@@ -741,7 +738,7 @@ namespace BebaKids
 
 
             OdbcDataAdapter adapter1 = new OdbcDataAdapter(cmd1, conn);
-            
+
             adapter1.Fill(tabelaProvizija);
             conn.Close();
 
@@ -753,7 +750,7 @@ namespace BebaKids
             string tSifra = sifra;
             string naziv = "";
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
-            OdbcCommand komanda = new OdbcCommand("select top 1 naziv from ean_kod2 where bar_kod = '"+tSifra+"'" );
+            OdbcCommand komanda = new OdbcCommand("select top 1 naziv from ean_kod2 where bar_kod = '" + tSifra + "'");
             OdbcDataReader dr = komanda.ExecuteReader();
             if (dr.Read())
             {
@@ -761,7 +758,7 @@ namespace BebaKids
             }
             else
             {
-                
+
             }
             return naziv;
 
@@ -803,11 +800,11 @@ namespace BebaKids
 
             OdbcConnection conn = new OdbcConnection(connString);
 
-            OdbcCommand komandaKartica = new OdbcCommand("select * from platna_kartica where ozn_pla_kar = '"+tCard+"' and sta_pla_kar = 'N'",conn);
-            OdbcCommand komandaPartner = new OdbcCommand("select * from pos_par where sif_par = '"+tCard+"' and sta_pos_par = '0'",conn);
+            OdbcCommand komandaKartica = new OdbcCommand("select * from platna_kartica where ozn_pla_kar = '" + tCard + "' and sta_pla_kar = 'N'", conn);
+            OdbcCommand komandaPartner = new OdbcCommand("select * from pos_par where sif_par = '" + tCard + "' and sta_pos_par = '0'", conn);
             conn.Open();
             OdbcDataReader dr = komandaKartica.ExecuteReader();
-            
+
             if (dr.Read())
             {
                 conn.Close();

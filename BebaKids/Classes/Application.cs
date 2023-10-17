@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClosedXML.Excel;
-using System.Net.Mail;
-using System.Net;
+﻿using ClosedXML.Excel;
+using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Data.Odbc;
+using System.Data.SqlClient;
+using System.Net;
+using System.Net.Mail;
 using System.Net.Sockets;
+using System.Text;
 using System.Windows.Forms;
 
 namespace BebaKids.Classes
 {
     class Application
     {
-        public void playSound (string typeOfSound)
+        public void playSound(string typeOfSound)
         {
             string sound = typeOfSound;
             if (sound == "error")
@@ -37,7 +34,7 @@ namespace BebaKids.Classes
             }
         }
 
-        public void createExcel(string vrsta, string objekat, string dokument,DataTable ExcelTabela)
+        public void createExcel(string vrsta, string objekat, string dokument, DataTable ExcelTabela)
         {
             string tVrsta = vrsta;
             string tObjekat = objekat;
@@ -66,7 +63,7 @@ namespace BebaKids.Classes
             {
                 email = objekat;
             }
-            
+
             DataTable excel = new DataTable();
             excel = tabela.table(tDokument);
 
@@ -77,14 +74,14 @@ namespace BebaKids.Classes
 
             MailMessage mail = new MailMessage();
 
-            mail.From = new MailAddress(objekatFrom, naziv);
+            mail.From = new MailAddress("server@bebakids.com", naziv);
             mail.To.Add(email);
             mail.CC.Add(objekatFrom);
-            mail.Subject = "Razlika robe prema dokumentu "+tDokument.ToString();
+            mail.Subject = "Razlika robe prema dokumentu " + tDokument.ToString();
 
             StringBuilder poruka = new StringBuilder();
 
-            poruka.Append("Postovani, u prilogu su razlike provere prema dokumentu "+tDokument.ToString()+" \n");
+            poruka.Append("Postovani, u prilogu su razlike provere prema dokumentu " + tDokument.ToString() + " \n");
 
             mail.Body = poruka.ToString();
 
@@ -92,14 +89,14 @@ namespace BebaKids.Classes
             attachment = new System.Net.Mail.Attachment("Razlika.xlsx");
             mail.Attachments.Add(attachment);
             //SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             SmtpClient SmtpServer = new SmtpClient();
             SmtpServer.UseDefaultCredentials = true;
-            SmtpServer.Host = "smtp.gmail.com";
+            SmtpServer.Host = "smtp.office365.com";
             SmtpServer.Port = 587;
             SmtpServer.EnableSsl = true;
             SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
-            SmtpServer.Credentials = new NetworkCredential("server.bebakids@gmail.com", "Migracija123");
-
+            SmtpServer.Credentials = new NetworkCredential("server@bebakids.com", "Migracija123");
 
             SmtpServer.Send(mail);
 
@@ -135,6 +132,28 @@ namespace BebaKids.Classes
             return objekti;
         }
 
+        public DataTable magacini()
+        {
+            string connString = "Dsn=ifx;uid=informix";
+            OdbcConnection conn = new OdbcConnection(connString);
+
+            // string cmd = ("select sif_rob sifra,sif_ent_rob velicina from pop_sta_mp_st where ozn_pop_sta = '" + document + "'");
+            string cmd = ("select trim(sif_mag) sif_mag,trim(sif_mag)||'-'||trim(naz_mag) magacin,trim(napomena) e_mail from magacin where left(sif_org_jed,3) = ('012')");
+
+            OdbcCommand command = new OdbcCommand(cmd, conn);
+
+            OdbcDataAdapter adapter1 = new OdbcDataAdapter(cmd, conn);
+
+            conn.Open();
+
+            DataTable magacini = new DataTable();
+            adapter1.Fill(magacini);
+
+            conn.Close();
+
+            return magacini;
+        }
+
         public DataTable zuti_izvodi()
         {
             string informixKonString = "Dsn=ifx;uid=informix";
@@ -152,7 +171,7 @@ namespace BebaKids.Classes
         }
 
         public DataTable radnici()
-        { 
+        {
             string prijavaKonString = "Dsn=prijava;uid=sa;Pwd=adminabc123";
 
             OdbcConnection konekcija = new OdbcConnection(prijavaKonString);
@@ -174,10 +193,10 @@ namespace BebaKids.Classes
         {
             var MyIni = new IniFile(@"C:\bkapps\config.ini");
             var Sifraobjekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta");
-            int objekat = Convert.ToInt32(Sifraobjekat.ToString()); 
+            int objekat = Convert.ToInt32(Sifraobjekat.ToString());
 
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
-            string cmd1 = "select * from radnici where radnici.sif_obj_mp = '"+objekat+"'";
+            string cmd1 = "select * from radnici where radnici.sif_obj_mp = '" + objekat + "'";
             OdbcDataAdapter adapter1 = new OdbcDataAdapter(cmd1, konekcija);
 
             konekcija.Open();
@@ -233,7 +252,7 @@ namespace BebaKids.Classes
                     StringBuilder prenosPazara = new StringBuilder();
                     StringBuilder sbKartice = new StringBuilder();
                     StringBuilder sbObrasci = new StringBuilder();
-                    
+
                     prenosPazara.Append("insert into pazari (id_pazar,sif_obj_mp,date,cache,card,cek,presek,presek_pdv,cek_redovni,cek_odlozeni,administrativna,konzul,vaucer,napomena,oznaka) values");
                     prenosPazara.Append("(@id,@objekat,@date,@cache,@card,@cek,@presek,@presekPdv,@cekRedovni,@cekOdlozeni,@administrativna,@konzul,@vaucer,@napomena,@oznaka)");
                     SqlCommand komanda = new SqlCommand(prenosPazara.ToString(), sqlConn);
@@ -282,7 +301,7 @@ namespace BebaKids.Classes
                     Decimal ni10 = Decimal.TryParse(row["ni_10"].ToString(), out ni10) ? ni10 : 0;
 
 
-                    
+
 
                     komanda.Parameters.Add("@id", SqlDbType.Int).Value = id;
                     komanda.Parameters.Add("@objekat", SqlDbType.Char).Value = objekat;
@@ -326,7 +345,7 @@ namespace BebaKids.Classes
 
                     try
                     {
-                        int a,b,c;
+                        int a, b, c;
                         sqlConn.Open();
                         a = komanda.ExecuteNonQuery();
                         if (a == 0)
@@ -355,7 +374,7 @@ namespace BebaKids.Classes
                                     sqlConnLocal.Open();
                                     updateKomanda.ExecuteNonQuery();
                                     sqlConnLocal.Close();
-                                    
+
                                 }
                             }
                         }
@@ -376,10 +395,10 @@ namespace BebaKids.Classes
 
 
             }
-            
+
 
 
         }
     }
-    
+
 }

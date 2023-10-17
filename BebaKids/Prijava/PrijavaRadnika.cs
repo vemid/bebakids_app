@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.Odbc;
 using System.Net.Http;
 using System.Text;
+using System.Windows.Forms;
 
 namespace BebaKids.Prijava
 {
@@ -153,7 +147,7 @@ namespace BebaKids.Prijava
                         vrsta = Form1.vrsta.ToString();
                         //MessageBox.Show(vrsta);
 
-                        OdbcCommand checkCheckin = new OdbcCommand("Select * from prijava where sifra ='" + checkUser["sifra"] + "' and date = '" + thisDay.ToString(dateFormat) + "' and sif_obj_mp = '" + objekat + "' and vrsta = '"+vrsta+"'", konekcija);
+                        OdbcCommand checkCheckin = new OdbcCommand("Select * from prijava where sifra ='" + checkUser["sifra"] + "' and date = '" + thisDay.ToString(dateFormat) + "' and sif_obj_mp = '" + objekat + "' and vrsta = '" + vrsta + "'", konekcija);
                         konekcija.Open();
                         OdbcDataAdapter adapt = new OdbcDataAdapter(checkCheckin);
                         DataSet ds = new DataSet();
@@ -170,7 +164,7 @@ namespace BebaKids.Prijava
                         }
                         else
                         {
-                            
+
                             if (count == 1 && String.IsNullOrEmpty(ds.Tables[0].Rows[0]["check_out"].ToString()))
                             {
                                 DateTime checkIn = Convert.ToDateTime(ds.Tables[0].Rows[0]["check_in"]);
@@ -201,7 +195,7 @@ namespace BebaKids.Prijava
                                 }
                             }
                         }
-                        if(count == 1 && !String.IsNullOrEmpty(ds.Tables[0].Rows[0]["check_out"].ToString()))
+                        if (count == 1 && !String.IsNullOrEmpty(ds.Tables[0].Rows[0]["check_out"].ToString()))
                         {
                             MessageBox.Show("Postovani, već ste prijavljeni !", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }

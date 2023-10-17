@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.Odbc;
+using System.Windows.Forms;
 
 namespace BebaKids.Racunovodstvo
 {
@@ -31,7 +24,7 @@ namespace BebaKids.Racunovodstvo
             string connString = "Dsn=ifx;uid=informix";
             if (comboBox1.SelectedValue.ToString() != "")
             {
-                string cmd = "execute procedure test_update_izvod('"+comboBox1.SelectedValue.ToString()+"');";
+                string cmd = "execute procedure test_update_izvod('" + comboBox1.SelectedValue.ToString() + "');";
                 OdbcConnection conn = new OdbcConnection(connString);
                 OdbcCommand komandaProcedure = new OdbcCommand(cmd, conn);
                 conn.Open();
@@ -42,7 +35,8 @@ namespace BebaKids.Racunovodstvo
                 {
                     MessageBox.Show("Uspesno osvezeni izvod", "Informacija", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else {
+                else
+                {
                     MessageBox.Show(dr.GetString(0).ToString(), "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 conn.Close();

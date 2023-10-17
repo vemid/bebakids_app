@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using BebaKids.Properties;
+using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Printing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-using System.Drawing.Printing;
-using BebaKids.Properties;
-using System.Globalization;
 
 namespace BebaKids.Backend
 {
@@ -30,7 +27,7 @@ namespace BebaKids.Backend
             comboBox1.ValueMember = "sif_obj_mp";
             comboBox1.SelectedIndex = -1;
 
-           
+
 
         }
 
@@ -88,7 +85,8 @@ namespace BebaKids.Backend
             {
                 objekat = comboBox1.SelectedValue.ToString();
             }
-            else {
+            else
+            {
                 objekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta");
                 label39.Visible = false;
                 if (system == "watch")
@@ -99,12 +97,12 @@ namespace BebaKids.Backend
             string date = datumPrometa.Value.ToString("yyyy-MM-dd");
             date1 = Convert.ToDateTime(date);
             string Localbaza = MyIni.Read("konekcija_server", "Baza").ToString();
-            
-            
+
+
             SqlConnection sqlConn = new SqlConnection(Localbaza);
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("select * from pazari as p left join pazari_card as pc on pc.oznaka = p.oznaka left join pazari_ni as pn on pn.oznaka = p.oznaka where date = '" + date + "' and sif_obj_mp = '"+objekat+"'");
+            sb.Append("select * from pazari as p left join pazari_card as pc on pc.oznaka = p.oznaka left join pazari_ni as pn on pn.oznaka = p.oznaka where date = '" + date + "' and sif_obj_mp = '" + objekat + "'");
             SqlCommand komanda = new SqlCommand(sb.ToString(), sqlConn);
 
             try
@@ -208,7 +206,8 @@ namespace BebaKids.Backend
             string text1 = "Preduzece za trgovinu KIDS BEBA doo";
             string text2 = "Ignjata Joba 37 Beograd";
 
-            if (system == "watch") {
+            if (system == "watch")
+            {
                 text1 = "Watch is Watch doo";
                 text2 = "Zaplanjska 32 Beograd";
                 logo = Resources.watch_header;
@@ -222,36 +221,36 @@ namespace BebaKids.Backend
             e.Graphics.DrawImage(logo, 25, 25, logo.Width, logo.Height);
 
             e.Graphics.DrawString("Pregled dnevnog prometa na kasi", new Font("Arial", 18, FontStyle.Bold), Brushes.Black, new Point(100, visina + 50));
-            e.Graphics.DrawString("Objekat: "+comboBox1.SelectedValue+" "+ comboBox1.Text, new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(100, visina + 80));
-            e.Graphics.DrawString("Datum: "+ date1.ToString("dd.MM.yyyy"), new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(100, visina + 110));
+            e.Graphics.DrawString("Objekat: " + comboBox1.SelectedValue + " " + comboBox1.Text, new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(100, visina + 80));
+            e.Graphics.DrawString("Datum: " + date1.ToString("dd.MM.yyyy"), new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(100, visina + 110));
             int width = ClientRectangle.Width;
             Color color = System.Drawing.ColorTranslator.FromHtml("#3fb0ac");
             Pen myPen = new Pen(color);
             myPen.Width = 5;
-            Point tacka1 = new Point(30, visina+150);
+            Point tacka1 = new Point(30, visina + 150);
             Point tacka2 = new Point(800, visina + 150);
             e.Graphics.DrawLine(myPen, tacka1, tacka2);
             int visinaPromet = visina + 170;
             int levo = 100;
-            int centar=330;
-            int desno=530;
-            e.Graphics.DrawString("Dnevni izvestaj", new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(levo-20, visinaPromet));
+            int centar = 330;
+            int desno = 530;
+            e.Graphics.DrawString("Dnevni izvestaj", new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(levo - 20, visinaPromet));
             e.Graphics.DrawString("Gotovina: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(levo, visinaPromet + 40));
-            e.Graphics.DrawString(tbDIGotovina.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(levo+90, visinaPromet + 40));
+            e.Graphics.DrawString(tbDIGotovina.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(levo + 90, visinaPromet + 40));
             e.Graphics.DrawString("Kartica: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(levo, visinaPromet + 65));
             e.Graphics.DrawString(tbDIKartice.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(levo + 90, visinaPromet + 65));
             e.Graphics.DrawString("Cek: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(levo, visinaPromet + 90));
             e.Graphics.DrawString(tbDICek.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(levo + 90, visinaPromet + 90));
 
-            e.Graphics.DrawString("Presek Stanja", new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(centar-20, visinaPromet));
+            e.Graphics.DrawString("Presek Stanja", new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(centar - 20, visinaPromet));
             e.Graphics.DrawString("Gotovina: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(centar, visinaPromet + 40));
-            e.Graphics.DrawString(tbPresek.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(centar+90, visinaPromet + 40));
+            e.Graphics.DrawString(tbPresek.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(centar + 90, visinaPromet + 40));
             e.Graphics.DrawString("Kartica: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(centar, visinaPromet + 65));
-            e.Graphics.DrawString(tbPSPdv.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(centar+90, visinaPromet + 65));
+            e.Graphics.DrawString(tbPSPdv.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(centar + 90, visinaPromet + 65));
 
-            e.Graphics.DrawString("Administrativne i cekovi", new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(desno-20, visinaPromet));
+            e.Graphics.DrawString("Administrativne i cekovi", new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(desno - 20, visinaPromet));
             e.Graphics.DrawString("Redovni cekovi: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(desno, visinaPromet + 40));
-            e.Graphics.DrawString(tbACRedovni.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(desno+145, visinaPromet + 40));
+            e.Graphics.DrawString(tbACRedovni.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(desno + 145, visinaPromet + 40));
             e.Graphics.DrawString("Odlozeni cekovi: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(desno, visinaPromet + 65));
             e.Graphics.DrawString(tbACOdlozeni.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(desno + 145, visinaPromet + 65));
             e.Graphics.DrawString("Administrativne: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(desno, visinaPromet + 90));
@@ -268,16 +267,16 @@ namespace BebaKids.Backend
             e.Graphics.DrawString("Unicredit: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(levo, visinaDrugi + 65));
             e.Graphics.DrawString(tbBankaUni.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(levo + 110, visinaDrugi + 65));
 
-            e.Graphics.DrawString("Redovan Diners: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(centar-20, visinaDrugi + 40));
+            e.Graphics.DrawString("Redovan Diners: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(centar - 20, visinaDrugi + 40));
             e.Graphics.DrawString(tbDinersRedovan.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(centar + 120, visinaDrugi + 40));
-            e.Graphics.DrawString("Diners 1.rata: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(centar-20, visinaDrugi + 65));
+            e.Graphics.DrawString("Diners 1.rata: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(centar - 20, visinaDrugi + 65));
             e.Graphics.DrawString(tbDiners1.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(centar + 120, visinaDrugi + 65));
-            e.Graphics.DrawString("Diners 2.rata: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(centar-20, visinaDrugi + 90));
+            e.Graphics.DrawString("Diners 2.rata: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(centar - 20, visinaDrugi + 90));
             e.Graphics.DrawString(tbDiners2.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(centar + 120, visinaDrugi + 90));
 
-            e.Graphics.DrawString("Diners 1.rata: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(desno+20, visinaDrugi + 40));
+            e.Graphics.DrawString("Diners 1.rata: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(desno + 20, visinaDrugi + 40));
             e.Graphics.DrawString(tbDiners3.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(desno + 140, visinaDrugi + 40));
-            e.Graphics.DrawString("Diners 2.rata: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(desno+20, visinaDrugi + 65));
+            e.Graphics.DrawString("Diners 2.rata: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(desno + 20, visinaDrugi + 65));
             e.Graphics.DrawString(tbDiners4.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(desno + 140, visinaDrugi + 65));
             int visinatreci = visinaDrugi + 140;
             Point tacka31 = new Point(30, visinaDrugi + 125);
@@ -313,7 +312,7 @@ namespace BebaKids.Backend
             levo1 += 135;
 
             //double niObrasci = Convert.ToDouble(tbNi1.Text) + Convert.ToDouble(tbNi2.Text) + Convert.ToDouble(tbNi3.Text) + Convert.ToDouble(tbNi4.Text) +
-              //  Convert.ToDouble(tbNi5.Text) + Convert.ToDouble(tbNi6.Text) + Convert.ToDouble(tbNi7.Text) + Convert.ToDouble(tbNi8.Text) + Convert.ToDouble(tbNi9.Text) + Convert.ToDouble(tbNi10.Text);
+            //  Convert.ToDouble(tbNi5.Text) + Convert.ToDouble(tbNi6.Text) + Convert.ToDouble(tbNi7.Text) + Convert.ToDouble(tbNi8.Text) + Convert.ToDouble(tbNi9.Text) + Convert.ToDouble(tbNi10.Text);
             Double pazar = Convert.ToDouble(tbDIGotovina.Text);
 
             int visinaCetvrti = visinatreci + 120;
@@ -325,7 +324,7 @@ namespace BebaKids.Backend
             e.Graphics.DrawString("Refakcije i vauceri", new Font("Arial", 16, FontStyle.Bold), Brushes.Black, new Point(levo - 20, visinaCetvrti));
             e.Graphics.DrawString("Iznos refakcija i konzularnih predsavnistva: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(levo, visinaCetvrti + 40));
             e.Graphics.DrawString(tbKonzul.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(levo + 360, visinaCetvrti + 40));
-            e.Graphics.DrawString("Vauceri: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(levo+520, visinaCetvrti + 40));
+            e.Graphics.DrawString("Vauceri: ", new Font("Arial", 13, FontStyle.Regular), Brushes.Black, new Point(levo + 520, visinaCetvrti + 40));
             e.Graphics.DrawString(tbVauceri.Text, new Font("Arial", 13, FontStyle.Bold), Brushes.Black, new Point(levo + 585, visinaCetvrti + 40));
 
             int visinaPeti = visinaCetvrti + 90;
@@ -354,7 +353,7 @@ namespace BebaKids.Backend
             blackPen2.DashPattern = dashValues;
             e.Graphics.DrawLine(blackPen2, tacka51, tacka52);
 
-            int pocetakNaloga = visinaPeti-30;
+            int pocetakNaloga = visinaPeti - 30;
 
             int visinaNalog11 = pocetakNaloga + 90;
             e.Graphics.DrawString("Platilac", new Font("Arial", 9, FontStyle.Bold), Brushes.Black, new Point(levo - 70, pocetakNaloga + 65));
@@ -366,7 +365,7 @@ namespace BebaKids.Backend
             e.Graphics.DrawString(text2, new Font("Arial", 9, FontStyle.Bold), Brushes.Black, new Point(levo - 60, pocetakNaloga + 100));
 
             int visinaNalog12 = visinaNalog11 + 0;
-            Point tacka121 = new Point(30, visinaNalog11-10);
+            Point tacka121 = new Point(30, visinaNalog11 - 10);
             Point tacka122 = new Point(30, visinaNalog11 + 30);
             e.Graphics.DrawLine(blackPen, tacka121, tacka122);
 
@@ -383,8 +382,8 @@ namespace BebaKids.Backend
             /*gornja margina svrha uplate*/
             int visinaNalog21 = visinaNalog14 + 30;
             e.Graphics.DrawString("Svrha Uplate", new Font("Arial", 9, FontStyle.Bold), Brushes.Black, new Point(levo - 70, visinaNalog14 + 5));
-            Point tacka211 = new Point(30, visinaNalog14+20);
-            Point tacka212 = new Point(300, visinaNalog14+20);
+            Point tacka211 = new Point(30, visinaNalog14 + 20);
+            Point tacka212 = new Point(300, visinaNalog14 + 20);
             e.Graphics.DrawLine(blackPen, tacka211, tacka212);
 
             /*leva margina svrha uplate*/
@@ -407,10 +406,10 @@ namespace BebaKids.Backend
             /* primalac */
             int visinaNalog31 = visinaNalog24 + 30;
             e.Graphics.DrawString("Primalac", new Font("Arial", 9, FontStyle.Bold), Brushes.Black, new Point(levo - 70, visinaNalog31 + 5));
-            Point tacka331 = new Point(30, visinaNalog31+20);
-            Point tacka332 = new Point(300, visinaNalog31+20);
-            Point tacka333 = new Point(30, visinaNalog31+60);
-            Point tacka334 = new Point(300, visinaNalog31+60);
+            Point tacka331 = new Point(30, visinaNalog31 + 20);
+            Point tacka332 = new Point(300, visinaNalog31 + 20);
+            Point tacka333 = new Point(30, visinaNalog31 + 60);
+            Point tacka334 = new Point(300, visinaNalog31 + 60);
 
             e.Graphics.DrawLine(blackPen, tacka331, tacka332);
             e.Graphics.DrawLine(blackPen, tacka331, tacka333);
@@ -433,11 +432,11 @@ namespace BebaKids.Backend
             Point tacka511 = new Point(200, visinaNalog51 + 20);
             Point tacka512 = new Point(360, visinaNalog51 + 20);
             e.Graphics.DrawLine(blackPen, tacka511, tacka512);
-            e.Graphics.DrawString("Mesto i datum prijema", new Font("Arial", 9, FontStyle.Bold), Brushes.Black, new Point(levo+120, visinaNalog51 + 25));
+            e.Graphics.DrawString("Mesto i datum prijema", new Font("Arial", 9, FontStyle.Bold), Brushes.Black, new Point(levo + 120, visinaNalog51 + 25));
 
             /* linija presek */
             int krajNaloga = visinaNalog41 + 20;
-            Point tacka611 = new Point(360, pocetakNaloga+80);
+            Point tacka611 = new Point(360, pocetakNaloga + 80);
             Point tacka612 = new Point(360, krajNaloga);
             e.Graphics.DrawLine(blackPen, tacka611, tacka612);
 
@@ -447,22 +446,22 @@ namespace BebaKids.Backend
             int paddingNalogD = 410;
             e.Graphics.DrawString("Sifra", new Font("Arial", 8, FontStyle.Bold), Brushes.Black, new Point(paddingNalogD, pocetakNaloga + 62));
             e.Graphics.DrawString("Placanja", new Font("Arial", 8, FontStyle.Bold), Brushes.Black, new Point(paddingNalogD, pocetakNaloga + 72));
-            e.Graphics.DrawString("Valuta", new Font("Arial", 8, FontStyle.Bold), Brushes.Black, new Point(paddingNalogD+80, pocetakNaloga + 72));
-            e.Graphics.DrawString("Iznos", new Font("Arial", 9, FontStyle.Bold), Brushes.Black, new Point(paddingNalogD+160, pocetakNaloga + 70));
+            e.Graphics.DrawString("Valuta", new Font("Arial", 8, FontStyle.Bold), Brushes.Black, new Point(paddingNalogD + 80, pocetakNaloga + 72));
+            e.Graphics.DrawString("Iznos", new Font("Arial", 9, FontStyle.Bold), Brushes.Black, new Point(paddingNalogD + 160, pocetakNaloga + 70));
 
             Point tackaD111 = new Point(paddingNalogD, visinaNalogD1 + 85);
-            Point tackaD112 = new Point(paddingNalogD+60, visinaNalogD1 + 85);
+            Point tackaD112 = new Point(paddingNalogD + 60, visinaNalogD1 + 85);
             Point tackaD113 = new Point(paddingNalogD, visinaNalogD1 + 110);
-            Point tackaD114 = new Point(paddingNalogD+60, visinaNalogD1 + 110);
+            Point tackaD114 = new Point(paddingNalogD + 60, visinaNalogD1 + 110);
 
             e.Graphics.DrawLine(blackPen, tackaD111, tackaD112);
             e.Graphics.DrawLine(blackPen, tackaD111, tackaD113);
             e.Graphics.DrawLine(blackPen, tackaD113, tackaD114);
             e.Graphics.DrawLine(blackPen, tackaD112, tackaD114);
 
-            Point tackaD121 = new Point(paddingNalogD+80, visinaNalogD1 + 85);
+            Point tackaD121 = new Point(paddingNalogD + 80, visinaNalogD1 + 85);
             Point tackaD122 = new Point(paddingNalogD + 140, visinaNalogD1 + 85);
-            Point tackaD123 = new Point(paddingNalogD+80, visinaNalogD1 + 110);
+            Point tackaD123 = new Point(paddingNalogD + 80, visinaNalogD1 + 110);
             Point tackaD124 = new Point(paddingNalogD + 140, visinaNalogD1 + 110);
 
             e.Graphics.DrawLine(blackPen, tackaD121, tackaD122);
@@ -485,8 +484,8 @@ namespace BebaKids.Backend
             /* racun */
             int visinaNalogD2 = visinaNalogD1 + 110;
             e.Graphics.DrawString("Racun platioca", new Font("Arial", 9, FontStyle.Bold), Brushes.Black, new Point(paddingNalogD, visinaNalogD2));
-            Point tackaD211 = new Point(paddingNalogD, visinaNalogD2+15);
-            Point tackaD212 = new Point(paddingNalogD + 320, visinaNalogD2+15);
+            Point tackaD211 = new Point(paddingNalogD, visinaNalogD2 + 15);
+            Point tackaD212 = new Point(paddingNalogD + 320, visinaNalogD2 + 15);
             Point tackaD213 = new Point(paddingNalogD, visinaNalogD2 + 45);
             Point tackaD214 = new Point(paddingNalogD + 320, visinaNalogD2 + 45);
 
@@ -510,10 +509,10 @@ namespace BebaKids.Backend
             e.Graphics.DrawLine(blackPen, tackaD312, tackaD314);
             e.Graphics.DrawLine(blackPen, tackaD313, tackaD314);
 
-            Point tackaD321 = new Point(paddingNalogD+80, visinaNalogD3 + 15);
-            Point tackaD322 = new Point(paddingNalogD+80 + 240, visinaNalogD3 + 15);
-            Point tackaD323 = new Point(paddingNalogD+80, visinaNalogD3 + 45);
-            Point tackaD324 = new Point(paddingNalogD+80 + 240, visinaNalogD3 + 45);
+            Point tackaD321 = new Point(paddingNalogD + 80, visinaNalogD3 + 15);
+            Point tackaD322 = new Point(paddingNalogD + 80 + 240, visinaNalogD3 + 15);
+            Point tackaD323 = new Point(paddingNalogD + 80, visinaNalogD3 + 45);
+            Point tackaD324 = new Point(paddingNalogD + 80 + 240, visinaNalogD3 + 45);
 
             e.Graphics.DrawLine(blackPen, tackaD321, tackaD322);
             e.Graphics.DrawLine(blackPen, tackaD321, tackaD323);
@@ -525,23 +524,26 @@ namespace BebaKids.Backend
             {
                 string objekatString = "";
                 int count = comboBox1.SelectedValue.ToString().Length;
-                if (count < 2) {
+                if (count < 2)
+                {
                     objekatString = "0" + comboBox1.SelectedValue.ToString();
                 }
-                else {
+                else
+                {
                     objekatString = comboBox1.SelectedValue.ToString();
                 }
                 pozivNaBroj = "MP" + objekatString + date1.ToString("yyyyMMdd");
             }
-            else {
+            else
+            {
                 pozivNaBroj = "MP" + objekat + date1.ToString("yyyyMMdd");
             }
-            e.Graphics.DrawString(pozivNaBroj, new Font("Arial", 12, FontStyle.Bold), Brushes.Black, new Point(paddingNalogD+120, visinaNalogD3+20));
+            e.Graphics.DrawString(pozivNaBroj, new Font("Arial", 12, FontStyle.Bold), Brushes.Black, new Point(paddingNalogD + 120, visinaNalogD3 + 20));
 
             /* mesto i datum izvrsenja */
             int visinaD411 = visinaNalog41 + 20;
             Point tackaD511 = new Point(paddingNalogD, visinaNalog51 + 20);
-            Point tackaD512 = new Point(paddingNalogD+160, visinaNalog51 + 20);
+            Point tackaD512 = new Point(paddingNalogD + 160, visinaNalog51 + 20);
             e.Graphics.DrawLine(blackPen, tackaD511, tackaD512);
             e.Graphics.DrawString("Datum izvrsenja", new Font("Arial", 9, FontStyle.Bold), Brushes.Black, new Point(paddingNalogD + 30, visinaNalog51 + 25));
         }
@@ -575,7 +577,7 @@ namespace BebaKids.Backend
             {
                 this.Icon = Properties.Resources.watch_icon;
             }
-            
+
 
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

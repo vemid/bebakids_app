@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.Odbc;
-using MySql.Data.MySqlClient;
+using System.Text;
+using System.Windows.Forms;
 
 namespace BebaKids.Proizvodnja
 {
@@ -17,7 +12,7 @@ namespace BebaKids.Proizvodnja
         public PrenosSifara()
         {
             InitializeComponent();
-            lbNazivKolekcije.Text = "";           
+            lbNazivKolekcije.Text = "";
         }
 
         private void tbOznakaKolekcije_Leave(object sender, EventArgs e)
@@ -74,7 +69,7 @@ namespace BebaKids.Proizvodnja
             conn.Close();
 
             MySqlConnection mysql = new MySqlConnection(MysqlKonekcija.myConnectionString);
-            
+
 
 
             var i = 0;
@@ -95,11 +90,11 @@ namespace BebaKids.Proizvodnja
                     MySqlCommand komanda = mysql.CreateCommand();
                     StringBuilder sb = new StringBuilder();
                     komanda.CommandText = "insert into roba (sif_rob,naz_rob,kla_ozn,kolekcija,kurs,marza,kla_ozn_07) values (@PsifRob,@PnazRob,@PklaOzn,@Pkolekcija,@Pkurs,@Pmarza,@PklaOzn07);";
-                    
+
                     komanda.Parameters.AddWithValue("@PsifRob", sif_rob);
                     komanda.Parameters.AddWithValue("@PnazRob", naziv);
                     komanda.Parameters.AddWithValue("@PklaOzn", kla_ozn);
-                    komanda.Parameters.AddWithValue("@Pkolekcija",kolekcija);
+                    komanda.Parameters.AddWithValue("@Pkolekcija", kolekcija);
                     komanda.Parameters.AddWithValue("@PklaOzn07", kla_ozn_07);
                     komanda.Parameters.AddWithValue("@Pkurs", kurs);
                     komanda.Parameters.AddWithValue("@Pmarza", marza);

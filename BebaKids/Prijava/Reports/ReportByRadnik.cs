@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using ClosedXML.Excel;
+using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClosedXML.Excel;
 
 namespace BebaKids.Prijava.Reports
 {
@@ -80,9 +75,9 @@ namespace BebaKids.Prijava.Reports
 
             //smestanja podataka na sat u excel
             DataTable excelHour = new DataTable();
-            excelHour = tabela.tableIzvestajRadnika(tsifra,dFrom,dTo,"HOUR");
+            excelHour = tabela.tableIzvestajRadnika(tsifra, dFrom, dTo, "HOUR");
             string TotalVremeHour = tabela.getTime(tsifra, dFrom, dTo, "HOUR");
-            
+
             var wHour = wb.Worksheets.Add(excelHour, "Hour");
             wHour.Columns().AdjustToContents();
             wHour.Row(1).InsertRowsAbove(3);
@@ -148,7 +143,7 @@ namespace BebaKids.Prijava.Reports
             bPopis.Cell(lastRobPopis + 1, 9).Value = excelPopis.Compute("Sum(Bolovanje)", "").ToString();
             bPopis.Cell(lastRobPopis + 1, 10).Value = excelPopis.Compute("Sum(PlacenDan)", "").ToString();
 
-            
+
 
             var saveFileDialog = new SaveFileDialog
             {

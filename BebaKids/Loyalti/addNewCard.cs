@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Data.Odbc;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.Odbc;
-using MySql.Data.MySqlClient;
 
 namespace BebaKids.Loyalti
 {
@@ -47,8 +42,8 @@ namespace BebaKids.Loyalti
 
             Pen litlePen = new Pen(color);
             litlePen.Width = 5;
-            Point tackal1 = new Point(30, height-20);
-            Point tackal2 = new Point(width - 30, height-20);
+            Point tackal1 = new Point(30, height - 20);
+            Point tackal2 = new Point(width - 30, height - 20);
             g.DrawLine(litlePen, tackal1, tackal2);
         }
 
@@ -66,7 +61,7 @@ namespace BebaKids.Loyalti
 
             foreach (CheckBox tb in this.Controls.OfType<CheckBox>())
             {
-                tb.Checked=false;
+                tb.Checked = false;
             }
         }
 
@@ -139,12 +134,12 @@ namespace BebaKids.Loyalti
                 OdbcConnection conn = new OdbcConnection(connString);
                 int returnInformation;
 
-                OdbcCommand komandaPosPar = new OdbcCommand("update pos_par set sif_del = 'M', naz_par = '"+ totalName + "', uli_bro = '"+address+"', telefon = '"+phone+"', e_mail = '"+email+"', sta_pos_par = '1' where sif_par = '"+card+"'",conn);
-                OdbcCommand komandaPlatnaKartica = new OdbcCommand("update platna_kartica set sta_pla_kar = 'A' where ozn_pla_kar = '"+card+"'",conn);
+                OdbcCommand komandaPosPar = new OdbcCommand("update pos_par set sif_del = 'M', naz_par = '" + totalName + "', uli_bro = '" + address + "', telefon = '" + phone + "', e_mail = '" + email + "', sta_pos_par = '1' where sif_par = '" + card + "'", conn);
+                OdbcCommand komandaPlatnaKartica = new OdbcCommand("update platna_kartica set sta_pla_kar = 'A' where ozn_pla_kar = '" + card + "'", conn);
 
                 MySqlConnection mysql = new MySqlConnection(MysqlB2B.myConnectionString);
                 MySqlCommand command = mysql.CreateCommand();
-                command.CommandText = "insert into loyalti (sif_obj_mp, datum, vreme, card,first_name,last_name,address,ptt,phone,e_mail,date_of_birth,gender) VALUES ('"+objekat+"','"+ thisDay.ToString("yyyy-MM-dd") + "','"+thisDay.ToString(timeFormat)+"','"+card+"','"+name+"','"+lastName+"','"+address+"','"+postalCode+"','"+phone+"','"+email+"','"+d.ToString("yyyy-MM-dd") + "','"+pol+"')"; ;
+                command.CommandText = "insert into loyalti (sif_obj_mp, datum, vreme, card,first_name,last_name,address,ptt,phone,e_mail,date_of_birth,gender) VALUES ('" + objekat + "','" + thisDay.ToString("yyyy-MM-dd") + "','" + thisDay.ToString(timeFormat) + "','" + card + "','" + name + "','" + lastName + "','" + address + "','" + postalCode + "','" + phone + "','" + email + "','" + d.ToString("yyyy-MM-dd") + "','" + pol + "')"; ;
 
                 conn.Open();
                 int posPar = komandaPosPar.ExecuteNonQuery();

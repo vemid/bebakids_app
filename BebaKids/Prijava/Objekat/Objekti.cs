@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.Odbc;
+using System.Windows.Forms;
 
 namespace BebaKids.Prijava.Objekat
 {
@@ -33,7 +26,7 @@ namespace BebaKids.Prijava.Objekat
         {
             string prijavaKonString = "Dsn=prijava;uid=sa;Pwd=adminabc123";
 
-            if (!String.IsNullOrEmpty(textBox2.Text.ToString()) && textBox1.Text.ToString()!="")
+            if (!String.IsNullOrEmpty(textBox2.Text.ToString()) && textBox1.Text.ToString() != "")
             {
                 int status = 0;
                 if (comboBox1.SelectedText.ToString() == "Aktivan")
@@ -47,7 +40,7 @@ namespace BebaKids.Prijava.Objekat
 
                 int sifraObjekta = Convert.ToInt32(textBox1.Text.ToString());
                 OdbcConnection konekcija = new OdbcConnection(prijavaKonString);
-                OdbcCommand komanda = new OdbcCommand("insert into sif_obj_mp (sif_obj_mp,naz_obj_mp,e_mail,status) values ('" + sifraObjekta + "','" + textBox2.Text.ToString() + "','" + textBox3.Text.ToString() + "','"+status+"')", konekcija);
+                OdbcCommand komanda = new OdbcCommand("insert into sif_obj_mp (sif_obj_mp,naz_obj_mp,e_mail,status) values ('" + sifraObjekta + "','" + textBox2.Text.ToString() + "','" + textBox3.Text.ToString() + "','" + status + "')", konekcija);
                 try
                 {
                     konekcija.Open();
@@ -68,7 +61,7 @@ namespace BebaKids.Prijava.Objekat
                 textBox1.Clear();
                 textBox2.Clear();
                 textBox3.Clear();
-                comboBox1.SelectedIndex =-1;
+                comboBox1.SelectedIndex = -1;
 
             }
             else
@@ -88,7 +81,7 @@ namespace BebaKids.Prijava.Objekat
             if (e.RowIndex >= 0)
             {
 
-                string sifra= dataGridView1.CurrentRow.Cells[0].Value.ToString();
+                string sifra = dataGridView1.CurrentRow.Cells[0].Value.ToString();
                 string nazivObjekta = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                 string email = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 string status = dataGridView1.CurrentRow.Cells[3].Value.ToString();

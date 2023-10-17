@@ -47,6 +47,7 @@
             this.pregledPrenosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.radniciToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pregledDnevnogIzveštajaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dokumentOtpremeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.izvestajiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.izvestajFransizePoDanuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.izvestajLageraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,7 +67,6 @@
             this.btnProveraFakture = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.dokumentOtpremeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -75,10 +75,9 @@
             // btnBarkod
             // 
             this.btnBarkod.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnBarkod.Location = new System.Drawing.Point(626, 85);
-            this.btnBarkod.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnBarkod.Location = new System.Drawing.Point(313, 44);
             this.btnBarkod.Name = "btnBarkod";
-            this.btnBarkod.Size = new System.Drawing.Size(272, 60);
+            this.btnBarkod.Size = new System.Drawing.Size(136, 31);
             this.btnBarkod.TabIndex = 0;
             this.btnBarkod.Text = "Unos Barkodova";
             this.btnBarkod.UseVisualStyleBackColor = true;
@@ -89,10 +88,9 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.label1.Location = new System.Drawing.Point(64, 402);
-            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Location = new System.Drawing.Point(32, 209);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(145, 37);
+            this.label1.Size = new System.Drawing.Size(72, 20);
             this.label1.TabIndex = 7;
             this.label1.Text = "Objekat: ";
             // 
@@ -101,19 +99,17 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.label2.Location = new System.Drawing.Point(194, 402);
-            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label2.Location = new System.Drawing.Point(97, 209);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(0, 37);
+            this.label2.Size = new System.Drawing.Size(0, 20);
             this.label2.TabIndex = 4;
             // 
             // btnPrijemnica
             // 
             this.btnPrijemnica.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnPrijemnica.Location = new System.Drawing.Point(626, 160);
-            this.btnPrijemnica.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPrijemnica.Location = new System.Drawing.Point(313, 83);
             this.btnPrijemnica.Name = "btnPrijemnica";
-            this.btnPrijemnica.Size = new System.Drawing.Size(272, 60);
+            this.btnPrijemnica.Size = new System.Drawing.Size(136, 31);
             this.btnPrijemnica.TabIndex = 1;
             this.btnPrijemnica.Text = "Provera Prijemnice";
             this.btnPrijemnica.UseVisualStyleBackColor = true;
@@ -122,10 +118,9 @@
             // btnPrenosnica
             // 
             this.btnPrenosnica.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnPrenosnica.Location = new System.Drawing.Point(628, 229);
-            this.btnPrenosnica.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPrenosnica.Location = new System.Drawing.Point(314, 119);
             this.btnPrenosnica.Name = "btnPrenosnica";
-            this.btnPrenosnica.Size = new System.Drawing.Size(272, 60);
+            this.btnPrenosnica.Size = new System.Drawing.Size(136, 31);
             this.btnPrenosnica.TabIndex = 2;
             this.btnPrenosnica.Text = "Provera Prenosnice";
             this.btnPrenosnica.UseVisualStyleBackColor = true;
@@ -134,22 +129,20 @@
             // btnMagacin
             // 
             this.btnMagacin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnMagacin.Location = new System.Drawing.Point(298, 302);
-            this.btnMagacin.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnMagacin.Location = new System.Drawing.Point(149, 157);
             this.btnMagacin.Name = "btnMagacin";
-            this.btnMagacin.Size = new System.Drawing.Size(318, 60);
+            this.btnMagacin.Size = new System.Drawing.Size(159, 31);
             this.btnMagacin.TabIndex = 3;
-            this.btnMagacin.Text = "Provera Prenosnice MAG";
+            this.btnMagacin.Text = "Provera Pov. MAG";
             this.btnMagacin.UseVisualStyleBackColor = true;
             this.btnMagacin.Click += new System.EventHandler(this.btnMagacin_Click);
             // 
             // btnPrijavaRadnika
             // 
             this.btnPrijavaRadnika.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnPrijavaRadnika.Location = new System.Drawing.Point(924, 85);
-            this.btnPrijavaRadnika.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPrijavaRadnika.Location = new System.Drawing.Point(462, 44);
             this.btnPrijavaRadnika.Name = "btnPrijavaRadnika";
-            this.btnPrijavaRadnika.Size = new System.Drawing.Size(272, 60);
+            this.btnPrijavaRadnika.Size = new System.Drawing.Size(136, 31);
             this.btnPrijavaRadnika.TabIndex = 0;
             this.btnPrijavaRadnika.Text = "Prijava radnika";
             this.btnPrijavaRadnika.UseVisualStyleBackColor = true;
@@ -158,10 +151,9 @@
             // btnPrijavaOdsustva
             // 
             this.btnPrijavaOdsustva.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnPrijavaOdsustva.Location = new System.Drawing.Point(924, 160);
-            this.btnPrijavaOdsustva.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPrijavaOdsustva.Location = new System.Drawing.Point(462, 83);
             this.btnPrijavaOdsustva.Name = "btnPrijavaOdsustva";
-            this.btnPrijavaOdsustva.Size = new System.Drawing.Size(272, 60);
+            this.btnPrijavaOdsustva.Size = new System.Drawing.Size(136, 31);
             this.btnPrijavaOdsustva.TabIndex = 1;
             this.btnPrijavaOdsustva.Text = "Prijava Odsustva";
             this.btnPrijavaOdsustva.UseVisualStyleBackColor = true;
@@ -170,10 +162,9 @@
             // btnPrijavaPopisa
             // 
             this.btnPrijavaPopisa.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnPrijavaPopisa.Location = new System.Drawing.Point(926, 229);
-            this.btnPrijavaPopisa.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPrijavaPopisa.Location = new System.Drawing.Point(463, 119);
             this.btnPrijavaPopisa.Name = "btnPrijavaPopisa";
-            this.btnPrijavaPopisa.Size = new System.Drawing.Size(272, 60);
+            this.btnPrijavaPopisa.Size = new System.Drawing.Size(136, 31);
             this.btnPrijavaPopisa.TabIndex = 2;
             this.btnPrijavaPopisa.Text = "Popis Objekta";
             this.btnPrijavaPopisa.UseVisualStyleBackColor = true;
@@ -182,10 +173,9 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button1.Location = new System.Drawing.Point(924, 302);
-            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button1.Location = new System.Drawing.Point(462, 157);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(272, 60);
+            this.button1.Size = new System.Drawing.Size(136, 31);
             this.button1.TabIndex = 2;
             this.button1.Text = "Dodatni sati";
             this.button1.UseVisualStyleBackColor = true;
@@ -196,20 +186,18 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label7.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label7.Location = new System.Drawing.Point(686, 412);
-            this.label7.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label7.Location = new System.Drawing.Point(343, 214);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(525, 26);
+            this.label7.Size = new System.Drawing.Size(256, 13);
             this.label7.TabIndex = 9;
             this.label7.Text = "Copyright @ Kids Beba doo, Created by Marko Vesic";
             // 
             // btnRealizacijaCekova
             // 
             this.btnRealizacijaCekova.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnRealizacijaCekova.Location = new System.Drawing.Point(628, 300);
-            this.btnRealizacijaCekova.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnRealizacijaCekova.Location = new System.Drawing.Point(314, 156);
             this.btnRealizacijaCekova.Name = "btnRealizacijaCekova";
-            this.btnRealizacijaCekova.Size = new System.Drawing.Size(272, 60);
+            this.btnRealizacijaCekova.Size = new System.Drawing.Size(136, 31);
             this.btnRealizacijaCekova.TabIndex = 2;
             this.btnRealizacijaCekova.Text = "Realizacija Cekova";
             this.btnRealizacijaCekova.UseVisualStyleBackColor = true;
@@ -217,7 +205,6 @@
             // 
             // menuStrip2
             // 
-            this.menuStrip2.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.popisObjektaToolStripMenuItem,
@@ -228,7 +215,8 @@
             this.racunovodstvoToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(0, 0);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(1282, 46);
+            this.menuStrip2.Padding = new System.Windows.Forms.Padding(3, 1, 0, 1);
+            this.menuStrip2.Size = new System.Drawing.Size(641, 24);
             this.menuStrip2.TabIndex = 10;
             this.menuStrip2.Text = "menuStrip2";
             // 
@@ -241,36 +229,43 @@
             this.pregledDnevnogIzveštajaToolStripMenuItem,
             this.dokumentOtpremeToolStripMenuItem});
             this.popisObjektaToolStripMenuItem.Name = "popisObjektaToolStripMenuItem";
-            this.popisObjektaToolStripMenuItem.Size = new System.Drawing.Size(134, 38);
+            this.popisObjektaToolStripMenuItem.Size = new System.Drawing.Size(69, 22);
             this.popisObjektaToolStripMenuItem.Text = "Aktivnost";
             // 
             // unosPopisaToolStripMenuItem
             // 
             this.unosPopisaToolStripMenuItem.Name = "unosPopisaToolStripMenuItem";
-            this.unosPopisaToolStripMenuItem.Size = new System.Drawing.Size(432, 44);
+            this.unosPopisaToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.unosPopisaToolStripMenuItem.Text = "Unos popisa";
             this.unosPopisaToolStripMenuItem.Click += new System.EventHandler(this.unosPopisaToolStripMenuItem_Click);
             // 
             // pregledPrenosToolStripMenuItem
             // 
             this.pregledPrenosToolStripMenuItem.Name = "pregledPrenosToolStripMenuItem";
-            this.pregledPrenosToolStripMenuItem.Size = new System.Drawing.Size(432, 44);
+            this.pregledPrenosToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.pregledPrenosToolStripMenuItem.Text = "Pregled prenos";
             this.pregledPrenosToolStripMenuItem.Click += new System.EventHandler(this.pregledPrenosToolStripMenuItem_Click);
             // 
             // radniciToolStripMenuItem
             // 
             this.radniciToolStripMenuItem.Name = "radniciToolStripMenuItem";
-            this.radniciToolStripMenuItem.Size = new System.Drawing.Size(432, 44);
+            this.radniciToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.radniciToolStripMenuItem.Text = "Radnici";
             this.radniciToolStripMenuItem.Click += new System.EventHandler(this.otvoriToolStripMenuItem_Click);
             // 
             // pregledDnevnogIzveštajaToolStripMenuItem
             // 
             this.pregledDnevnogIzveštajaToolStripMenuItem.Name = "pregledDnevnogIzveštajaToolStripMenuItem";
-            this.pregledDnevnogIzveštajaToolStripMenuItem.Size = new System.Drawing.Size(432, 44);
+            this.pregledDnevnogIzveštajaToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.pregledDnevnogIzveštajaToolStripMenuItem.Text = "Pregled Dnevnog Izveštaja";
             this.pregledDnevnogIzveštajaToolStripMenuItem.Click += new System.EventHandler(this.pregledDnevnogIzveštajaToolStripMenuItem_Click);
+            // 
+            // dokumentOtpremeToolStripMenuItem
+            // 
+            this.dokumentOtpremeToolStripMenuItem.Name = "dokumentOtpremeToolStripMenuItem";
+            this.dokumentOtpremeToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.dokumentOtpremeToolStripMenuItem.Text = "Dokument otpreme";
+            this.dokumentOtpremeToolStripMenuItem.Click += new System.EventHandler(this.dokumentOtpremeToolStripMenuItem_Click);
             // 
             // izvestajiToolStripMenuItem
             // 
@@ -278,21 +273,21 @@
             this.izvestajFransizePoDanuToolStripMenuItem,
             this.izvestajLageraToolStripMenuItem});
             this.izvestajiToolStripMenuItem.Name = "izvestajiToolStripMenuItem";
-            this.izvestajiToolStripMenuItem.Size = new System.Drawing.Size(119, 38);
+            this.izvestajiToolStripMenuItem.Size = new System.Drawing.Size(60, 22);
             this.izvestajiToolStripMenuItem.Text = "Izvestaji";
             this.izvestajiToolStripMenuItem.Visible = false;
             // 
             // izvestajFransizePoDanuToolStripMenuItem
             // 
             this.izvestajFransizePoDanuToolStripMenuItem.Name = "izvestajFransizePoDanuToolStripMenuItem";
-            this.izvestajFransizePoDanuToolStripMenuItem.Size = new System.Drawing.Size(412, 44);
+            this.izvestajFransizePoDanuToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.izvestajFransizePoDanuToolStripMenuItem.Text = "Izvestaj fransize po danu";
             this.izvestajFransizePoDanuToolStripMenuItem.Click += new System.EventHandler(this.izvestajFransizePoDanuToolStripMenuItem_Click);
             // 
             // izvestajLageraToolStripMenuItem
             // 
             this.izvestajLageraToolStripMenuItem.Name = "izvestajLageraToolStripMenuItem";
-            this.izvestajLageraToolStripMenuItem.Size = new System.Drawing.Size(412, 44);
+            this.izvestajLageraToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.izvestajLageraToolStripMenuItem.Text = "Izvestaj lagera";
             // 
             // proizvodnjaToolStripMenuItem
@@ -303,34 +298,34 @@
             this.izvestajiToolStripMenuItem1,
             this.proveraCeneToolStripMenuItem});
             this.proizvodnjaToolStripMenuItem.Name = "proizvodnjaToolStripMenuItem";
-            this.proizvodnjaToolStripMenuItem.Size = new System.Drawing.Size(159, 38);
+            this.proizvodnjaToolStripMenuItem.Size = new System.Drawing.Size(81, 22);
             this.proizvodnjaToolStripMenuItem.Text = "Proizvodnja";
             this.proizvodnjaToolStripMenuItem.Visible = false;
             // 
             // prenosSifaraToolStripMenuItem
             // 
             this.prenosSifaraToolStripMenuItem.Name = "prenosSifaraToolStripMenuItem";
-            this.prenosSifaraToolStripMenuItem.Size = new System.Drawing.Size(331, 44);
+            this.prenosSifaraToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.prenosSifaraToolStripMenuItem.Text = "Prenos Sifara";
             this.prenosSifaraToolStripMenuItem.Click += new System.EventHandler(this.prenosSifaraToolStripMenuItem_Click);
             // 
             // kalkulacijaArtiklaToolStripMenuItem
             // 
             this.kalkulacijaArtiklaToolStripMenuItem.Name = "kalkulacijaArtiklaToolStripMenuItem";
-            this.kalkulacijaArtiklaToolStripMenuItem.Size = new System.Drawing.Size(331, 44);
+            this.kalkulacijaArtiklaToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.kalkulacijaArtiklaToolStripMenuItem.Text = "Kalkulacija artikla";
             this.kalkulacijaArtiklaToolStripMenuItem.Click += new System.EventHandler(this.kalkulacijaArtiklaToolStripMenuItem_Click);
             // 
             // izvestajiToolStripMenuItem1
             // 
             this.izvestajiToolStripMenuItem1.Name = "izvestajiToolStripMenuItem1";
-            this.izvestajiToolStripMenuItem1.Size = new System.Drawing.Size(331, 44);
+            this.izvestajiToolStripMenuItem1.Size = new System.Drawing.Size(165, 22);
             this.izvestajiToolStripMenuItem1.Text = "Izvestaji";
             // 
             // proveraCeneToolStripMenuItem
             // 
             this.proveraCeneToolStripMenuItem.Name = "proveraCeneToolStripMenuItem";
-            this.proveraCeneToolStripMenuItem.Size = new System.Drawing.Size(331, 44);
+            this.proveraCeneToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.proveraCeneToolStripMenuItem.Text = "Provera Cene";
             this.proveraCeneToolStripMenuItem.Click += new System.EventHandler(this.proveraCeneArtToolStripMenuItem_Click);
             // 
@@ -339,13 +334,13 @@
             this.dnevniPrometToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.unosPrometaToolStripMenuItem});
             this.dnevniPrometToolStripMenuItem.Name = "dnevniPrometToolStripMenuItem";
-            this.dnevniPrometToolStripMenuItem.Size = new System.Drawing.Size(196, 38);
+            this.dnevniPrometToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.dnevniPrometToolStripMenuItem.Text = "Dnevni promet";
             // 
             // unosPrometaToolStripMenuItem
             // 
             this.unosPrometaToolStripMenuItem.Name = "unosPrometaToolStripMenuItem";
-            this.unosPrometaToolStripMenuItem.Size = new System.Drawing.Size(300, 44);
+            this.unosPrometaToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.unosPrometaToolStripMenuItem.Text = "Unos prometa";
             this.unosPrometaToolStripMenuItem.Click += new System.EventHandler(this.unosPrometaToolStripMenuItem_Click);
             // 
@@ -355,20 +350,20 @@
             this.unosNovogClanaToolStripMenuItem,
             this.unosNovogClanaCGToolStripMenuItem});
             this.loyaltiToolStripMenuItem.Name = "loyaltiToolStripMenuItem";
-            this.loyaltiToolStripMenuItem.Size = new System.Drawing.Size(104, 38);
+            this.loyaltiToolStripMenuItem.Size = new System.Drawing.Size(54, 22);
             this.loyaltiToolStripMenuItem.Text = "Loyalti";
             // 
             // unosNovogClanaToolStripMenuItem
             // 
             this.unosNovogClanaToolStripMenuItem.Name = "unosNovogClanaToolStripMenuItem";
-            this.unosNovogClanaToolStripMenuItem.Size = new System.Drawing.Size(377, 44);
+            this.unosNovogClanaToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.unosNovogClanaToolStripMenuItem.Text = "Unos novog clana";
             this.unosNovogClanaToolStripMenuItem.Click += new System.EventHandler(this.unosNovogClanaToolStripMenuItem_Click);
             // 
             // unosNovogClanaCGToolStripMenuItem
             // 
             this.unosNovogClanaCGToolStripMenuItem.Name = "unosNovogClanaCGToolStripMenuItem";
-            this.unosNovogClanaCGToolStripMenuItem.Size = new System.Drawing.Size(377, 44);
+            this.unosNovogClanaCGToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.unosNovogClanaCGToolStripMenuItem.Text = "Unos novog clana CG";
             this.unosNovogClanaCGToolStripMenuItem.Click += new System.EventHandler(this.unosNovogClanaCGToolStripMenuItem_Click);
             // 
@@ -377,13 +372,13 @@
             this.racunovodstvoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.osvezavanjeIzvodaToolStripMenuItem});
             this.racunovodstvoToolStripMenuItem.Name = "racunovodstvoToolStripMenuItem";
-            this.racunovodstvoToolStripMenuItem.Size = new System.Drawing.Size(198, 38);
+            this.racunovodstvoToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.racunovodstvoToolStripMenuItem.Text = "Racunovodstvo";
             // 
             // osvezavanjeIzvodaToolStripMenuItem
             // 
             this.osvezavanjeIzvodaToolStripMenuItem.Name = "osvezavanjeIzvodaToolStripMenuItem";
-            this.osvezavanjeIzvodaToolStripMenuItem.Size = new System.Drawing.Size(358, 44);
+            this.osvezavanjeIzvodaToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.osvezavanjeIzvodaToolStripMenuItem.Text = "Osvezavanje Izvoda";
             this.osvezavanjeIzvodaToolStripMenuItem.Click += new System.EventHandler(this.osvezavanjeIzvodaToolStripMenuItem_Click);
             // 
@@ -392,10 +387,10 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(136, 271);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(68, 141);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(317, 25);
+            this.label3.Size = new System.Drawing.Size(173, 13);
             this.label3.TabIndex = 12;
             this.label3.Text = "Nemate konekciju ka serveru";
             this.label3.Visible = false;
@@ -403,10 +398,10 @@
             // btnProveraFakture
             // 
             this.btnProveraFakture.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.btnProveraFakture.Location = new System.Drawing.Point(298, 85);
-            this.btnProveraFakture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnProveraFakture.Location = new System.Drawing.Point(149, 44);
+            this.btnProveraFakture.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnProveraFakture.Name = "btnProveraFakture";
-            this.btnProveraFakture.Size = new System.Drawing.Size(316, 60);
+            this.btnProveraFakture.Size = new System.Drawing.Size(158, 31);
             this.btnProveraFakture.TabIndex = 13;
             this.btnProveraFakture.Text = "Provera Fakture";
             this.btnProveraFakture.UseVisualStyleBackColor = true;
@@ -415,10 +410,10 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::BebaKids.Properties.Resources.nc11;
-            this.pictureBox2.Location = new System.Drawing.Point(72, 271);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox2.Location = new System.Drawing.Point(36, 141);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(52, 54);
+            this.pictureBox2.Size = new System.Drawing.Size(26, 28);
             this.pictureBox2.TabIndex = 11;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Visible = false;
@@ -426,25 +421,17 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::BebaKids.Properties.Resources.logo;
-            this.pictureBox1.Location = new System.Drawing.Point(72, 156);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.pictureBox1.Location = new System.Drawing.Point(36, 81);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(450, 110);
+            this.pictureBox1.Size = new System.Drawing.Size(225, 57);
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             // 
-            // dokumentOtpremeToolStripMenuItem
-            // 
-            this.dokumentOtpremeToolStripMenuItem.Name = "dokumentOtpremeToolStripMenuItem";
-            this.dokumentOtpremeToolStripMenuItem.Size = new System.Drawing.Size(432, 44);
-            this.dokumentOtpremeToolStripMenuItem.Text = "Dokument otpreme";
-            this.dokumentOtpremeToolStripMenuItem.Click += new System.EventHandler(this.dokumentOtpremeToolStripMenuItem_Click);
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1282, 458);
+            this.ClientSize = new System.Drawing.Size(641, 238);
             this.Controls.Add(this.btnProveraFakture);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.pictureBox2);
@@ -463,7 +450,6 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pocetna";

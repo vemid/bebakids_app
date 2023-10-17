@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.Odbc;
+using System.Text;
+using System.Windows.Forms;
 
 namespace BebaKids.PopisMp
 {
@@ -23,7 +18,7 @@ namespace BebaKids.PopisMp
             string connString = "Dsn=ifx;uid=informix";
             OdbcConnection conn = new OdbcConnection(connString);
             Save save = new Save();
-            
+
             DataTable table = new DataTable();
             table = save.popisTable("", "prenos");
             var i = 0;
@@ -41,7 +36,7 @@ namespace BebaKids.PopisMp
                 StringBuilder insertPopis = new StringBuilder();
                 insertPopis.Append("insert into pop_sta_mp_st (ozn_pop_sta,rbr,sif_rob,sif_ent_rob,kol_pop) values ('" + ozn_pop_sta + "','" + id + "','" + sif_rob + "','" + sif_ent_rob + "','" + kol_pop + "')");
                 OdbcCommand komandaUpdate = new OdbcCommand(insertPopis.ToString(), conn);
-                
+
 
                 StringBuilder updatePopis = new StringBuilder();
                 updatePopis.Append("update pop_sta_mp_st set preneto = 1 where id = '" + id + "'");
