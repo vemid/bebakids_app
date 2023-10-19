@@ -40,13 +40,15 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.tbObjekat = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnUporedi
             // 
-            this.btnUporedi.Location = new System.Drawing.Point(193, 269);
+            this.btnUporedi.Location = new System.Drawing.Point(290, 420);
+            this.btnUporedi.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnUporedi.Name = "btnUporedi";
-            this.btnUporedi.Size = new System.Drawing.Size(75, 23);
+            this.btnUporedi.Size = new System.Drawing.Size(112, 36);
             this.btnUporedi.TabIndex = 13;
             this.btnUporedi.Text = "Uporedi";
             this.btnUporedi.UseVisualStyleBackColor = true;
@@ -54,19 +56,19 @@
             // 
             // tbPrijemnica
             // 
-            this.tbPrijemnica.Location = new System.Drawing.Point(193, 51);
-            this.tbPrijemnica.Margin = new System.Windows.Forms.Padding(4);
+            this.tbPrijemnica.Location = new System.Drawing.Point(290, 80);
+            this.tbPrijemnica.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tbPrijemnica.Name = "tbPrijemnica";
-            this.tbPrijemnica.Size = new System.Drawing.Size(197, 22);
+            this.tbPrijemnica.Size = new System.Drawing.Size(294, 31);
             this.tbPrijemnica.TabIndex = 11;
             this.tbPrijemnica.Leave += new System.EventHandler(this.tbPrijemnica_Leave);
             // 
             // tbBarkod
             // 
-            this.tbBarkod.Location = new System.Drawing.Point(193, 104);
-            this.tbBarkod.Margin = new System.Windows.Forms.Padding(4);
+            this.tbBarkod.Location = new System.Drawing.Point(290, 162);
+            this.tbBarkod.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tbBarkod.Name = "tbBarkod";
-            this.tbBarkod.Size = new System.Drawing.Size(197, 22);
+            this.tbBarkod.Size = new System.Drawing.Size(294, 31);
             this.tbBarkod.TabIndex = 12;
             this.tbBarkod.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxTest_KeyDown);
             // 
@@ -74,10 +76,10 @@
             // 
             this.lbNaziv.AutoSize = true;
             this.lbNaziv.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.lbNaziv.Location = new System.Drawing.Point(97, 215);
-            this.lbNaziv.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbNaziv.Location = new System.Drawing.Point(146, 336);
+            this.lbNaziv.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbNaziv.Name = "lbNaziv";
-            this.lbNaziv.Size = new System.Drawing.Size(47, 17);
+            this.lbNaziv.Size = new System.Drawing.Size(72, 25);
             this.lbNaziv.TabIndex = 3;
             this.lbNaziv.Text = "Naziv:";
             // 
@@ -85,20 +87,20 @@
             // 
             this.lbVelicina.AutoSize = true;
             this.lbVelicina.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.lbVelicina.Location = new System.Drawing.Point(97, 187);
-            this.lbVelicina.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbVelicina.Location = new System.Drawing.Point(146, 292);
+            this.lbVelicina.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbVelicina.Name = "lbVelicina";
-            this.lbVelicina.Size = new System.Drawing.Size(61, 17);
+            this.lbVelicina.Size = new System.Drawing.Size(94, 25);
             this.lbVelicina.TabIndex = 4;
             this.lbVelicina.Text = "Velicina:";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(53, 215);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(80, 336);
+            this.label5.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(47, 17);
+            this.label5.Size = new System.Drawing.Size(72, 25);
             this.label5.TabIndex = 5;
             this.label5.Text = "Naziv:";
             // 
@@ -106,58 +108,67 @@
             // 
             this.lbSifra.AutoSize = true;
             this.lbSifra.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.lbSifra.Location = new System.Drawing.Point(97, 155);
-            this.lbSifra.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbSifra.Location = new System.Drawing.Point(146, 242);
+            this.lbSifra.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lbSifra.Name = "lbSifra";
-            this.lbSifra.Size = new System.Drawing.Size(41, 17);
+            this.lbSifra.Size = new System.Drawing.Size(62, 25);
             this.lbSifra.TabIndex = 6;
             this.lbSifra.Text = "Sifra:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(39, 187);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(58, 292);
+            this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 17);
+            this.label4.Size = new System.Drawing.Size(94, 25);
             this.label4.TabIndex = 7;
             this.label4.Text = "Velicina:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(61, 155);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(92, 242);
+            this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 17);
+            this.label3.Size = new System.Drawing.Size(62, 25);
             this.label3.TabIndex = 8;
             this.label3.Text = "Sifra:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(126, 113);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(189, 177);
+            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 17);
+            this.label2.Size = new System.Drawing.Size(86, 25);
             this.label2.TabIndex = 9;
             this.label2.Text = "Barkod:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(39, 51);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(58, 80);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(146, 17);
+            this.label1.Size = new System.Drawing.Size(223, 25);
             this.label1.TabIndex = 10;
             this.label1.Text = "Unesi Broj Prijemnice:";
             // 
+            // tbObjekat
+            // 
+            this.tbObjekat.Location = new System.Drawing.Point(32, 502);
+            this.tbObjekat.Name = "tbObjekat";
+            this.tbObjekat.Size = new System.Drawing.Size(100, 31);
+            this.tbObjekat.TabIndex = 14;
+            this.tbObjekat.Visible = false;
+            // 
             // FrmProveraFakture
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 361);
+            this.ClientSize = new System.Drawing.Size(684, 564);
+            this.Controls.Add(this.tbObjekat);
             this.Controls.Add(this.btnUporedi);
             this.Controls.Add(this.tbPrijemnica);
             this.Controls.Add(this.tbBarkod);
@@ -170,6 +181,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FrmProveraFakture";
             this.Text = "Provera Fakture";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -191,5 +203,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbObjekat;
     }
 }

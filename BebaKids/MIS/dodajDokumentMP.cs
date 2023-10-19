@@ -9,6 +9,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+using System.Data.SqlClient;
+
 namespace BebaKids.MIS
 {
     public partial class dodajDokumentMP : Form
@@ -35,8 +37,9 @@ namespace BebaKids.MIS
             {
                 new ItemWithTextAndValue("Otprema u MP", "OM"),
                 new ItemWithTextAndValue("Otprema Fransize", "OT"),
+                new ItemWithTextAndValue("Nalog otpreme MP", "NO"),
                 new ItemWithTextAndValue("Narudzbenica", "N1"),
-                new ItemWithTextAndValue("Otprema u MP", "NO"),
+
             };
 
 
@@ -69,12 +72,16 @@ namespace BebaKids.MIS
             dc = new DataColumn("kolicina", typeof(String));
             dt.Columns.Add(dc);
 
+            dc = new DataColumn("id", typeof(string));
+            dt.Columns.Add(dc);
+
             return dt;
 
         }
 
         DataTable tabela = new DataTable();
         int i = 0;
+        Classes.ErrorLogger errorLogger = new Classes.ErrorLogger();
 
 
         public DataTable citajBarkod()
@@ -93,6 +100,8 @@ namespace BebaKids.MIS
 
         public void btnNoviPopis_Click(object sender, EventArgs e)
         {
+            deleteOldRecords();
+
             Classes.Application test = new Classes.Application();
             if (test.testKonekcija())
             {
@@ -100,12 +109,16 @@ namespace BebaKids.MIS
                 if (comboBoxMagacin.SelectedIndex != -1 && comboBox1.SelectedIndex != -1 && cbDocumentType.SelectedIndex != -1)
                 {
                     var MyIni = new IniFile(@"C:\bkapps\config.ini");
-                    var sifraObjekta = MyIni.Read("naziv", "ProveraDokumenta");
+                    string objekatToMp = comboBox1.SelectedValue.ToString();
+                    if (objekatToMp.Length == 1)
+                    {
+                        objekatToMp = "0" + objekatToMp;
+                    }
                     var objekat = comboBoxMagacin.SelectedValue.ToString();
                     DateTime d = datumDokumenta.Value.Date;
                     var organizacija = MyIni.Read("organizacija", "ProveraDokumenta");
                     string connString = "Dsn=ifx;uid=informix";
-                    string cmd = "execute procedure test_get_oznaka_dokumenta('"+cbDocumentType.SelectedValue.ToString()+"','" + objekat + "','" + organizacija + "')";
+                    string cmd = "execute procedure test_get_oznaka_dokumenta('" + cbDocumentType.SelectedValue.ToString() + "','" + objekatToMp + "','" + organizacija + "','" + objekat + "','" + d.ToString("dd.MM.yyyy") + "')";
                     OdbcConnection conn = new OdbcConnection(connString);
                     OdbcCommand komandaProcedure = new OdbcCommand(cmd, conn);
                     conn.Open();
@@ -126,6 +139,9 @@ namespace BebaKids.MIS
                     conn.Close();
                     datumDokumenta.Enabled = false;
                     textBox1.Enabled = false;
+                    cbDocumentType.Enabled = false;
+                    comboBox1.Enabled = false;
+                    comboBoxMagacin.Enabled = false;
                     tbBarkod.Enabled = true;
                     btnExport.Visible = true;
                     btnPrenesi.Visible = true;
@@ -135,7 +151,7 @@ namespace BebaKids.MIS
                 }
                 else
                 {
-                    MessageBox.Show("Nisu preneti popunjena sva polja", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Nisu popunjena sva polja", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
 
@@ -152,19 +168,15 @@ namespace BebaKids.MIS
         {
 
             var oznakaDokumenta = textBox1.Text.ToString();
-            //var objekat = textBox2.Text.ToString;
             DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            //DateTime d = datumDokumenta.Value.Date;
             Classes.Application sound = new Classes.Application();
-            //MessageBox.Show(d.ToString("dd.MM.yyyy"));
 
             if (e.KeyCode == Keys.Enter && !string.IsNullOrEmpty(tbBarkod.Text.ToString()))
             {
                 string BARKOD = Convert.ToString(tbBarkod.Text);
-                int objekat = Convert.ToInt32(textBox2.Text.ToString());
+                int objekat = Convert.ToInt32(comboBox1.SelectedValue.ToString());
                 Save saveBarkod = new Save();
                 DataTable barkodovi = saveBarkod.barkodovi(BARKOD);
-                //MessageBox.Show(saveBarkod.barkodovi(BARKOD).ToString());
                 var result = barkodovi.Rows.IndexOf(barkodovi.AsEnumerable().Where(c => c.Field<String>(3) == BARKOD).FirstOrDefault());
 
                 if (result == -1)
@@ -179,13 +191,13 @@ namespace BebaKids.MIS
                         string iSifra = frmRucniUnos.tsifra;
                         string iVelicina = frmRucniUnos.tvelicina;
                         Save cuvanje = new Save();
-                        //cuvanje.insert(dokument, vrsta, objekat, iSifra, iVelicina, Convert.ToInt32(iKolicina));
-                        cuvanje.insertPopis(oznakaDokumenta, objekat, d, iSifra, iVelicina, Convert.ToInt32(iKolicina));
+                        int id = cuvanje.insertPopis(oznakaDokumenta, objekat, d, iSifra, iVelicina, Convert.ToInt32(iKolicina));
                         DataRow dr = tabela.NewRow();
                         dr[0] = "";
                         dr[1] = iSifra;
                         dr[2] = iVelicina;
                         dr[3] = Convert.ToInt32(iKolicina);
+                        dr[4] = id;
                         tabela.Rows.Add(dr);
                         i++;
 
@@ -217,13 +229,13 @@ namespace BebaKids.MIS
                             int iKolicina = 1;
 
                             Save cuvanje = new Save();
-                            //cuvanje.insert(dokument, vrsta, objekat, iSifra, iVelicina, Convert.ToInt32(iKolicina));
-                            cuvanje.insertPopis(oznakaDokumenta, objekat, d, iSifra, iVelicina, Convert.ToInt32(iKolicina));
+                            int id = cuvanje.insertPopis(oznakaDokumenta, objekat, d, iSifra, iVelicina, Convert.ToInt32(iKolicina));
                             DataRow dr = tabela.NewRow();
                             dr[0] = barkodovi.Rows[result].ItemArray[1].ToString();
                             dr[1] = iSifra;
                             dr[2] = iVelicina;
                             dr[3] = Convert.ToInt32(iKolicina);
+                            dr[4] = id;
                             tabela.Rows.Add(dr);
                             i++;
                         }
@@ -234,7 +246,6 @@ namespace BebaKids.MIS
                         lbSifra.Text = barkodovi.Rows[result].ItemArray[2].ToString();
                         lbNaziv.Text = barkodovi.Rows[result].ItemArray[1].ToString();
                         lbVelicina.Text = barkodovi.Rows[result].ItemArray[4].ToString();
-                        //MessageBox.Show(barkodovi.Rows[result].ItemArray[2].ToString());
                         tbBarkod.Clear();
 
                         string iVelicina = barkodovi.Rows[result].ItemArray[4].ToString();
@@ -242,13 +253,13 @@ namespace BebaKids.MIS
                         int iKolicina = 1;
 
                         Save cuvanje = new Save();
-                        //cuvanje.insert(dokument, vrsta, objekat, iSifra, iVelicina, Convert.ToInt32(iKolicina));
-                        cuvanje.insertPopis(oznakaDokumenta, objekat, d, iSifra, iVelicina, Convert.ToInt32(iKolicina));
+                        int id = cuvanje.insertPopis(oznakaDokumenta, objekat, d, iSifra, iVelicina, Convert.ToInt32(iKolicina));
                         DataRow dr = tabela.NewRow();
                         dr[0] = barkodovi.Rows[result].ItemArray[1].ToString();
                         dr[1] = iSifra;
                         dr[2] = iVelicina;
                         dr[3] = Convert.ToInt32(iKolicina);
+                        dr[4] = id;
                         tabela.Rows.Add(dr);
                         i++;
                     }
@@ -258,11 +269,10 @@ namespace BebaKids.MIS
 
             Save save = new Save();
 
-            //dataGridView1.DataSource = save.popisTable(textBox1.Text.ToString(),"insert");
-            dataGridView1.DataSource = tabela;
+            dataGridView1.DataSource = save.popisTable(textBox1.Text.ToString(), "insert");
             dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
             dataGridView1.AutoResizeColumns();
-            //dataGridView1.Sort(dataGridView1.Columns["col1"], ListSortDirection.Descending);
+            dataGridView1.ReadOnly = true;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -271,31 +281,35 @@ namespace BebaKids.MIS
             OdbcConnection conn = new OdbcConnection(Konekcija.konString);
             if (dataGridView1.CurrentCell.ColumnIndex == 0)
             {
-                int row = dataGridView1.CurrentCell.RowIndex;
-                /* int id = Convert.ToInt32(dataGridView1.CurrentRow.Cells[1].Value);
+                if (dataGridView1.Rows.Count > 2)
+                {
+                    int rowID = e.RowIndex;
+                    string idCell = dataGridView1.Rows[e.RowIndex].Cells[5].Value.ToString();
 
+                    OdbcCommand komanda = new OdbcCommand("delete from pop_sta_mp_st where ozn_pop_sta = '" + textBox1.Text.ToString() + "' and id = '" + idCell + "'", conn);
+                    try
+                    {
+                        conn.Open();
+                        komanda.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Rows.Clear();
+                    Save save = new Save();
+                    DataTable tabelaCekova = new DataTable();
+                    dataGridView1.DataSource = save.popisTable(textBox1.Text.ToString(), "insert");
 
-                 OdbcCommand komanda = new OdbcCommand("delete from pop_sta_mp_st where ozn_pop_sta = '" + textBox1.Text.ToString() + "' and id = '" + id + "'", conn);
-                 try
-                 {
-                     conn.Open();
-                     komanda.ExecuteNonQuery();
-                     conn.Close();
-                 }
-                 catch (Exception ex)
-                 {
-                     MessageBox.Show(ex.Message);
-                 }
-                 dataGridView1.DataSource = null;
-                 dataGridView1.Rows.Clear();
-                 Save save = new Save();
-                 DataTable tabelaCekova = new DataTable();
-                 dataGridView1.DataSource = save.popisTable(textBox1.Text.ToString(),"insert");
-                 */
-                //tabela.Rows[row].Delete();
-                dataGridView1.DataSource = tabela;
+                    int lastIndex = dataGridView1.Rows.Count - 1;
+                    dataGridView1.FirstDisplayedScrollingRowIndex = lastIndex;
+
+                }
+
                 dataGridView1.AutoResizeColumns();
-                //dataGridView1.Sort(dataGridView1.Columns["col1"], ListSortDirection.Descending);
+                dataGridView1.ReadOnly = true;
                 tbBarkod.Focus();
 
             }
@@ -316,8 +330,6 @@ namespace BebaKids.MIS
             var objekatTo = comboBox1.SelectedValue.ToString();
             var vrsta = cbDocumentType.SelectedValue.ToString();
             DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            //Save cuvanje = new Save();
-            //cuvanje.savePopis(tabela, dokument, objekat, d);
 
 
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
@@ -368,7 +380,9 @@ namespace BebaKids.MIS
                 }
                 catch (Exception ex)
                 {
+                    errorLogger.LogException(ex);
                     MessageBox.Show(ex.Message);
+
                 }
                 progressBar1.Value = i;
             }
@@ -396,7 +410,7 @@ namespace BebaKids.MIS
             {
 
                 HttpContent content = new StringContent(soapRequest, Encoding.UTF8, "text/xml");
-                Classes.ErrorLogger errorLogger = new Classes.ErrorLogger();
+                
                 try
                 {
                     HttpResponseMessage response = await client.PostAsync(servisUrl(documentType), content);
@@ -406,7 +420,7 @@ namespace BebaKids.MIS
                     XmlNode errorMessageNode = xmlDoc.SelectSingleNode("//errorMessage");
                     if (errorMessageNode != null)
                     {
-                        string log = "Za dokument " + document + "postoji greska : " + errorMessageNode.InnerText;
+                        string log = "Za dokument " + document + " postoji greska : " + errorMessageNode.InnerText;
                         errorLogger.LogStringException(log);
                         MessageBox.Show(log, "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -434,7 +448,7 @@ namespace BebaKids.MIS
 
             if (documentType == "OM")
             {
-                url = urlServis + "/OptremnicaServisPort";
+                url = urlServis + "/OptremnicaServisPort?wsdl";
             }
 
             if (documentType == "OT")
@@ -453,13 +467,13 @@ namespace BebaKids.MIS
             string connString = "Dsn=ifx;uid=informix";
             OdbcConnection conn = new OdbcConnection(connString);
 
-            // string cmd = ("select sif_rob sifra,sif_ent_rob velicina from pop_sta_mp_st where ozn_pop_sta = '" + document + "'");
-            string cmd = "select trim(p.sif_rob) sifra,trim(p.sif_ent_rob) velicina,p.kol_pop kolicina,obc.ozn_cen cenovnik," +
-                            "nvl(z.cen_zal, 0) nabavna,nvl(c.vel_cen, 0) vp,nvl(c.mal_cen, 0) mp,round(nvl(c.mal_cen, 0) * 0.8333, 3) mp_bpdv from pop_sta_mp_st p " +
-                            "left join zal_robe_mag z on z.sif_rob = p.sif_rob and z.sif_mag = '"+objekatFrom+"' " +
-                            "left join proiz_cen_obj_mp obc on obc.sif_obj_mp = '"+objekatTo+"' " +
+            string cmd = "select trim(p.sif_rob) sifra,trim(p.sif_ent_rob) velicina,obc.ozn_cen cenovnik," +
+                            "nvl(z.cen_zal, 0) nabavna,nvl(c.vel_cen, 0) vp,nvl(c.mal_cen, 0) mp,round(nvl(c.mal_cen, 0) * 0.8333, 3) mp_bpdv,trim(nvl(o.sif_par_obj,'000000')) partner,sum(p.kol_pop) kolicina from pop_sta_mp_st p " +
+                            "left join zal_robe_mag z on z.sif_rob = p.sif_rob and z.sif_mag = '" + objekatFrom + "' " +
+                            "left join proiz_cen_obj_mp obc on obc.sif_obj_mp = '" + objekatTo + "' " +
                             "left join proiz_cen_st c on c.sif_rob = p.sif_rob and c.sta_cen_st = 'A' and c.ozn_cen = obc.ozn_cen " +
-                            "where p.ozn_pop_sta = '01/230300003'";
+                            "left join obj_mp o on obc.sif_obj_mp = o.sif_obj_mp " +
+                            "where p.ozn_pop_sta = '" + document + "' group by 1,2,3,4,5,6,7,8";
 
             List<DataRecord> dataCollection = new List<DataRecord>();
 
@@ -470,12 +484,12 @@ namespace BebaKids.MIS
                 {
                     while (reader.Read())
                     {
-                        // Create a custom data record object to store the data
                         DataRecord dataRecord = new DataRecord
                         {
-                            sifra = reader["sifra"].ToString(), // Replace with actual column names
+                            sifra = reader["sifra"].ToString(), 
                             velicina = reader["velicina"].ToString(),
                             cenovnik = reader["cenovnik"].ToString(),
+                            partner = reader["partner"].ToString(),
                             nabavna = double.Parse(reader["nabavna"].ToString()),
                             kolicina = double.Parse(reader["kolicina"].ToString()),
                             vp = double.Parse(reader["vp"].ToString()),
@@ -483,7 +497,6 @@ namespace BebaKids.MIS
                             mp_bpdv = double.Parse(reader["mp_bpdv"].ToString()),
                         };
 
-                        // Add the data record to the data collection
                         dataCollection.Add(dataRecord);
                     }
                 }
@@ -505,7 +518,7 @@ namespace BebaKids.MIS
 
             if (documentType == "OT")
             {
-                returnXml = generateDodajNalogZaIzdavanjeMP(document, dataCollection, objekatFrom, objekatTo);
+                returnXml = generateDodajNalogZaIzdavanje(document, dataCollection, objekatFrom, objekatTo);
             }
 
             if (documentType == "N1")
@@ -521,6 +534,7 @@ namespace BebaKids.MIS
 
             var MyIni = new IniFile(@"C:\bkapps\config.ini");
             var organizacija = MyIni.Read("organizacija", "ProveraDokumenta");
+            DateTime d = datumDokumenta.Value.Date;
 
             List<string> stavkeElements = new List<string>();
             foreach (var dataItem in items)
@@ -552,8 +566,8 @@ namespace BebaKids.MIS
                     <soap:Body>
                         <dodajNalogZaIzdavanjeMp xmlns='http://dokumenti.servis.mis.com/'>
                             <nalozi xmlns=''>
-                                <datumDokumenta>{DateTime.Now.ToString("yyyy-MM-dd")}</datumDokumenta>
-                                <dpo>{DateTime.Now.ToString("yyyy-MM-dd")}</dpo>
+                                <datumDokumenta>{d.ToString("yyyy-MM-dd")}</datumDokumenta>
+                                <dpo>{d.ToString("yyyy-MM-dd")}</dpo>
                                 <logname>mis</logname>
                                 <oznakaCenovnika>{items[0].cenovnik}</oznakaCenovnika>
                                 <oznakaDokumenta>{document}</oznakaDokumenta>
@@ -576,6 +590,7 @@ namespace BebaKids.MIS
 
             var MyIni = new IniFile(@"C:\bkapps\config.ini");
             var organizacija = MyIni.Read("organizacija", "ProveraDokumenta");
+            DateTime d = datumDokumenta.Value.Date;
 
             List<string> stavkeElements = new List<string>();
             foreach (var dataItem in items)
@@ -583,14 +598,14 @@ namespace BebaKids.MIS
                 string stavkeElement = $@"
                 <stavke>
                     <akcijskaStopaRabata>0</akcijskaStopaRabata>
-                    <cenaZalihe>{}</cenaZalihe>
-                    <kolicina>{}</kolicina>
-                    <osnovnaCena>100</osnovnaCena>
-                    <prodajnaCena>100</prodajnaCena>
-                    <prodajnaCenaBezPoreza>83.333</prodajnaCenaBezPoreza>
-                    <prodajnaCenaSaRabatom>100</prodajnaCenaSaRabatom>
-                    <sifraObelezja>XX</sifraObelezja>
-                    <sifraRobe>01032040</sifraRobe>
+                    <cenaZalihe>{dataItem.nabavna}</cenaZalihe>
+                    <kolicina>{dataItem.kolicina}</kolicina>
+                    <osnovnaCena>{dataItem.mp}</osnovnaCena>
+                    <prodajnaCena>{dataItem.mp}</prodajnaCena>
+                    <prodajnaCenaBezPoreza>{dataItem.mp_bpdv}</prodajnaCenaBezPoreza>
+                    <prodajnaCenaSaRabatom>{dataItem.mp}</prodajnaCenaSaRabatom>
+                    <sifraObelezja>{dataItem.velicina}</sifraObelezja>
+                    <sifraRobe>{dataItem.sifra}</sifraRobe>
                     <sifraTarifneGrupePoreza>100</sifraTarifneGrupePoreza>
                     <stopaPDV>20</stopaPDV>
                     <stopaRabata>0</stopaRabata>
@@ -609,21 +624,106 @@ namespace BebaKids.MIS
             string soapRequest = $@"<?xml version='1.0' encoding='utf-8'?>
                 <soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
                     <soap:Body>
-                        <dodajNalogZaIzdavanjeMp xmlns='http://dokumenti.servis.mis.com/'>
-                            <nalozi xmlns=''>
-                                <datumDokumenta>{DateTime.Now.ToString("yyyy-MM-dd")}</datumDokumenta>
+                        <dodajOtpremnicuUMaloprodaju xmlns='http://sifarnici.servis.mis.com/'>
+                            <otpremnicaUMaloprodaju xmlns=''>
+                                <datumDokumenta>{d.ToString("yyyy-MM-dd")}</datumDokumenta>
                                 <logname>mis</logname>
                                 <napomena>123</napomena>
                                 <oznakaCenovnika>{items[0].cenovnik}</oznakaCenovnika>
                                 <oznakaDokumenta>{document}</oznakaDokumenta>
                                 <sifraMagacina>{objekatFrom}</sifraMagacina>
                                 <sifraObjektaMaloprodaje>{objekatTo}</sifraObjektaMaloprodaje>
-                                <status>0</status>
                                 {stavkeXml}
                                 <storno>N</storno>
                                 <vrstaKnjizenja>2</vrstaKnjizenja>
-                            </nalozi>
-                        </dodajNalogZaIzdavanjeMp>
+                                <napomena>{tbComment.Text.ToString()}</napomena>
+                            </otpremnicaUMaloprodaju>
+                        </dodajOtpremnicuUMaloprodaju>
+                    </soap:Body>
+                </soap:Envelope>";
+
+            return Regex.Replace(soapRequest, @"\t|\n|\r", "");
+        }
+
+        private string generateDodajNalogZaIzdavanje(string document, List<DataRecord> items, string objekatFrom, string objekatTo)
+        {
+
+            var MyIni = new IniFile(@"C:\bkapps\config.ini");
+            var organizacija = MyIni.Read("organizacija", "ProveraDokumenta");
+            DateTime d = datumDokumenta.Value.Date;
+
+            List<string> stavkeElements = new List<string>();
+            foreach (var dataItem in items)
+            {
+                string stavkeElement = $@"
+                <stavke>
+                    <akcijskaStopaRabata>0</akcijskaStopaRabata>
+                    <brojPakovanja>0</brojPakovanja>
+                    <bruto>0</bruto>
+                    <cenaSaRabatom>{dataItem.vp}</cenaSaRabatom>
+                    <deviznaCena>{dataItem.vp}</deviznaCena>
+                    <dodatniRabat>0</dodatniRabat>
+                    <iznosAkcize>0</iznosAkcize>
+                    <iznosManipulativnihTroskova>0</iznosManipulativnihTroskova>
+                    <iznosTakse>0</iznosTakse>
+                    <kolicina>{dataItem.kolicina}</kolicina>
+                    <osnovnaCena>{dataItem.vp}</osnovnaCena>
+                    <posebnaStopaRabata>0</posebnaStopaRabata>
+                    <prodajnaCena>{dataItem.mp_bpdv}</prodajnaCena>
+                    <rabatBezAkciza>0</rabatBezAkciza>
+                    <sifraObelezja>{dataItem.velicina}</sifraObelezja>
+                    <sifraRobe>{dataItem.sifra}</sifraRobe>
+                    <stopaManipulativnihTroskova>0</stopaManipulativnihTroskova>
+                    <stopaPoreza>20</stopaPoreza>
+                    <stopaRabata>0</stopaRabata>
+                    <zahtevanaKolicina>{dataItem.kolicina}</zahtevanaKolicina>
+                </stavke>";
+
+                i++;
+
+                stavkeElements.Add(stavkeElement);
+            }
+
+            string stavkeXml = string.Join("", stavkeElements);
+
+
+            string soapRequest = $@"<?xml version='1.0' encoding='utf-8'?>
+                <soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+                    <soap:Body>
+                        <dodajNalogZaIzdavanje xmlns='http://dokumenti.servis.mis.com/'>
+                            <dokumenti xmlns=''>
+                                <akcijskiRabatVrednost>0</akcijskiRabatVrednost>
+                                <brojRata>0</brojRata>
+                                <cenaPrevoza>0</cenaPrevoza>
+                                <datumDokumenta>{d.ToString("yyyy-MM-dd")}</datumDokumenta>
+                                <datumOtpreme>{d.ToString("yyyy-MM-dd")}</datumOtpreme>
+                                <dpo>{d.ToString("yyyy-MM-dd")}</dpo>
+                                <valutaPlacanja>{DateTime.Now.ToString("yyyy-MM-dd")}</valutaPlacanja>
+                                <logname>mis</logname>
+                                <napomena>123</napomena>
+                                <oznakaCenovnika>{items[0].cenovnik}</oznakaCenovnika>
+                                <oznakaDokumenta>{document}</oznakaDokumenta>
+                                <realizovano>N</realizovano>
+                                <sifraNacinaPlacanja>1</sifraNacinaPlacanja>
+                                <sifraOrganizacioneJednice>{organizacija}</sifraOrganizacioneJednice>
+                                <sifraMagacina>{objekatFrom}</sifraMagacina>
+                                <status>0</status>
+                                <stopaManipulativnihTroskova>0</stopaManipulativnihTroskova>
+                                <iznosManipulativnihTroskova>0</iznosManipulativnihTroskova>
+                                <iznosKasaSkonto>0</iznosKasaSkonto>
+                                <iznosManipulativnihTroskova>0</iznosManipulativnihTroskova>
+                                <kasaSkonto>0</kasaSkonto>
+                                <marza>0</marza>
+                                {stavkeXml}
+                                <storno>N</storno>
+                                <vrstaFakturisanja>1</vrstaFakturisanja>
+                                <vrstaIzjave>2</vrstaIzjave>
+                                <sifraRacuna>RB</sifraRacuna>
+                                <sifraPartnera>{items[0].partner}</sifraPartnera>
+                                <sifraPartneraKorisnika>{items[0].partner}</sifraPartneraKorisnika>
+                                <napomena>{tbComment.Text.ToString()}</napomena>
+                            </dokumenti>
+                        </dodajNalogZaIzdavanje>
                     </soap:Body>
                 </soap:Envelope>";
 
@@ -649,7 +749,6 @@ namespace BebaKids.MIS
             saveFileDialog.InitialDirectory = "c:\\";
             saveFileDialog.RestoreDirectory = true;
             saveFileDialog.FileName = text;
-            //saveFileDialog.ShowDialog();
             if (saveFileDialog.ShowDialog() == DialogResult.OK && !String.IsNullOrWhiteSpace(saveFileDialog.FileName))
             {
 
@@ -666,18 +765,18 @@ namespace BebaKids.MIS
             public string velicina { get; set; }
 
             public string cenovnik { get; set; }
+            public string partner { get; set; }
             public double kolicina { get; set; }
             public double nabavna { get; set; }
             public double vp { get; set; }
             public double mp { get; set; }
             public double mp_bpdv { get; set; }
 
-            // Add more properties for other columns
         }
 
         private void PopisMpUnos_Load(object sender, EventArgs e)
         {
-
+            this.WindowState = FormWindowState.Maximized;
         }
 
         public class ItemWithTextAndValue
@@ -689,6 +788,31 @@ namespace BebaKids.MIS
             {
                 DisplayText = displayText;
                 Value = value;
+            }
+        }
+
+        private void deleteOldRecords()
+        {
+            string query = $"DELETE FROM pop_sta_mp_st WHERE DATEDIFF(day, dat_pop, GETDATE()) > 30";
+            
+            var MyIni = new IniFile(@"C:\bkapps\config.ini");
+            string Localbaza = MyIni.Read("konekcija", "Baza").ToString();
+
+            using (SqlConnection connection = new SqlConnection(Localbaza))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        int rowsAffected = command.ExecuteNonQuery();
+                        errorLogger.LogStringException("Obrisano iz tabele popisa broj rekorda: " + rowsAffected);
+                    }
+                    catch (Exception ex)
+                    {
+                        errorLogger.LogException(ex);
+                    }
+                }
             }
         }
     }

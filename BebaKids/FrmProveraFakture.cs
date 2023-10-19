@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
-using System.Data.Odbc;
+using System.Drawing;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.Odbc;
+using System.Media;
 
 namespace BebaKids
 {
@@ -17,6 +23,7 @@ namespace BebaKids
             lbVelicina.Text = "";
             this.ActiveControl = tbBarkod;
         }
+
 
         public static string prijemnica = "";
         public static string vrsta = "";
@@ -43,11 +50,13 @@ namespace BebaKids
 
             if (e.KeyCode == Keys.Enter)
             {
+
+                Save saveClass = new Save();
                 string BARKOD = Convert.ToString(tbBarkod.Text);
                 string dokument = Convert.ToString(tbPrijemnica.Text);
+                string objekat = Convert.ToString(tbObjekat.Text);
                 var MyIni = new IniFile(@"C:\bkapps\config.ini");
-                var objekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta").ToString();
-                var SifPar = MyIni.Read("sif_par", "ProveraDokumenta").ToString();
+                //var objekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta").ToString();
 
                 DataTable barkodovi = citajBarkod();
                 //dataGridView1.DataSource = barkodovi;
@@ -118,7 +127,7 @@ namespace BebaKids
                         int iKolicina = 1;
 
                         Save cuvanje = new Save();
-                        cuvanje.insert1(dokument, vrsta, SifPar, iSifra, iVelicina, Convert.ToInt32(iKolicina));
+                        cuvanje.insert1(dokument, vrsta, objekat, iSifra, iVelicina, Convert.ToInt32(iKolicina));
                     }
                 }
 
@@ -129,15 +138,26 @@ namespace BebaKids
         {
             var MyIni = new IniFile(@"C:\bkapps\config.ini");
             //var objekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta").ToString();
-            var SifPar = MyIni.Read("sif_par", "ProveraDokumenta").ToString();
+            //var SifPar = MyIni.Read("sif_par", "ProveraDokumenta").ToString();
             vrsta = Form1.vrsta.ToString();
             //MessageBox.Show(vrsta.ToString());
 
             Save cuvanje = new Save();
-            var provera = cuvanje.proveraDokumenta1(tbPrijemnica.Text.ToString(), vrsta, SifPar);
+            var provera = cuvanje.proveraDokumenta1(tbPrijemnica.Text.ToString(), vrsta);
+
+
+            DialogResult result = MessageBox.Show("Da li zelite da obrisete podatke ukoliko ste\n po istom dokumentu vec radili proveru prijema?", "Warning", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                // Do something if the user chooses Yes
+                cuvanje.brisiDokument(tbPrijemnica.Text.ToString());
+            }
+
             //MessageBox.Show(tbPrijemnica.Text.ToString() + " " + vrsta.ToString() + " " + objekat.ToString());
             if (provera == true)
             {
+                tbObjekat.Text = cuvanje.getInvoiceSifPar(tbPrijemnica.Text.ToString(), vrsta);
             }
 
             else
@@ -181,5 +201,26 @@ namespace BebaKids
             frmProveraPrijemnice1 frm = new frmProveraPrijemnice1();
             frm.Show();
         }
+
+        public void brisiDokument(string dokument)
+        {
+            string tDokument = dokument;
+
+            OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
+            OdbcCommand komanda = new OdbcCommand("delete from prenos_dokumenta where dokument ='" + tDokument + "'", konekcija);
+            try
+            {
+                konekcija.Open();
+                komanda.ExecuteNonQuery();
+                konekcija.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+
+        }
     }
+
 }

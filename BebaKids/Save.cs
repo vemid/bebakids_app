@@ -1,8 +1,13 @@
 ﻿using System;
-using System.Data;
-using System.Data.Odbc;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Data;
+using MySql.Data.MySqlClient;
 
 namespace BebaKids
 {
@@ -152,11 +157,10 @@ namespace BebaKids
             return provera;
         }
 
-        public bool proveraDokumenta1(string dokument, string vrsta, string sif_par)
+        public bool proveraDokumenta1(string dokument, string vrsta)
         {
             bool provera = false;
             string tDokumnet = dokument;
-            string tSifPar = sif_par;
             string tVrsta = vrsta;
 
             string connString = "Dsn=ifx;uid=informix";
@@ -164,7 +168,7 @@ namespace BebaKids
 
             OdbcConnection conn = new OdbcConnection(connString);
 
-            OdbcCommand komanda = new OdbcCommand("select * from otprem where storno = 'N' and sif_par = '" + tSifPar + "' and ozn_otp = '" + tDokumnet + "'", conn);
+            OdbcCommand komanda = new OdbcCommand("select * from otprem where storno = 'N' and ozn_otp = '" + tDokumnet + "'", conn);
             conn.Open();
             OdbcDataReader dr = komanda.ExecuteReader();
             if (dr.Read())
@@ -175,6 +179,88 @@ namespace BebaKids
             conn.Close();
 
             return provera;
+
+        }
+
+        public string getInvoiceEmail(string dokument, string vrsta)
+        {
+            bool provera = false;
+            string tDokumnet = dokument;
+
+            string connString = "Dsn=ifx;uid=informix";
+            //OdbcCommand komanda = new OdbcCommand();
+
+            OdbcConnection conn = new OdbcConnection(connString);
+
+            string sql = "";
+
+            if (vrsta == "FK")
+            {
+                sql = "select first 1 trim(nvl(m.napomena,'magacin@bebakids.com')) email from otprem o left join magacin m on m.sif_mag = o.sif_mag where o.ozn_otp = '" + tDokumnet + "'";
+            }
+
+
+            if (vrsta == "MP")
+            {
+                sql = "select first 1 trim(nvl(m.napomena,'magacin@bebakids.com')) email from povrat_mp o left join magacin m on m.sif_mag = o.sif_obj_mp where o.ozn_pov_mp = '" + tDokumnet + "'";
+            }
+
+            OdbcCommand komanda = new OdbcCommand(sql, conn);
+
+
+
+            conn.Open();
+            OdbcDataReader dr = komanda.ExecuteReader();
+
+            List<Dictionary<string, object>> responseData = this.ConvertOdbcDataReaderToListOdbc(dr);
+
+            conn.Close();
+            return responseData[0]["email"].ToString();
+
+        }
+
+        public string getInvoiceSifPar(string dokument, string vrsta)
+        {
+            bool provera = false;
+            string tDokumnet = dokument;
+
+            string connString = "Dsn=ifx;uid=informix";
+            //OdbcCommand komanda = new OdbcCommand();
+
+            OdbcConnection conn = new OdbcConnection(connString);
+
+            string sql = "";
+
+            if (vrsta == "FK")
+            {
+                sql = "select m.sif_par objekat from otprem o left join magacin m on m.sif_mag = o.sif_mag where o.ozn_otp = '" + tDokumnet + "'";
+            }
+
+
+            if (vrsta == "MP")
+            {
+                sql = "select sif_obj_mp objekat from povrat_mp o where o.ozn_pov_mp = '" + tDokumnet + "'";
+            }
+            if (vrsta == "OM")
+            {
+                sql = "select sif_obj_mp objekat from otprem_mp o where o.ozn_otp_mal = '" + tDokumnet + "'";
+            }
+            if (vrsta == "P9")
+            {
+                sql = "select obj_mp_izl objekat from pren_mp o where o.ozn_pre_mp = '" + tDokumnet + "'";
+            }
+
+            OdbcCommand komanda = new OdbcCommand(sql, conn);
+
+
+
+            conn.Open();
+            OdbcDataReader dr = komanda.ExecuteReader();
+
+            List<Dictionary<string, object>> responseData = this.ConvertOdbcDataReaderToListOdbc(dr);
+
+            conn.Close();
+            return responseData[0]["objekat"].ToString();
 
         }
 
@@ -328,12 +414,12 @@ namespace BebaKids
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
             if (vrsta == "insert")
             {
-                cmd1.Append("select id,dbo.get_naziv(sif_rob) naziv,sif_rob sifa,sif_ent_rob velicina,kolic kolicina from pop_sta_mp_st ");
-                cmd1.Append(" where ozn_pop_sta = '" + tDokumnet + "' and preneto = 0 order by id desc ");
+                cmd1.Append("select dbo.get_naziv(sif_rob) naziv,sif_rob sifa,sif_ent_rob velicina,kolic kolicina,id from pop_sta_mp_st ");
+                cmd1.Append(" where ozn_pop_sta = '" + tDokumnet + "' and preneto = 0 order by id asc ");
             }
             else
             {
-                cmd1.Append("select id,ozn_pop_sta,dbo.get_naziv(sif_rob) naziv,sif_rob sifra,sif_ent_rob velicina,kolic kolicina from pop_sta_mp_st ");
+                cmd1.Append("select ozn_pop_sta,dbo.get_naziv(sif_rob) naziv,sif_rob sifra,sif_ent_rob velicina,kolic kolicina,id from pop_sta_mp_st ");
                 cmd1.Append(" where preneto = 0 order by id desc ");
             }
             OdbcDataAdapter adapter1 = new OdbcDataAdapter(cmd1.ToString(), konekcija);
@@ -346,26 +432,6 @@ namespace BebaKids
             konekcija.Close();
 
             return popisDokumenta;
-        }
-        public void brisiDokument(string dokument, string vrsta)
-        {
-            string tDokument = dokument;
-            string tVrsta = vrsta;
-
-            OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
-            OdbcCommand komanda = new OdbcCommand("delete from prenos_dokumenta where dokument ='" + tDokument + "'", konekcija);
-            try
-            {
-                konekcija.Open();
-                komanda.ExecuteNonQuery();
-                konekcija.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-
         }
 
         public void completedDokument(string dokument)
@@ -675,7 +741,7 @@ namespace BebaKids
         }
 
         //insert popis stavka
-        public void insertPopis(string oznakaPopisa, int objekat, DateTime date, string sifra, string velicina, int kolicina)
+        public int insertPopis(string oznakaPopisa, int objekat, DateTime date, string sifra, string velicina, int kolicina)
         {
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
 
@@ -687,32 +753,36 @@ namespace BebaKids
             DateTime tdate = date;
             string dateFormat = "yyyy-MM-dd";
             string dateFormat2 = "dd.MM.yyyy";
-            //IFormatProvider culture = new System.Globalization.CultureInfo("sr", true);
-            //DateTime dt = DateTime.ParseExact(tdate, "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
             int preneto = 0;
-            /*
-            SqlCommand cmd = new SqlCommand("insert into pop_sta_mp_st (ozn_pop_sta,dat_pop,sif_obj_mp,sif_rob,sif_ent_rob,kolic,preneto) output INSERTED.ID values(@oznaka,@date,@objekat,@sifra,@velicina,@kolicina,$preneto)", konekcija);
 
-            cmd.Parameters.AddWithValue("@oznaka", tOznakaPopisa);
-            cmd.Parameters.AddWithValue("@date", tdate.ToString(dateFormat));
-            cmd.Parameters.AddWithValue("@objekat", tObjekat);
-            cmd.Parameters.AddWithValue("@sifra", tSifra);
-            cmd.Parameters.AddWithValue("@velicina", tObjekat);
-            cmd.Parameters.AddWithValue("@kolicina", tObjekat);
-            cmd.Parameters.AddWithValue("@ve", tObjekat);*/
+            int generatedID;
 
+            var MyIni = new IniFile(@"C:\bkapps\config.ini");
+            string Localbaza = MyIni.Read("konekcija", "Baza").ToString();
 
-            OdbcCommand komanda = new OdbcCommand("insert into pop_sta_mp_st (ozn_pop_sta,dat_pop,sif_obj_mp,sif_rob,sif_ent_rob,kolic,preneto) values ('" + tOznakaPopisa + "','" + tdate.ToString(dateFormat) + "','" + tObjekat + "','" + tSifra + "','" + tVelicina + "','" + tKolicina + "','" + preneto + "')", konekcija);
-            try
+            using (SqlConnection connection = new SqlConnection(Localbaza))
             {
-                konekcija.Open();
-                komanda.ExecuteNonQuery();
-                konekcija.Close();
+                connection.Open();
+
+                string insertQuery = "insert into pop_sta_mp_st (ozn_pop_sta,dat_pop,sif_obj_mp,sif_rob,sif_ent_rob,kolic,preneto) values (@oznaka, @datum, @objekat, @sifra, @velicina, @kolicina, @preneto); SELECT SCOPE_IDENTITY();";
+
+                using (SqlCommand cmd = new SqlCommand(insertQuery, connection))
+                {
+                    cmd.Parameters.AddWithValue("@oznaka", tOznakaPopisa);
+                    cmd.Parameters.AddWithValue("@datum", tdate.ToString(dateFormat));
+                    cmd.Parameters.AddWithValue("@objekat", tObjekat);
+                    cmd.Parameters.AddWithValue("@sifra", tSifra);
+                    cmd.Parameters.AddWithValue("@velicina", tVelicina);
+                    cmd.Parameters.AddWithValue("@kolicina", tKolicina);
+                    cmd.Parameters.AddWithValue("@preneto", preneto);
+
+                    generatedID = Convert.ToInt32(cmd.ExecuteScalar());
+
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+
+            return generatedID;
         }
 
         //FRANSIZNI OBJEKTI
@@ -851,6 +921,129 @@ namespace BebaKids
             else { provera = false; }
 
             return provera;
+
+        }
+
+        public List<Dictionary<string, object>> checkLoyaltiCardExists(string card)
+        {
+            string tCard = card;
+            MySqlConnection mysql = new MySqlConnection(MysqlB2B.myConnectionString);
+            MySqlCommand command = mysql.CreateCommand();
+            command.CommandText = "select * from loyalti where card = '" + tCard + "'";
+
+            mysql.Open();
+            MySqlDataReader reader = command.ExecuteReader();
+
+            List<Dictionary<string, object>> lista = new List<Dictionary<string, object>>();
+
+            try
+            {
+                lista = this.ConvertOdbcDataReaderToList(reader);
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors that occur
+                Console.WriteLine("Error: " + ex.Message);
+            }
+
+            return lista;
+
+
+
+        }
+
+        public List<Dictionary<string, object>> ConvertOdbcDataReaderToList(MySqlDataReader reader)
+        {
+            List<Dictionary<string, object>> resultList = new List<Dictionary<string, object>>();
+
+            while (reader.Read())
+            {
+                Dictionary<string, object> row = new Dictionary<string, object>();
+
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    row.Add(reader.GetName(i), reader.GetValue(i));
+                }
+
+                resultList.Add(row);
+            }
+
+            reader.Close();
+
+            return resultList;
+        }
+
+        public List<Dictionary<string, object>> ConvertOdbcDataReaderToListOdbc(OdbcDataReader reader)
+        {
+            List<Dictionary<string, object>> resultList = new List<Dictionary<string, object>>();
+
+            while (reader.Read())
+            {
+                Dictionary<string, object> row = new Dictionary<string, object>();
+
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    row.Add(reader.GetName(i), reader.GetValue(i));
+                }
+
+                resultList.Add(row);
+            }
+
+            reader.Close();
+
+            return resultList;
+        }
+
+        public bool checkVoucher(string card, string baza)
+        {
+            bool provera = false;
+
+            string tCard = card;
+            string tBaza = baza;
+            string connString = "Dsn=ifx;uid=informix";
+
+            OdbcConnection conn = new OdbcConnection(connString);
+
+            //OdbcCommand komandaKartica = new OdbcCommand("select * from platna_kartica where ozn_pla_kar = '" + tCard + "' and sta_pla_kar = 'N'", conn);
+            OdbcCommand komandaPartner = new OdbcCommand("select * from " + tBaza + ":platna_kartica where ozn_pla_kar = '" + tCard + "' and sta_pla_kar = 'N'", conn);
+            conn.Open();
+            OdbcDataReader dr = komandaPartner.ExecuteReader();
+
+            if (dr.Read())
+            {
+                conn.Close();
+                conn.Open();
+                OdbcDataReader drPartner = komandaPartner.ExecuteReader();
+                if (drPartner.Read())
+                {
+                    conn.Close();
+                    provera = true;
+                }
+                else { provera = false; }
+            }
+            else { provera = false; }
+
+            return provera;
+
+        }
+
+        public void brisiDokument(string dokument)
+        {
+            string tDokument = dokument;
+
+            OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
+            OdbcCommand komanda = new OdbcCommand("delete from prenos_dokumenta where dokument ='" + tDokument + "'", konekcija);
+            try
+            {
+                konekcija.Open();
+                komanda.ExecuteNonQuery();
+                konekcija.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
 
         }
 

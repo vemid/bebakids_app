@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
-using System.Data.Odbc;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.Odbc;
 
 namespace BebaKids
 {
@@ -17,6 +23,8 @@ namespace BebaKids
 
         public void frmProveraPrijemnice_Load(object sender, EventArgs e)
         {
+            Save save = new Save();
+
             //string prijemnica = frmPrijemnica.prijemnica;
             MessageBox.Show("Postovane Koleginice\n Molim Vas proverite sve stavke u tabeli\n da li su zaista ne slaganja u pakovanju robe!!\nTek nakon toga kliknite na dugme posalji!", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -24,7 +32,7 @@ namespace BebaKids
             var objekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta").ToString();
 
 
-            Save save = new Save();
+
             save.getTable(vrsta, objekat, prijemnica);
             Excel = save.table(prijemnica);
 
@@ -49,8 +57,8 @@ namespace BebaKids
                 }
                 if (vrsta == "OM")
                 {
-                    cmd = " select o.napomena e_mail from otprem_mp p " +
-                                 " left join magacin o on p.sif_mag = o.sif_mag " +
+                    cmd = " select o.e_mail from otprem_mp p " +
+                                 " left join obj_mp o on p.sif_obj_mp = o.sif_obj_mp " +
                                  " where p.ozn_otp_mal = '" + prijemnica + "'";
                 }
                 if (vrsta == "MP")
@@ -67,10 +75,10 @@ namespace BebaKids
                 OdbcDataReader dr = komanda.ExecuteReader();
                 dr.Read();
 
-                string objekat = dr.GetString(0);
+                string email = dr.GetString(0);
 
                 Classes.Application export = new Classes.Application();
-                export.createExcel(vrsta, objekat, prijemnica, Excel);
+                export.createExcel(vrsta, email, prijemnica, Excel);
 
                 MessageBox.Show("Uspesno poslati podaci", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

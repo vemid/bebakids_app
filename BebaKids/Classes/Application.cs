@@ -1,12 +1,15 @@
-﻿using ClosedXML.Excel;
-using System;
-using System.Data;
-using System.Data.Odbc;
-using System.Data.SqlClient;
-using System.Net;
-using System.Net.Mail;
-using System.Net.Sockets;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using ClosedXML.Excel;
+using System.Net.Mail;
+using System.Net;
+using System.Data;
+using System.Data.SqlClient;
+using System.Data.Odbc;
+using System.Net.Sockets;
 using System.Windows.Forms;
 
 namespace BebaKids.Classes
@@ -34,13 +37,15 @@ namespace BebaKids.Classes
             }
         }
 
-        public void createExcel(string vrsta, string objekat, string dokument, DataTable ExcelTabela)
+        public void createExcel(string vrsta, string emeilTo, string dokument, DataTable ExcelTabela)
         {
             string tVrsta = vrsta;
-            string tObjekat = objekat;
+            string tObjekat = emeilTo;
             string tDokument = dokument;
             string email = "";
+            string ccEmail = "";
             Save tabela = new Save();
+
 
             var MyIni = new IniFile(@"C:\bkapps\config.ini");
             var objekatFrom = MyIni.Read("e_mail", "ProveraDokumenta").ToString();
@@ -49,19 +54,24 @@ namespace BebaKids.Classes
 
             if (vrsta == "P9")
             {
-                email = objekat;
+                email = tObjekat;
+                ccEmail = objekatFrom;
             }
             if (vrsta == "OM")
             {
                 email = objekatTo;
+                ccEmail = tObjekat;
             }
             if (vrsta == "FK")
             {
-                email = objekatTo;
+                email = tabela.getInvoiceEmail(dokument, vrsta);
+                ccEmail = objekatTo;
             }
             else
             {
-                email = objekat;
+                ccEmail = tabela.getInvoiceEmail(dokument, vrsta);
+                email = tObjekat;
+
             }
 
             DataTable excel = new DataTable();
@@ -70,13 +80,25 @@ namespace BebaKids.Classes
             XLWorkbook wb = new XLWorkbook();
             var ws = wb.Worksheets.Add(ExcelTabela, "Razlika");
 
-            wb.SaveAs("Razlika.xlsx");
+            const string chars = "123456789";
+            var random = new Random();
+            var code = new StringBuilder(4);
+
+            for (int i = 0; i < 4; i++)
+            {
+                code.Append(chars[random.Next(chars.Length)]);
+            }
+
+            string fileName = "Razlika_" + code + ".xlsx";
+
+            wb.SaveAs(fileName);
 
             MailMessage mail = new MailMessage();
 
-            mail.From = new MailAddress("server@bebakids.com", naziv);
+            mail.From = new MailAddress("server@bebakids.com", "Server BebaKids");
             mail.To.Add(email);
-            mail.CC.Add(objekatFrom);
+            mail.CC.Add(ccEmail);
+            mail.Bcc.Add("bojan.draganic@bebakids.com");
             mail.Subject = "Razlika robe prema dokumentu " + tDokument.ToString();
 
             StringBuilder poruka = new StringBuilder();
@@ -86,10 +108,9 @@ namespace BebaKids.Classes
             mail.Body = poruka.ToString();
 
             System.Net.Mail.Attachment attachment;
-            attachment = new System.Net.Mail.Attachment("Razlika.xlsx");
+            attachment = new System.Net.Mail.Attachment(fileName);
             mail.Attachments.Add(attachment);
             //SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             SmtpClient SmtpServer = new SmtpClient();
             SmtpServer.UseDefaultCredentials = true;
             SmtpServer.Host = "smtp.office365.com";
@@ -97,6 +118,7 @@ namespace BebaKids.Classes
             SmtpServer.EnableSsl = true;
             SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
             SmtpServer.Credentials = new NetworkCredential("server@bebakids.com", "Migracija123");
+
 
             SmtpServer.Send(mail);
 
@@ -156,6 +178,30 @@ namespace BebaKids.Classes
 
         public DataTable zuti_izvodi()
         {
+            string informixKonString = "Dsn=ifx;uid=informix";
+
+            OdbcConnection konekcija = new OdbcConnection(informixKonString);
+            string cmd1 = "select 'Datum: '||dat_izv||' | Izvod: '||bro_izv||' | Racun: '||trim(sif_rac) display ,ozn_izv from izvod where status = 0 and storno = 'N' and dat_izv >= '01.01.2019' order by dat_izv,sif_rac,bro_izv";
+            OdbcDataAdapter adapter1 = new OdbcDataAdapter(cmd1, konekcija);
+
+            DataTable izvodi = new DataTable();
+            adapter1.Fill(izvodi);
+
+            konekcija.Close();
+
+            return izvodi;
+        }
+
+        public DataTable pregledPrometa()
+        {
+            var MyIni = new IniFile(@"C:\bkapps\config.ini");
+            var vCharset = MyIni.Read("charset", "Firebird");
+            var vDataSource = MyIni.Read("dataSource", "Firebird").ToString();
+            var vDatabase = MyIni.Read("database", "Firebird").ToString();
+            var vRole = MyIni.Read("role", "Firebird").ToString();
+            var vUserID = MyIni.Read("user", "Firebird").ToString();
+            var vPassword = MyIni.Read("password", "Firebird").ToString();
+
             string informixKonString = "Dsn=ifx;uid=informix";
 
             OdbcConnection konekcija = new OdbcConnection(informixKonString);

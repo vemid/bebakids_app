@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Net.Sockets;
 using System.Windows.Forms;
+using System.IO;
+using System.Text;
 
 namespace BebaKids
 {
@@ -94,6 +96,7 @@ namespace BebaKids
 
         public void formLoad_Load(object sender, EventArgs e)
         {
+            ConfigUpdater();
             var MyIni = new IniFile(@"C:\bkapps\config.ini");
             var provera = MyIni.Read("magacin", "ProveraDokumenta");
             var franzisa = MyIni.Read("fransiza", "ProveraDokumenta");
@@ -332,5 +335,97 @@ namespace BebaKids
             MIS.dodajDokumentMP frm = new MIS.dodajDokumentMP();
             frm.Show();
         }
+
+        private void updaterConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConfigUpdater();
+        }
+
+        private void ConfigUpdater()
+        {
+            string filePath = @"C:\bkapps\config.ini";
+
+            string[] lines = File.ReadAllLines(filePath);
+
+            bool foundServisSection = false;
+            StringBuilder modifiedFile = new StringBuilder();
+
+            foreach (string line in lines)
+            {
+                if (line.Trim() == "[Servis]")
+                {
+                    foundServisSection = true;
+                    modifiedFile.AppendLine(line);
+                    continue;
+                }
+
+                modifiedFile.AppendLine(line);
+            }
+
+            if (!foundServisSection)
+            {
+                modifiedFile.AppendLine("\n");
+                modifiedFile.AppendLine("[Servis]");
+                modifiedFile.AppendLine("webservis=\"http://192.168.100.236/ServisMisWeb/services\"");
+            }
+
+            File.WriteAllText(filePath, modifiedFile.ToString());
+
+            UpdateSectionValue(filePath, "[Servis]", "webservis", "http://192.168.100.236/ServisMisWeb/services");
+        }
+
+        static void UpdateSectionValue(string filePath, string sectionName, string key, string newValue)
+        {
+            string[] lines = File.ReadAllLines(filePath);
+            bool isInTargetSection = false;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].Trim() == sectionName)
+                {
+                    isInTargetSection = true;
+                    continue;
+                }
+
+                if (isInTargetSection && lines[i].StartsWith(key + "="))
+                {
+                    lines[i] = key + "=\"" + newValue + "\"";
+                    break; 
+                }
+            }
+
+            File.WriteAllLines(filePath, lines);
+        }
+
+        private void dodavanjeNovogClanaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            if (testKonekcija())
+            {
+                Loyalti.DodavanjeUceniska frm = new Loyalti.DodavanjeUceniska();
+                frm.Show();
+            }
+            else
+            {
+                noConnection nc = new noConnection();
+                nc.Show();
+            }
+        }
+
+        private void kreiranjeVauceraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            if (testKonekcija())
+            {
+                Loyalti.addVoucher frm = new Loyalti.addVoucher();
+                frm.Show();
+            }
+            else
+            {
+                noConnection nc = new noConnection();
+                nc.Show();
+            }
+        }
     }
+
 }
