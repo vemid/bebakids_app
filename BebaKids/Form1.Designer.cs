@@ -52,6 +52,11 @@
             this.izvestajiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.izvestajFransizePoDanuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.izvestajLageraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loyaltiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unosNovogClanaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unosNovogClanaCGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dodavanjeNovogClanaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kreiranjeVauceraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proizvodnjaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.prenosSifaraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kalkulacijaArtiklaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,17 +64,13 @@
             this.proveraCeneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dnevniPrometToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unosPrometaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loyaltiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.unosNovogClanaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.unosNovogClanaCGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.racunovodstvoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.osvezavanjeIzvodaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label3 = new System.Windows.Forms.Label();
             this.btnProveraFakture = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.dodavanjeNovogClanaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.kreiranjeVauceraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.versionLabel = new System.Windows.Forms.Label();
             this.menuStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -79,7 +80,7 @@
             // 
             this.btnBarkod.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnBarkod.Location = new System.Drawing.Point(626, 85);
-            this.btnBarkod.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnBarkod.Margin = new System.Windows.Forms.Padding(6);
             this.btnBarkod.Name = "btnBarkod";
             this.btnBarkod.Size = new System.Drawing.Size(272, 60);
             this.btnBarkod.TabIndex = 0;
@@ -114,7 +115,7 @@
             // 
             this.btnPrijemnica.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnPrijemnica.Location = new System.Drawing.Point(626, 160);
-            this.btnPrijemnica.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPrijemnica.Margin = new System.Windows.Forms.Padding(6);
             this.btnPrijemnica.Name = "btnPrijemnica";
             this.btnPrijemnica.Size = new System.Drawing.Size(272, 60);
             this.btnPrijemnica.TabIndex = 1;
@@ -126,7 +127,7 @@
             // 
             this.btnPrenosnica.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnPrenosnica.Location = new System.Drawing.Point(628, 229);
-            this.btnPrenosnica.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPrenosnica.Margin = new System.Windows.Forms.Padding(6);
             this.btnPrenosnica.Name = "btnPrenosnica";
             this.btnPrenosnica.Size = new System.Drawing.Size(272, 60);
             this.btnPrenosnica.TabIndex = 2;
@@ -138,7 +139,7 @@
             // 
             this.btnMagacin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnMagacin.Location = new System.Drawing.Point(298, 302);
-            this.btnMagacin.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnMagacin.Margin = new System.Windows.Forms.Padding(6);
             this.btnMagacin.Name = "btnMagacin";
             this.btnMagacin.Size = new System.Drawing.Size(318, 60);
             this.btnMagacin.TabIndex = 3;
@@ -150,7 +151,7 @@
             // 
             this.btnPrijavaRadnika.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnPrijavaRadnika.Location = new System.Drawing.Point(924, 85);
-            this.btnPrijavaRadnika.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPrijavaRadnika.Margin = new System.Windows.Forms.Padding(6);
             this.btnPrijavaRadnika.Name = "btnPrijavaRadnika";
             this.btnPrijavaRadnika.Size = new System.Drawing.Size(272, 60);
             this.btnPrijavaRadnika.TabIndex = 0;
@@ -162,7 +163,7 @@
             // 
             this.btnPrijavaOdsustva.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnPrijavaOdsustva.Location = new System.Drawing.Point(924, 160);
-            this.btnPrijavaOdsustva.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPrijavaOdsustva.Margin = new System.Windows.Forms.Padding(6);
             this.btnPrijavaOdsustva.Name = "btnPrijavaOdsustva";
             this.btnPrijavaOdsustva.Size = new System.Drawing.Size(272, 60);
             this.btnPrijavaOdsustva.TabIndex = 1;
@@ -174,7 +175,7 @@
             // 
             this.btnPrijavaPopisa.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnPrijavaPopisa.Location = new System.Drawing.Point(926, 229);
-            this.btnPrijavaPopisa.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnPrijavaPopisa.Margin = new System.Windows.Forms.Padding(6);
             this.btnPrijavaPopisa.Name = "btnPrijavaPopisa";
             this.btnPrijavaPopisa.Size = new System.Drawing.Size(272, 60);
             this.btnPrijavaPopisa.TabIndex = 2;
@@ -186,7 +187,7 @@
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.button1.Location = new System.Drawing.Point(924, 302);
-            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(272, 60);
             this.button1.TabIndex = 2;
@@ -202,15 +203,14 @@
             this.label7.Location = new System.Drawing.Point(686, 412);
             this.label7.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(525, 26);
+            this.label7.Size = new System.Drawing.Size(0, 26);
             this.label7.TabIndex = 9;
-            this.label7.Text = "Copyright @ Kids Beba doo, Created by Marko Vesic";
             // 
             // btnRealizacijaCekova
             // 
             this.btnRealizacijaCekova.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.btnRealizacijaCekova.Location = new System.Drawing.Point(628, 300);
-            this.btnRealizacijaCekova.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnRealizacijaCekova.Margin = new System.Windows.Forms.Padding(6);
             this.btnRealizacijaCekova.Name = "btnRealizacijaCekova";
             this.btnRealizacijaCekova.Size = new System.Drawing.Size(272, 60);
             this.btnRealizacijaCekova.TabIndex = 2;
@@ -231,8 +231,7 @@
             this.racunovodstvoToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(0, 0);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
-            this.menuStrip2.Size = new System.Drawing.Size(1282, 42);
+            this.menuStrip2.Size = new System.Drawing.Size(1282, 48);
             this.menuStrip2.TabIndex = 10;
             this.menuStrip2.Text = "menuStrip2";
             // 
@@ -246,7 +245,7 @@
             this.dokumentOtpremeToolStripMenuItem,
             this.updaterConfigToolStripMenuItem});
             this.popisObjektaToolStripMenuItem.Name = "popisObjektaToolStripMenuItem";
-            this.popisObjektaToolStripMenuItem.Size = new System.Drawing.Size(134, 38);
+            this.popisObjektaToolStripMenuItem.Size = new System.Drawing.Size(134, 44);
             this.popisObjektaToolStripMenuItem.Text = "Aktivnost";
             // 
             // unosPopisaToolStripMenuItem
@@ -297,7 +296,7 @@
             this.izvestajFransizePoDanuToolStripMenuItem,
             this.izvestajLageraToolStripMenuItem});
             this.izvestajiToolStripMenuItem.Name = "izvestajiToolStripMenuItem";
-            this.izvestajiToolStripMenuItem.Size = new System.Drawing.Size(119, 38);
+            this.izvestajiToolStripMenuItem.Size = new System.Drawing.Size(119, 36);
             this.izvestajiToolStripMenuItem.Text = "Izvestaji";
             this.izvestajiToolStripMenuItem.Visible = false;
             // 
@@ -314,60 +313,6 @@
             this.izvestajLageraToolStripMenuItem.Size = new System.Drawing.Size(412, 44);
             this.izvestajLageraToolStripMenuItem.Text = "Izvestaj lagera";
             // 
-            // proizvodnjaToolStripMenuItem
-            // 
-            this.proizvodnjaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.prenosSifaraToolStripMenuItem,
-            this.kalkulacijaArtiklaToolStripMenuItem,
-            this.izvestajiToolStripMenuItem1,
-            this.proveraCeneToolStripMenuItem});
-            this.proizvodnjaToolStripMenuItem.Name = "proizvodnjaToolStripMenuItem";
-            this.proizvodnjaToolStripMenuItem.Size = new System.Drawing.Size(159, 38);
-            this.proizvodnjaToolStripMenuItem.Text = "Proizvodnja";
-            this.proizvodnjaToolStripMenuItem.Visible = false;
-            // 
-            // prenosSifaraToolStripMenuItem
-            // 
-            this.prenosSifaraToolStripMenuItem.Name = "prenosSifaraToolStripMenuItem";
-            this.prenosSifaraToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            this.prenosSifaraToolStripMenuItem.Text = "Prenos Sifara";
-            this.prenosSifaraToolStripMenuItem.Click += new System.EventHandler(this.prenosSifaraToolStripMenuItem_Click);
-            // 
-            // kalkulacijaArtiklaToolStripMenuItem
-            // 
-            this.kalkulacijaArtiklaToolStripMenuItem.Name = "kalkulacijaArtiklaToolStripMenuItem";
-            this.kalkulacijaArtiklaToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            this.kalkulacijaArtiklaToolStripMenuItem.Text = "Kalkulacija artikla";
-            this.kalkulacijaArtiklaToolStripMenuItem.Click += new System.EventHandler(this.kalkulacijaArtiklaToolStripMenuItem_Click);
-            // 
-            // izvestajiToolStripMenuItem1
-            // 
-            this.izvestajiToolStripMenuItem1.Name = "izvestajiToolStripMenuItem1";
-            this.izvestajiToolStripMenuItem1.Size = new System.Drawing.Size(359, 44);
-            this.izvestajiToolStripMenuItem1.Text = "Izvestaji";
-            // 
-            // proveraCeneToolStripMenuItem
-            // 
-            this.proveraCeneToolStripMenuItem.Name = "proveraCeneToolStripMenuItem";
-            this.proveraCeneToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
-            this.proveraCeneToolStripMenuItem.Text = "Provera Cene";
-            this.proveraCeneToolStripMenuItem.Click += new System.EventHandler(this.proveraCeneArtToolStripMenuItem_Click);
-            // 
-            // dnevniPrometToolStripMenuItem
-            // 
-            this.dnevniPrometToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.unosPrometaToolStripMenuItem});
-            this.dnevniPrometToolStripMenuItem.Name = "dnevniPrometToolStripMenuItem";
-            this.dnevniPrometToolStripMenuItem.Size = new System.Drawing.Size(196, 38);
-            this.dnevniPrometToolStripMenuItem.Text = "Dnevni promet";
-            // 
-            // unosPrometaToolStripMenuItem
-            // 
-            this.unosPrometaToolStripMenuItem.Name = "unosPrometaToolStripMenuItem";
-            this.unosPrometaToolStripMenuItem.Size = new System.Drawing.Size(300, 44);
-            this.unosPrometaToolStripMenuItem.Text = "Unos prometa";
-            this.unosPrometaToolStripMenuItem.Click += new System.EventHandler(this.unosPrometaToolStripMenuItem_Click);
-            // 
             // loyaltiToolStripMenuItem
             // 
             this.loyaltiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -376,7 +321,7 @@
             this.dodavanjeNovogClanaToolStripMenuItem,
             this.kreiranjeVauceraToolStripMenuItem});
             this.loyaltiToolStripMenuItem.Name = "loyaltiToolStripMenuItem";
-            this.loyaltiToolStripMenuItem.Size = new System.Drawing.Size(104, 38);
+            this.loyaltiToolStripMenuItem.Size = new System.Drawing.Size(104, 44);
             this.loyaltiToolStripMenuItem.Text = "Loyalti";
             // 
             // unosNovogClanaToolStripMenuItem
@@ -393,12 +338,80 @@
             this.unosNovogClanaCGToolStripMenuItem.Text = "Unos novog clana CG";
             this.unosNovogClanaCGToolStripMenuItem.Click += new System.EventHandler(this.unosNovogClanaCGToolStripMenuItem_Click);
             // 
+            // dodavanjeNovogClanaToolStripMenuItem
+            // 
+            this.dodavanjeNovogClanaToolStripMenuItem.Name = "dodavanjeNovogClanaToolStripMenuItem";
+            this.dodavanjeNovogClanaToolStripMenuItem.Size = new System.Drawing.Size(400, 44);
+            this.dodavanjeNovogClanaToolStripMenuItem.Text = "Dodavanje novog clana";
+            this.dodavanjeNovogClanaToolStripMenuItem.Click += new System.EventHandler(this.dodavanjeNovogClanaToolStripMenuItem_Click);
+            // 
+            // kreiranjeVauceraToolStripMenuItem
+            // 
+            this.kreiranjeVauceraToolStripMenuItem.Name = "kreiranjeVauceraToolStripMenuItem";
+            this.kreiranjeVauceraToolStripMenuItem.Size = new System.Drawing.Size(400, 44);
+            this.kreiranjeVauceraToolStripMenuItem.Text = "Kreiranje Vaucera";
+            this.kreiranjeVauceraToolStripMenuItem.Click += new System.EventHandler(this.kreiranjeVauceraToolStripMenuItem_Click);
+            // 
+            // proizvodnjaToolStripMenuItem
+            // 
+            this.proizvodnjaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.prenosSifaraToolStripMenuItem,
+            this.kalkulacijaArtiklaToolStripMenuItem,
+            this.izvestajiToolStripMenuItem1,
+            this.proveraCeneToolStripMenuItem});
+            this.proizvodnjaToolStripMenuItem.Name = "proizvodnjaToolStripMenuItem";
+            this.proizvodnjaToolStripMenuItem.Size = new System.Drawing.Size(159, 36);
+            this.proizvodnjaToolStripMenuItem.Text = "Proizvodnja";
+            this.proizvodnjaToolStripMenuItem.Visible = false;
+            // 
+            // prenosSifaraToolStripMenuItem
+            // 
+            this.prenosSifaraToolStripMenuItem.Name = "prenosSifaraToolStripMenuItem";
+            this.prenosSifaraToolStripMenuItem.Size = new System.Drawing.Size(331, 44);
+            this.prenosSifaraToolStripMenuItem.Text = "Prenos Sifara";
+            this.prenosSifaraToolStripMenuItem.Click += new System.EventHandler(this.prenosSifaraToolStripMenuItem_Click);
+            // 
+            // kalkulacijaArtiklaToolStripMenuItem
+            // 
+            this.kalkulacijaArtiklaToolStripMenuItem.Name = "kalkulacijaArtiklaToolStripMenuItem";
+            this.kalkulacijaArtiklaToolStripMenuItem.Size = new System.Drawing.Size(331, 44);
+            this.kalkulacijaArtiklaToolStripMenuItem.Text = "Kalkulacija artikla";
+            this.kalkulacijaArtiklaToolStripMenuItem.Click += new System.EventHandler(this.kalkulacijaArtiklaToolStripMenuItem_Click);
+            // 
+            // izvestajiToolStripMenuItem1
+            // 
+            this.izvestajiToolStripMenuItem1.Name = "izvestajiToolStripMenuItem1";
+            this.izvestajiToolStripMenuItem1.Size = new System.Drawing.Size(331, 44);
+            this.izvestajiToolStripMenuItem1.Text = "Izvestaji";
+            // 
+            // proveraCeneToolStripMenuItem
+            // 
+            this.proveraCeneToolStripMenuItem.Name = "proveraCeneToolStripMenuItem";
+            this.proveraCeneToolStripMenuItem.Size = new System.Drawing.Size(331, 44);
+            this.proveraCeneToolStripMenuItem.Text = "Provera Cene";
+            this.proveraCeneToolStripMenuItem.Click += new System.EventHandler(this.proveraCeneArtToolStripMenuItem_Click);
+            // 
+            // dnevniPrometToolStripMenuItem
+            // 
+            this.dnevniPrometToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.unosPrometaToolStripMenuItem});
+            this.dnevniPrometToolStripMenuItem.Name = "dnevniPrometToolStripMenuItem";
+            this.dnevniPrometToolStripMenuItem.Size = new System.Drawing.Size(196, 44);
+            this.dnevniPrometToolStripMenuItem.Text = "Dnevni promet";
+            // 
+            // unosPrometaToolStripMenuItem
+            // 
+            this.unosPrometaToolStripMenuItem.Name = "unosPrometaToolStripMenuItem";
+            this.unosPrometaToolStripMenuItem.Size = new System.Drawing.Size(300, 44);
+            this.unosPrometaToolStripMenuItem.Text = "Unos prometa";
+            this.unosPrometaToolStripMenuItem.Click += new System.EventHandler(this.unosPrometaToolStripMenuItem_Click);
+            // 
             // racunovodstvoToolStripMenuItem
             // 
             this.racunovodstvoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.osvezavanjeIzvodaToolStripMenuItem});
             this.racunovodstvoToolStripMenuItem.Name = "racunovodstvoToolStripMenuItem";
-            this.racunovodstvoToolStripMenuItem.Size = new System.Drawing.Size(198, 38);
+            this.racunovodstvoToolStripMenuItem.Size = new System.Drawing.Size(198, 44);
             this.racunovodstvoToolStripMenuItem.Text = "Racunovodstvo";
             // 
             // osvezavanjeIzvodaToolStripMenuItem
@@ -425,7 +438,7 @@
             // 
             this.btnProveraFakture.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.btnProveraFakture.Location = new System.Drawing.Point(298, 85);
-            this.btnProveraFakture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnProveraFakture.Margin = new System.Windows.Forms.Padding(4);
             this.btnProveraFakture.Name = "btnProveraFakture";
             this.btnProveraFakture.Size = new System.Drawing.Size(316, 60);
             this.btnProveraFakture.TabIndex = 13;
@@ -437,7 +450,7 @@
             // 
             this.pictureBox2.Image = global::BebaKids.Properties.Resources.nc11;
             this.pictureBox2.Location = new System.Drawing.Point(72, 271);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(52, 54);
             this.pictureBox2.TabIndex = 11;
@@ -448,31 +461,26 @@
             // 
             this.pictureBox1.Image = global::BebaKids.Properties.Resources.logo;
             this.pictureBox1.Location = new System.Drawing.Point(72, 156);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(6);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(450, 110);
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             // 
-            // dodavanjeNovogClanaToolStripMenuItem
+            // versionLabel
             // 
-            this.dodavanjeNovogClanaToolStripMenuItem.Name = "dodavanjeNovogClanaToolStripMenuItem";
-            this.dodavanjeNovogClanaToolStripMenuItem.Size = new System.Drawing.Size(400, 44);
-            this.dodavanjeNovogClanaToolStripMenuItem.Text = "Dodavanje novog clana";
-            this.dodavanjeNovogClanaToolStripMenuItem.Click += new System.EventHandler(this.dodavanjeNovogClanaToolStripMenuItem_Click);
-            // 
-            // kreiranjeVauceraToolStripMenuItem
-            // 
-            this.kreiranjeVauceraToolStripMenuItem.Name = "kreiranjeVauceraToolStripMenuItem";
-            this.kreiranjeVauceraToolStripMenuItem.Size = new System.Drawing.Size(400, 44);
-            this.kreiranjeVauceraToolStripMenuItem.Text = "Kreiranje Vaucera";
-            this.kreiranjeVauceraToolStripMenuItem.Click += new System.EventHandler(this.kreiranjeVauceraToolStripMenuItem_Click);
+            this.versionLabel.AutoSize = true;
+            this.versionLabel.Location = new System.Drawing.Point(503, 414);
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(0, 25);
+            this.versionLabel.TabIndex = 14;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1282, 458);
+            this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.btnProveraFakture);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.pictureBox2);
@@ -491,7 +499,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pocetna";
@@ -549,6 +557,7 @@
         private System.Windows.Forms.ToolStripMenuItem updaterConfigToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dodavanjeNovogClanaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem kreiranjeVauceraToolStripMenuItem;
+        private System.Windows.Forms.Label versionLabel;
     }
 }
 

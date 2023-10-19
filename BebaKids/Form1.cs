@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Windows.Forms;
 using System.IO;
 using System.Text;
+using System.Reflection;
 
 namespace BebaKids
 {
@@ -12,6 +13,7 @@ namespace BebaKids
         public Form1()
         {
             InitializeComponent();
+            versionLabel.Text = VersionLabel;
 
             var MyIni = new IniFile(@"C:\bkapps\config.ini");
             var sifraObjekta = MyIni.Read("naziv", "ProveraDokumenta");
@@ -424,6 +426,24 @@ namespace BebaKids
             {
                 noConnection nc = new noConnection();
                 nc.Show();
+            }
+        }
+
+        public string VersionLabel
+        {
+            get
+            {
+                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+                {
+                    
+                    Version ver = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
+                    return string.Format("Copyright @ Kids Beba doo, Created by Marko Vesic, Version: {0}.{1}.{2}.{3}", ver.Major, ver.Minor, ver.Build, ver.Revision, Assembly.GetEntryAssembly().GetName().Name);
+                }
+                else
+                {
+                    var ver = Assembly.GetExecutingAssembly().GetName().Version;
+                    return string.Format("Copyright @ Kids Beba doo, Created by Marko Vesic Version: {0}.{1}.{2}.{3}", ver.Major, ver.Minor, ver.Build, ver.Revision, Assembly.GetEntryAssembly().GetName().Name);
+                }
             }
         }
     }

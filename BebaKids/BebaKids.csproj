@@ -27,12 +27,12 @@
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>http://www.bebakids-promo.com/</InstallUrl>
     <PublisherName>Marko Vesic</PublisherName>
-    <MinimumRequiredVersion>1.1.0.101</MinimumRequiredVersion>
+    <MinimumRequiredVersion>2.1.10.118</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>101</ApplicationRevision>
-    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
+    <ApplicationRevision>119</ApplicationRevision>
+    <ApplicationVersion>2.1.10.%2a</ApplicationVersion>
+    <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -60,7 +60,7 @@
     <ApplicationIcon>Logo-BEBAKIDS%281%29.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>BC670C9A0866FC2256EBA56F4421E70364234AE7</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2813542E5A41C62762469E26A9FE7322D5287401</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>BebaKids_TemporaryKey.pfx</ManifestKeyFile>
@@ -69,13 +69,16 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClosedXML, Version=0.86.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
@@ -457,6 +460,7 @@
     <EmbeddedResource Include="Racunovodstvo\izvodi.resx">
       <DependentUpon>izvodi.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="BebaKids_TemporaryKey.pfx" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
