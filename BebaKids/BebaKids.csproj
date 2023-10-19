@@ -94,11 +94,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Informix\bin\netf40\IBM.Data.Informix.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignColors, Version=2.0.6.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignColors.2.0.6\lib\net452\MaterialDesignColors.dll</HintPath>
-    </Reference>
-    <Reference Include="MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialSkin.0.2.1\lib\MaterialSkin.dll</HintPath>
+    <Reference Include="MaterialSkin, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialSkin.2.2.3.1\lib\net45\MaterialSkin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
@@ -395,6 +392,12 @@
     <EmbeddedResource Include="Loyalti\addNewCardCG.resx">
       <DependentUpon>addNewCardCG.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Loyalti\addNewParticipations.resx">
+      <DependentUpon>addNewParticipations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Loyalti\addVoucher.resx">
+      <DependentUpon>addVoucher.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MIS\dodajDokumentMP.resx">
       <DependentUpon>dodajDokumentMP.cs</DependentUpon>
     </EmbeddedResource>
@@ -519,13 +522,6 @@
     <PostBuildEvent>REM Update the ClickOnce MinimumRequiredVersion so that it auto-updates without prompting.
 PowerShell -NoProfile -ExecutionPolicy Bypass -Command "&amp; '$(ProjectDir)PostBuildScripts\AutoUpdateProjectsMinimumRequiredClickOnceVersion.ps1' -ProjectFilePaths '$(ProjectPath)'"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
