@@ -64,16 +64,31 @@ namespace BebaKids.Classes
             }
             if (vrsta == "FK")
             {
+                if (MyIni.Read("fransiza", "ProveraDokumenta").ToString() == "DA")
+                {
+                    ccEmail = objekatFrom;
+                    email = objekatTo;
+                }
+                else
+                {
+                    email = tabela.getInvoiceEmail(dokument, vrsta);
+                    ccEmail = objekatTo;
+                }
+            }
+            if (vrsta == "MP")
+            {
                 email = tabela.getInvoiceEmail(dokument, vrsta);
                 ccEmail = objekatTo;
             }
+            /*
             else
             {
-                ccEmail = tabela.getInvoiceEmail(dokument, vrsta);
+                //ccEmail = tabela.getInvoiceEmail(dokument, vrsta);
+                ccEmail = "admin@bebakids.com";
                 email = tObjekat;
 
             }
-
+            */
             DataTable excel = new DataTable();
             excel = tabela.table(tDokument);
 
@@ -98,7 +113,7 @@ namespace BebaKids.Classes
             mail.From = new MailAddress("server@bebakids.com", "Server BebaKids");
             mail.To.Add(email);
             mail.CC.Add(ccEmail);
-            mail.Bcc.Add("bojan.draganic@bebakids.com");
+            //mail.Bcc.Add("bojan.draganic@bebakids.com");
             mail.Subject = "Razlika robe prema dokumentu " + tDokument.ToString();
 
             StringBuilder poruka = new StringBuilder();

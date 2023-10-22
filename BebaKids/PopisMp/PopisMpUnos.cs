@@ -9,6 +9,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.ComponentModel;
+using BebaKids.Models;
+using BebaKids.Models.Controllers;
 
 namespace BebaKids.PopisMp
 {
@@ -55,21 +58,10 @@ namespace BebaKids.PopisMp
         DataTable tabela = new DataTable();
         int i = 0;
         Classes.ErrorLogger errorLogger = new Classes.ErrorLogger();
+        EanKodController eanKodController = new EanKodController();
+        PopisController popisController = new PopisController();
 
-
-        public DataTable citajBarkod()
-        {
-            OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
-
-            DataSet ds = new DataSet();// kreiranje DataSet objekta
-            barkod = new OdbcDataAdapter("select * from ean_kod2", konekcija);//punjenje objekta sqladaptera sa podacima iz tab. users
-            barkod.MissingSchemaAction = MissingSchemaAction.AddWithKey;
-            OdbcCommandBuilder builder = new OdbcCommandBuilder(barkod);//sqldataadapter komanda cita iz sqlbuildera
-            barkod.Fill(ds, "barkod");//punjenj objekta
-            DataTable tabelaBarkodova = ds.Tables["barkod"];//kreiraanje tabele koja prestavlja kopiju
-            return tabelaBarkodova;
-        }
-
+        IniFile MyIni = new IniFile(@"C:\bkapps\config.ini");
 
         public void btnNoviPopis_Click(object sender, EventArgs e)
         {
@@ -78,7 +70,6 @@ namespace BebaKids.PopisMp
             if (test.testKonekcija())
             {
 
-                var MyIni = new IniFile(@"C:\bkapps\config.ini");
                 var sifraObjekta = MyIni.Read("naziv", "ProveraDokumenta");
                 var objekat = MyIni.Read("sif_obj_mp", "ProveraDokumenta");
                 DateTime d = datumDokumenta.Value.Date;
@@ -122,122 +113,106 @@ namespace BebaKids.PopisMp
 
         private void textBoxTest_KeyDown(object sender, KeyEventArgs e)
         {
-
-            var oznakaDokumenta = textBox1.Text.ToString();
-            //var objekat = textBox2.Text.ToString;
-            DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            //DateTime d = datumDokumenta.Value.Date;
-            Classes.Application sound = new Classes.Application();
-            //MessageBox.Show(d.ToString("dd.MM.yyyy"));
-
-            if (e.KeyCode == Keys.Enter && !string.IsNullOrEmpty(tbBarkod.Text.ToString()))
+            if (e.KeyCode == Keys.Enter)
             {
-                string BARKOD = Convert.ToString(tbBarkod.Text);
-                int objekat = Convert.ToInt32(textBox2.Text.ToString());
-                Save saveBarkod = new Save();
-                DataTable barkodovi = saveBarkod.barkodovi(BARKOD);
-                //MessageBox.Show(saveBarkod.barkodovi(BARKOD).ToString());
-                var result = barkodovi.Rows.IndexOf(barkodovi.AsEnumerable().Where(c => c.Field<String>(3) == BARKOD).FirstOrDefault());
+                var oznakaDokumenta = textBox1.Text.ToString();
+                DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                Classes.Application sound = new Classes.Application();
 
-                if (result == -1)
+                if (e.KeyCode == Keys.Enter && !string.IsNullOrEmpty(tbBarkod.Text.ToString()))
                 {
+                    string BARKOD = Convert.ToString(tbBarkod.Text);
+                    int objekat = Convert.ToInt32(textBox2.Text.ToString());
+                    var product = searchForBarKod(BARKOD);
 
-                    sound.playSound("errorSifra");
-
-                    frmRucniUnos frmRucniUnos = new frmRucniUnos();
-                    if (frmRucniUnos.ShowDialog() == DialogResult.OK)
+                    if (product == null)
                     {
-                        int iKolicina = frmRucniUnos.tkolicina;
-                        string iSifra = frmRucniUnos.tsifra;
-                        string iVelicina = frmRucniUnos.tvelicina;
-                        Save cuvanje = new Save();
-                        //cuvanje.insert(dokument, vrsta, objekat, iSifra, iVelicina, Convert.ToInt32(iKolicina));
-                        int id = cuvanje.insertPopis(oznakaDokumenta, objekat, d, iSifra, iVelicina, Convert.ToInt32(iKolicina));
-                        DataRow dr = tabela.NewRow();
-                        dr[0] = "";
-                        dr[1] = iSifra;
-                        dr[2] = iVelicina;
-                        dr[3] = Convert.ToInt32(iKolicina);
-                        dr[4] = id;
-                        tabela.Rows.Add(dr);
-                        i++;
+                        EanKod tProdukt = new EanKod();
+                        sound.playSound("errorSifra");
 
-
-                        lbVelicina.Text = iVelicina.ToString();
-                        lbSifra.Text = iSifra.ToString();
-
-                        tbBarkod.Clear();
-                    }
-
-
-                }
-                else
-                {
-                    if (barkodovi.Rows[result].ItemArray[4].ToString() == "")
-                    {
-
-                        sound.playSound("error");
-                        frmVelicina frmVelicina = new frmVelicina();
-                        if (frmVelicina.ShowDialog() == DialogResult.OK || !string.IsNullOrEmpty(frmVelicina.tbvelicina.ToString()))
+                        frmRucniUnos frmRucniUnos = new frmRucniUnos();
+                        if (frmRucniUnos.ShowDialog() == DialogResult.OK)
                         {
-                            lbVelicina.Text = frmVelicina.tbvelicina.ToString();
-                            lbSifra.Text = barkodovi.Rows[result].ItemArray[2].ToString();
-                            lbNaziv.Text = barkodovi.Rows[result].ItemArray[1].ToString();
-                            tbBarkod.Clear();
-
-                            string iVelicina = frmVelicina.tbvelicina.ToString();
-                            string iSifra = barkodovi.Rows[result].ItemArray[2].ToString();
-                            int iKolicina = 1;
-
-                            Save cuvanje = new Save();
-                            //cuvanje.insert(dokument, vrsta, objekat, iSifra, iVelicina, Convert.ToInt32(iKolicina));
-                            int id = cuvanje.insertPopis(oznakaDokumenta, objekat, d, iSifra, iVelicina, Convert.ToInt32(iKolicina));
+                            int iKolicina = frmRucniUnos.tkolicina;
+                            string sifra = frmRucniUnos.tsifra.ToString();
+                            string velicina = frmRucniUnos.tvelicina.ToString();
+                            tProdukt.sifraRobe = sifra;
+                            tProdukt.VelicinaRobe = velicina;
+                            eanKodController.AddRelatedItem(tProdukt);
                             DataRow dr = tabela.NewRow();
-                            dr[0] = barkodovi.Rows[result].ItemArray[1].ToString();
-                            dr[1] = iSifra;
-                            dr[2] = iVelicina;
+                            dr[0] = "";
+                            dr[1] = tProdukt.sifraRobe;
+                            dr[2] = tProdukt.VelicinaRobe;
                             dr[3] = Convert.ToInt32(iKolicina);
-                            dr[4] = id;
+                            dr[4] = 1;
                             tabela.Rows.Add(dr);
                             i++;
+
+
+                            lbVelicina.Text = tProdukt.VelicinaRobe.ToString();
+                            lbSifra.Text = tProdukt.sifraRobe.ToString();
+
+                            tbBarkod.Clear();
                         }
-                        else { MessageBox.Show("Niste uneli velicinu"); }
+
+
                     }
                     else
                     {
-                        lbSifra.Text = barkodovi.Rows[result].ItemArray[2].ToString();
-                        lbNaziv.Text = barkodovi.Rows[result].ItemArray[1].ToString();
-                        lbVelicina.Text = barkodovi.Rows[result].ItemArray[4].ToString();
-                        //MessageBox.Show(barkodovi.Rows[result].ItemArray[2].ToString());
-                        tbBarkod.Clear();
+                        if (product.VelicinaRobe == "")
+                        {
 
-                        string iVelicina = barkodovi.Rows[result].ItemArray[4].ToString();
-                        string iSifra = barkodovi.Rows[result].ItemArray[2].ToString();
-                        int iKolicina = 1;
+                            sound.playSound("error");
+                            frmVelicina frmVelicina = new frmVelicina();
+                            if (frmVelicina.ShowDialog() == DialogResult.OK || !string.IsNullOrEmpty(frmVelicina.tbvelicina.ToString()))
+                            {
+                                lbVelicina.Text = frmVelicina.tbvelicina.ToString();
+                                lbSifra.Text = product.sifraRobe;
+                                lbNaziv.Text = product.naziv;
+                                tbBarkod.Clear();
 
-                        Save cuvanje = new Save();
-                        //cuvanje.insert(dokument, vrsta, objekat, iSifra, iVelicina, Convert.ToInt32(iKolicina));
-                        int id = cuvanje.insertPopis(oznakaDokumenta, objekat, d, iSifra, iVelicina, Convert.ToInt32(iKolicina));
-                        DataRow dr = tabela.NewRow();
-                        dr[0] = barkodovi.Rows[result].ItemArray[1].ToString();
-                        dr[1] = iSifra;
-                        dr[2] = iVelicina;
-                        dr[3] = Convert.ToInt32(iKolicina);
-                        dr[4] = id;
-                        tabela.Rows.Add(dr);
-                        i++;
+                                product.VelicinaRobe = frmVelicina.tbvelicina.ToString();
+                                int iKolicina = 1;
+
+                                eanKodController.AddRelatedItem(product);
+                                DataRow dr = tabela.NewRow();
+                                dr[0] = product.naziv;
+                                dr[1] = product.sifraRobe;
+                                dr[2] = product.VelicinaRobe;
+                                dr[3] = Convert.ToInt32(iKolicina);
+                                dr[4] = 1;
+                                tabela.Rows.Add(dr);
+                                i++;
+                            }
+                            else { MessageBox.Show("Niste uneli velicinu"); }
+                        }
+                        else
+                        {
+                            lbSifra.Text = product.sifraRobe;
+                            lbNaziv.Text = product.naziv;
+                            lbVelicina.Text = product.VelicinaRobe;
+                            tbBarkod.Clear();
+
+                            int iKolicina = 1;
+
+                            eanKodController.AddRelatedItem(product);
+                            DataRow dr = tabela.NewRow();
+                            dr[0] = product.naziv;
+                            dr[1] = product.sifraRobe;
+                            dr[2] = product.VelicinaRobe;
+                            dr[3] = Convert.ToInt32(iKolicina);
+                            dr[4] = 1;
+                            tabela.Rows.Add(dr);
+                            i++;
+                        }
                     }
                 }
 
+                dataGridView1.DataSource = tabela;
+                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+                dataGridView1.AutoResizeColumns();
+
             }
-
-            Save save = new Save();
-
-            //dataGridView1.DataSource = save.popisTable(textBox1.Text.ToString(),"insert");
-            dataGridView1.DataSource = save.popisTable(textBox1.Text.ToString(), "insert");
-            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
-            dataGridView1.AutoResizeColumns();
-            //dataGridView1.Sort(dataGridView1.Columns["col1"], ListSortDirection.Descending);
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -246,6 +221,8 @@ namespace BebaKids.PopisMp
             OdbcConnection conn = new OdbcConnection(Konekcija.konString);
             if (dataGridView1.CurrentCell.ColumnIndex == 0)
             {
+                dataGridView1.Rows.RemoveAt(e.RowIndex);
+                /*
                 if (dataGridView1.Rows.Count > 2)
                 {
                     int rowID = e.RowIndex;
@@ -272,7 +249,11 @@ namespace BebaKids.PopisMp
                     dataGridView1.FirstDisplayedScrollingRowIndex = lastIndex;
 
                 }
+                */
 
+                dataGridView1.DataSource = tabela;
+                int lastIndex = dataGridView1.Rows.Count - 1;
+                dataGridView1.FirstDisplayedScrollingRowIndex = lastIndex;
                 dataGridView1.AutoResizeColumns();
                 dataGridView1.ReadOnly = true;
                 tbBarkod.Focus();
@@ -283,6 +264,11 @@ namespace BebaKids.PopisMp
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (!string.IsNullOrWhiteSpace(textBox1.Text.ToString()))
+            {
+                DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                saveToPopis(textBox1.Text.ToString(), d, MyIni.Read("sif_obj_mp", "ProveraDokumenta"), tabela);
+            }
             this.Hide();
             Form1 Form1 = new Form1();
             Form1.Show();
@@ -293,10 +279,8 @@ namespace BebaKids.PopisMp
             string dokument = textBox1.Text.ToString();
             var objekat = textBox2.Text.ToString();
             DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            //Save cuvanje = new Save();
-            //cuvanje.savePopis(tabela, dokument, objekat, d);
 
-
+            saveToPopis(dokument, d, objekat, tabela);
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
             string connString = "Dsn=ifx;uid=informix";
             OdbcConnection conn = new OdbcConnection(connString);
@@ -375,7 +359,6 @@ namespace BebaKids.PopisMp
             saveFileDialog.InitialDirectory = "c:\\";
             saveFileDialog.RestoreDirectory = true;
             saveFileDialog.FileName = text;
-            //saveFileDialog.ShowDialog();
             if (saveFileDialog.ShowDialog() == DialogResult.OK && !String.IsNullOrWhiteSpace(saveFileDialog.FileName))
             {
 
@@ -390,7 +373,6 @@ namespace BebaKids.PopisMp
         {
             public string sifra { get; set; }
             public string velicina { get; set; }
-            // Add more properties for other columns
         }
 
         private void PopisMpUnos_Load(object sender, EventArgs e)
@@ -421,6 +403,41 @@ namespace BebaKids.PopisMp
                     }
                 }
             }
+        }
+
+
+
+        private EanKod searchForBarKod(string barcode)
+        {
+            using (var context = new Models.MyContext())
+            {
+                var product = context.EanKod
+                    .FirstOrDefault(p => p.barKod == barcode);
+
+                return product;
+            }
+        }
+
+        private void saveToPopis(string dokument, DateTime datumDokumenta, string objekatDokumenta, DataTable tableData)
+        {
+            
+            foreach (DataRow row in tableData.Rows)
+            {
+                Popis popis = new Popis()
+                {
+                    oznakaDokumenta = dokument,
+                    datum = datumDokumenta,
+                    objekat = objekatDokumenta,
+                    sifra = row["sifra"].ToString(),
+                    velicina = row["velicina"].ToString(),
+                    kolic = Convert.ToInt32(row["kolicina"].ToString()),
+                    preneto = 0
+                };
+
+                popisController.AddRelatedItem(popis);
+            }
+
+            popisController.saveItemsToDatabase();
         }
     }
 }

@@ -202,7 +202,7 @@ namespace BebaKids
 
             if (vrsta == "MP")
             {
-                sql = "select first 1 trim(nvl(m.napomena,'magacin@bebakids.com')) email from povrat_mp o left join magacin m on m.sif_mag = o.sif_obj_mp where o.ozn_pov_mp = '" + tDokumnet + "'";
+                sql = "select first 1 trim(nvl(m.e_mail,'magacin@bebakids.com')) email from povrat_mp o left join obj_mp m on m.sif_obj_mp = o.sif_obj_mp where o.ozn_pov_mp = '" + tDokumnet + "'";
             }
 
             OdbcCommand komanda = new OdbcCommand(sql, conn);

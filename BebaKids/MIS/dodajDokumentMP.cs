@@ -10,6 +10,9 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using System.Data.SqlClient;
+using System.ComponentModel;
+using BebaKids.Models;
+using BebaKids.Models.Controllers;
 
 namespace BebaKids.MIS
 {
@@ -82,21 +85,10 @@ namespace BebaKids.MIS
         DataTable tabela = new DataTable();
         int i = 0;
         Classes.ErrorLogger errorLogger = new Classes.ErrorLogger();
+        EanKodController eanKodController = new EanKodController();
+        PopisController popisController = new PopisController();
 
-
-        public DataTable citajBarkod()
-        {
-            OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
-
-            DataSet ds = new DataSet();// kreiranje DataSet objekta
-            barkod = new OdbcDataAdapter("select * from ean_kod2", konekcija);//punjenje objekta sqladaptera sa podacima iz tab. users
-            barkod.MissingSchemaAction = MissingSchemaAction.AddWithKey;
-            OdbcCommandBuilder builder = new OdbcCommandBuilder(barkod);//sqldataadapter komanda cita iz sqlbuildera
-            barkod.Fill(ds, "barkod");//punjenj objekta
-            DataTable tabelaBarkodova = ds.Tables["barkod"];//kreiraanje tabele koja prestavlja kopiju
-            return tabelaBarkodova;
-        }
-
+        IniFile MyIni = new IniFile(@"C:\bkapps\config.ini");
 
         public void btnNoviPopis_Click(object sender, EventArgs e)
         {
@@ -162,8 +154,110 @@ namespace BebaKids.MIS
             }
 
         }
+        private void textBoxTest_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                var oznakaDokumenta = textBox1.Text.ToString();
+                DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                Classes.Application sound = new Classes.Application();
+
+                if (e.KeyCode == Keys.Enter && !string.IsNullOrEmpty(tbBarkod.Text.ToString()))
+                {
+                    string BARKOD = Convert.ToString(tbBarkod.Text);
+                    int objekat = Convert.ToInt32(comboBox1.SelectedValue.ToString());
+                    var product = searchForBarKod(BARKOD);
+
+                    if (product == null)
+                    {
+                        EanKod tProdukt = new EanKod();
+                        sound.playSound("errorSifra");
+
+                        frmRucniUnos frmRucniUnos = new frmRucniUnos();
+                        if (frmRucniUnos.ShowDialog() == DialogResult.OK)
+                        {
+                            int iKolicina = frmRucniUnos.tkolicina;
+                            string sifra = frmRucniUnos.tsifra.ToString();
+                            string velicina = frmRucniUnos.tvelicina.ToString();
+                            tProdukt.sifraRobe = sifra;
+                            tProdukt.VelicinaRobe = velicina;
+                            eanKodController.AddRelatedItem(tProdukt);
+                            DataRow dr = tabela.NewRow();
+                            dr[0] = "";
+                            dr[1] = tProdukt.sifraRobe;
+                            dr[2] = tProdukt.VelicinaRobe;
+                            dr[3] = Convert.ToInt32(iKolicina);
+                            dr[4] = 1;
+                            tabela.Rows.Add(dr);
+                            i++;
 
 
+                            lbVelicina.Text = tProdukt.VelicinaRobe.ToString();
+                            lbSifra.Text = tProdukt.sifraRobe.ToString();
+
+                            tbBarkod.Clear();
+                        }
+
+
+                    }
+                    else
+                    {
+                        if (product.VelicinaRobe == "")
+                        {
+
+                            sound.playSound("error");
+                            frmVelicina frmVelicina = new frmVelicina();
+                            if (frmVelicina.ShowDialog() == DialogResult.OK || !string.IsNullOrEmpty(frmVelicina.tbvelicina.ToString()))
+                            {
+                                lbVelicina.Text = frmVelicina.tbvelicina.ToString();
+                                lbSifra.Text = product.sifraRobe;
+                                lbNaziv.Text = product.naziv;
+                                tbBarkod.Clear();
+
+                                product.VelicinaRobe = frmVelicina.tbvelicina.ToString();
+                                int iKolicina = 1;
+
+                                eanKodController.AddRelatedItem(product);
+                                DataRow dr = tabela.NewRow();
+                                dr[0] = product.naziv;
+                                dr[1] = product.sifraRobe;
+                                dr[2] = product.VelicinaRobe;
+                                dr[3] = Convert.ToInt32(iKolicina);
+                                dr[4] = 1;
+                                tabela.Rows.Add(dr);
+                                i++;
+                            }
+                            else { MessageBox.Show("Niste uneli velicinu"); }
+                        }
+                        else
+                        {
+                            lbSifra.Text = product.sifraRobe;
+                            lbNaziv.Text = product.naziv;
+                            lbVelicina.Text = product.VelicinaRobe;
+                            tbBarkod.Clear();
+
+                            int iKolicina = 1;
+
+                            eanKodController.AddRelatedItem(product);
+                            DataRow dr = tabela.NewRow();
+                            dr[0] = product.naziv;
+                            dr[1] = product.sifraRobe;
+                            dr[2] = product.VelicinaRobe;
+                            dr[3] = Convert.ToInt32(iKolicina);
+                            dr[4] = 1;
+                            tabela.Rows.Add(dr);
+                            i++;
+                        }
+                    }
+                }
+
+                dataGridView1.DataSource = tabela;
+                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+                dataGridView1.AutoResizeColumns();
+
+            }
+        }
+        /*
         private void textBoxTest_KeyDown(object sender, KeyEventArgs e)
         {
 
@@ -274,13 +368,15 @@ namespace BebaKids.MIS
             dataGridView1.AutoResizeColumns();
             dataGridView1.ReadOnly = true;
         }
-
+        */
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
             OdbcConnection conn = new OdbcConnection(Konekcija.konString);
             if (dataGridView1.CurrentCell.ColumnIndex == 0)
             {
+                dataGridView1.Rows.RemoveAt(e.RowIndex);
+                /*
                 if (dataGridView1.Rows.Count > 2)
                 {
                     int rowID = e.RowIndex;
@@ -307,7 +403,11 @@ namespace BebaKids.MIS
                     dataGridView1.FirstDisplayedScrollingRowIndex = lastIndex;
 
                 }
+                */
 
+                dataGridView1.DataSource = tabela;
+                int lastIndex = dataGridView1.Rows.Count - 1;
+                dataGridView1.FirstDisplayedScrollingRowIndex = lastIndex;
                 dataGridView1.AutoResizeColumns();
                 dataGridView1.ReadOnly = true;
                 tbBarkod.Focus();
@@ -318,6 +418,18 @@ namespace BebaKids.MIS
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (!string.IsNullOrWhiteSpace(textBox1.Text.ToString()))
+            {
+                string objekatToMp = comboBox1.SelectedValue.ToString();
+                if (objekatToMp.Length == 1)
+                {
+                    objekatToMp = "0" + objekatToMp;
+                }
+
+                DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                saveToPopis(textBox1.Text.ToString(), d, MyIni.Read("sif_obj_mp", "ProveraDokumenta"), tabela);
+                sendRequest(textBox1.Text.ToString(), comboBoxMagacin.SelectedValue.ToString(), objekatToMp, cbDocumentType.SelectedValue.ToString());
+            }
             this.Hide();
             Form1 Form1 = new Form1();
             Form1.Show();
@@ -329,9 +441,14 @@ namespace BebaKids.MIS
             var objekatFrom = comboBoxMagacin.SelectedValue.ToString();
             var objekatTo = comboBox1.SelectedValue.ToString();
             var vrsta = cbDocumentType.SelectedValue.ToString();
+            string objekatToMp = comboBox1.SelectedValue.ToString();
+            if (objekatToMp.Length == 1)
+            {
+                objekatToMp = "0" + objekatToMp;
+            }
             DateTime d = DateTime.ParseExact(datumDokumenta.Value.ToShortDateString(), "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
-
+            saveToPopis(dokument, d, objekatToMp, tabela);
             OdbcConnection konekcija = new OdbcConnection(Konekcija.konString);
             string connString = "Dsn=ifx;uid=informix";
             OdbcConnection conn = new OdbcConnection(connString);
@@ -387,12 +504,6 @@ namespace BebaKids.MIS
                 progressBar1.Value = i;
             }
             MessageBox.Show("Uspesno preneti podaci", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            string objekatToMp = comboBox1.SelectedValue.ToString();
-            if (objekatToMp.Length == 1)
-            {
-                objekatToMp = "0" + objekatToMp;
-            }
 
             sendRequest(dokument, comboBoxMagacin.SelectedValue.ToString(), objekatToMp, cbDocumentType.SelectedValue.ToString());
             progressBar1.Value = 0;
@@ -568,7 +679,7 @@ namespace BebaKids.MIS
                             <nalozi xmlns=''>
                                 <datumDokumenta>{d.ToString("yyyy-MM-dd")}</datumDokumenta>
                                 <dpo>{d.ToString("yyyy-MM-dd")}</dpo>
-                                <logname>mis</logname>
+                                <logname>elektronska.servis</logname>
                                 <oznakaCenovnika>{items[0].cenovnik}</oznakaCenovnika>
                                 <oznakaDokumenta>{document}</oznakaDokumenta>
                                 <sifraMagacina>{objekatFrom}</sifraMagacina>
@@ -577,6 +688,7 @@ namespace BebaKids.MIS
                                 <status>0</status>
                                 {stavkeXml}
                                 <storno>N</storno>
+                                <napomena>{tbComment.Text.ToString()}</napomena>
                             </nalozi>
                         </dodajNalogZaIzdavanjeMp>
                     </soap:Body>
@@ -611,6 +723,7 @@ namespace BebaKids.MIS
                     <stopaRabata>0</stopaRabata>
                     <maloprodajnaMarza>0</maloprodajnaMarza>
                     <posebnaStopaRabata>0</posebnaStopaRabata>
+                    <brojPakovanja>{dataItem.kolicina}</brojPakovanja>
                 </stavke>";
 
                 i++;
@@ -627,8 +740,7 @@ namespace BebaKids.MIS
                         <dodajOtpremnicuUMaloprodaju xmlns='http://sifarnici.servis.mis.com/'>
                             <otpremnicaUMaloprodaju xmlns=''>
                                 <datumDokumenta>{d.ToString("yyyy-MM-dd")}</datumDokumenta>
-                                <logname>mis</logname>
-                                <napomena>123</napomena>
+                                <logname>elektronska.servis</logname>
                                 <oznakaCenovnika>{items[0].cenovnik}</oznakaCenovnika>
                                 <oznakaDokumenta>{document}</oznakaDokumenta>
                                 <sifraMagacina>{objekatFrom}</sifraMagacina>
@@ -699,7 +811,7 @@ namespace BebaKids.MIS
                                 <datumOtpreme>{d.ToString("yyyy-MM-dd")}</datumOtpreme>
                                 <dpo>{d.ToString("yyyy-MM-dd")}</dpo>
                                 <valutaPlacanja>{DateTime.Now.ToString("yyyy-MM-dd")}</valutaPlacanja>
-                                <logname>mis</logname>
+                                <logname>elektronska.servis</logname>
                                 <napomena>123</napomena>
                                 <oznakaCenovnika>{items[0].cenovnik}</oznakaCenovnika>
                                 <oznakaDokumenta>{document}</oznakaDokumenta>
@@ -791,6 +903,39 @@ namespace BebaKids.MIS
             }
         }
 
+        private EanKod searchForBarKod(string barcode)
+        {
+            using (var context = new Models.MyContext())
+            {
+                var product = context.EanKod
+                    .FirstOrDefault(p => p.barKod == barcode);
+
+                return product;
+            }
+        }
+
+        private void saveToPopis(string dokument, DateTime datumDokumenta, string objekatDokumenta, DataTable tableData)
+        {
+
+            foreach (DataRow row in tableData.Rows)
+            {
+                Popis popis = new Popis()
+                {
+                    oznakaDokumenta = dokument,
+                    datum = datumDokumenta,
+                    objekat = objekatDokumenta,
+                    sifra = row["sifra"].ToString(),
+                    velicina = row["velicina"].ToString(),
+                    kolic = Convert.ToInt32(row["kolicina"].ToString()),
+                    preneto = 0
+                };
+
+                popisController.AddRelatedItem(popis);
+            }
+
+            popisController.saveItemsToDatabase();
+        }
+
         private void deleteOldRecords()
         {
             string query = $"DELETE FROM pop_sta_mp_st WHERE DATEDIFF(day, dat_pop, GETDATE()) > 30";
@@ -806,7 +951,7 @@ namespace BebaKids.MIS
                     {
                         connection.Open();
                         int rowsAffected = command.ExecuteNonQuery();
-                        errorLogger.LogStringException("Obrisano iz tabele popisa broj rekorda: " + rowsAffected);
+                        //errorLogger.LogStringException("Obrisano iz tabele popisa broj rekorda: " + rowsAffected);
                     }
                     catch (Exception ex)
                     {
